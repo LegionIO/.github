@@ -1,0 +1,80 @@
+name: Ruby CI
+
+on:
+  workflow_call:
+    inputs:
+      ruby-version:
+        description: Ruby version to test against
+        default: '3.4'
+        type: string
+        required: false
+      ruby-versions:
+        description: JSON array of Ruby versions for matrix testing (overrides ruby-version)
+        default: ''
+        type: string
+        required: false
+      run-rspec:
+        description: Run RSpec tests
+        default: true
+        type: boolean
+        required: false
+      run-rubocop:
+        description: Run RuboCop linting
+        default: true
+        type: boolean
+        required: false
+      needs-redis:
+        description: Start a Redis service container
+        default: false
+        type: boolean
+        required: false
+      needs-rabbitmq:
+        description: Start a RabbitMQ service container
+        default: false
+        type: boolean
+        required: false
+
+jobs:
+  rspec:
+    if: ${{ inputs.run-rspec }}
+    name: "RSpec (Ruby ${{ matrix.ruby }})"
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby: ${{ inputs.ruby-versions != '' && fromJSON(inputs.ruby-versions) || fromJSON(format('["{0}"]', inputs.ruby-version)) }}
+    runs-on: ubuntu-latest
+    services:
+      redis:
+        image: ${{ inputs.needs-redis && 'redis:7-alpine' || '' }}
+        ports:
+          - ${{ inputs.needs-redis && '6379:6379' || '' }}
+        options: >-
+          ${{ inputs.needs-redis && '--health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5' || '' }}
+      rabbitmq:
+        image: ${{ inputs.needs-rabbitmq && 'rabbitmq:3-management-alpine' || '' }}
+        ports:
+          - ${{ inputs.needs-rabbitmq && '5672:5672' || '' }}
+          - ${{ inputs.needs-rabbitmq && '15672:15672' || '' }}
+        options: >-
+          ${{ inputs.needs-rabbitmq && '--health-cmd "rabbitmq-diagnostics -q ping" --health-interval 10s --health-timeout 5s --health-retries 5' || '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+      - name: Run RSpec
+        run: bundle exec rspec
+
+  rubocop:
+    if: ${{ inputs.run-rubocop }}
+    name: RuboCop
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ inputs.ruby-version || '3.4' }}
+          bundler-cache: true
+      - name: Run RuboCop
+        run: bundle exec rubocop

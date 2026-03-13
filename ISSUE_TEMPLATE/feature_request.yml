@@ -1,0 +1,33 @@
+name: Feature Request
+description: Suggest a new feature or improvement
+labels: ["type:enhancement"]
+body:
+  - type: input
+    id: gem
+    attributes:
+      label: Related Gem(s)
+      description: Which gem(s) would this affect?
+      placeholder: e.g., legionio, lex-scheduler, new extension
+    validations:
+      required: false
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or use case
+      description: What are you trying to do that isn't possible or is harder than it should be?
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: How would you like this to work? Code examples are welcome.
+    validations:
+      required: false
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Any other approaches you've thought about?
+    validations:
+      required: false
