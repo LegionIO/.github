@@ -79,6 +79,10 @@ The `ci.yml` reusable workflow accepts these inputs:
 | `needs-redis` | `false` | Start Redis service container |
 | `needs-rabbitmq` | `false` | Start RabbitMQ service container |
 
+## Project Tracker
+
+`docs/TODO.md` contains the consolidated project tracker for the entire LegionIO ecosystem. Canonical source: https://github.com/LegionIO/.github/blob/main/docs/TODO.md
+
 ## License
 
 [LICENSE](LICENSE) — Apache-2.0

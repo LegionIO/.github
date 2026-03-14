@@ -31,7 +31,9 @@ This repo holds organization-wide GitHub configuration for the LegionIO org. Git
 ├── PULL_REQUEST_TEMPLATE.md   # Default PR checklist
 ├── SECURITY.md                # Vulnerability reporting policy
 ├── README.md                  # This repo's own README
-└── LICENSE                    # Apache-2.0
+├── LICENSE                    # Apache-2.0
+└── docs/
+    └── TODO.md                # Consolidated project tracker for the entire LegionIO ecosystem
 ```
 
 ## Reusable Workflows
