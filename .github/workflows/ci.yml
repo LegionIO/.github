@@ -43,22 +43,18 @@ jobs:
       matrix:
         ruby: ${{ inputs.ruby-versions != '' && fromJSON(inputs.ruby-versions) || fromJSON(format('["{0}"]', inputs.ruby-version)) }}
     runs-on: ubuntu-latest
-    services:
-      redis:
-        image: ${{ inputs.needs-redis && 'redis:7-alpine' || '' }}
-        ports:
-          - ${{ inputs.needs-redis && '6379:6379' || '' }}
-        options: >-
-          ${{ inputs.needs-redis && '--health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5' || '' }}
-      rabbitmq:
-        image: ${{ inputs.needs-rabbitmq && 'rabbitmq:3-management-alpine' || '' }}
-        ports:
-          - ${{ inputs.needs-rabbitmq && '5672:5672' || '' }}
-          - ${{ inputs.needs-rabbitmq && '15672:15672' || '' }}
-        options: >-
-          ${{ inputs.needs-rabbitmq && '--health-cmd "rabbitmq-diagnostics -q ping" --health-interval 10s --health-timeout 5s --health-retries 5' || '' }}
     steps:
       - uses: actions/checkout@v4
+      - name: Start Redis
+        if: ${{ inputs.needs-redis }}
+        run: |
+          docker run -d --name redis -p 6379:6379 redis:7-alpine
+          until docker exec redis redis-cli ping 2>/dev/null; do sleep 1; done
+      - name: Start RabbitMQ
+        if: ${{ inputs.needs-rabbitmq }}
+        run: |
+          docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3-management-alpine
+          until docker exec rabbitmq rabbitmq-diagnostics -q ping 2>/dev/null; do sleep 1; done
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
