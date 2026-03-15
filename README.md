@@ -81,7 +81,7 @@ The `ci.yml` reusable workflow accepts these inputs:
 
 ## Project Tracker
 
-`docs/TODO.md` contains the consolidated project tracker for the entire LegionIO ecosystem. Canonical source: https://github.com/LegionIO/.github/blob/main/docs/TODO.md
+The consolidated project tracker for the entire LegionIO ecosystem lives in the `docs` repository. Canonical source: https://github.com/LegionIO/docs/blob/main/TODO.md
 
 ## License
 

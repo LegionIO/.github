@@ -31,9 +31,7 @@ This repo holds organization-wide GitHub configuration for the LegionIO org. Git
 ├── PULL_REQUEST_TEMPLATE.md   # Default PR checklist
 ├── SECURITY.md                # Vulnerability reporting policy
 ├── README.md                  # This repo's own README
-├── LICENSE                    # Apache-2.0
-└── docs/
-    └── TODO.md                # Consolidated project tracker for the entire LegionIO ecosystem
+└── LICENSE                    # Apache-2.0
 ```
 
 ## Reusable Workflows
@@ -95,6 +93,7 @@ jobs:
 - Do not add repo-specific logic to the reusable workflows — they serve all 66 repos
 - Do not hardcode gem names in issue templates — they ask the reporter to specify
 - The org profile README (`profile/README.md`) is the public face of the org — keep it current with actual architecture
+- The canonical TODO tracker lives in the `docs` repo (`/Users/miverso2/rubymine/legion/docs/TODO.md`), not here
 
 ## Related
 
