@@ -8,28 +8,113 @@ on:
         default: '3.4'
         type: string
         required: false
+      changelog-file:
+        description: 'Path to CHANGELOG.md'
+        default: 'CHANGELOG.md'
+        type: string
+        required: false
     secrets:
       rubygems-api-key:
         description: RubyGems API key for publishing
         required: true
 
+permissions:
+  contents: write
+
 jobs:
   release:
-    name: Build and Publish
+    name: Release
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/v')
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect version from source
+        id: version
+        run: |
+          set -euo pipefail
+          version_file=$(find . -path './.git' -prune -o -name 'version.rb' -print | head -1)
+          if [ -z "$version_file" ]; then
+            echo "No version.rb found"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          current=$(grep -oP "VERSION\s*=\s*['\"]\\K[^'\"]*" "$version_file")
+          if [ -z "$current" ]; then
+            echo "Could not parse version from $version_file"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "current=$current" >> "$GITHUB_OUTPUT"
+          echo "tag=v$current" >> "$GITHUB_OUTPUT"
+
+          if git rev-parse "v$current" >/dev/null 2>&1; then
+            echo "Tag v$current already exists, skipping release"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "New version detected: $current"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Extract changelog
+        if: steps.version.outputs.changed == 'true'
+        id: changelog
+        env:
+          VERSION: ${{ steps.version.outputs.current }}
+          CHANGELOG_PATH: ${{ inputs.changelog-file }}
+        run: |
+          set -euo pipefail
+          if [ ! -f "$CHANGELOG_PATH" ]; then
+            echo "Release v$VERSION" > /tmp/release_notes.md
+            echo "body_file=/tmp/release_notes.md" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # extract the section for this version (between ## vX.Y.Z headers)
+          awk -v ver="$VERSION" '
+            /^## v/ {
+              if (found) exit
+              if (index($0, "v" ver)) found=1
+              next
+            }
+            found { print }
+          ' "$CHANGELOG_PATH" > /tmp/release_notes.md
+
+          if [ ! -s /tmp/release_notes.md ]; then
+            echo "Release v$VERSION" > /tmp/release_notes.md
+          fi
+
+          echo "body_file=/tmp/release_notes.md" >> "$GITHUB_OUTPUT"
+
       - uses: ruby/setup-ruby@v1
+        if: steps.version.outputs.changed == 'true'
         with:
           ruby-version: ${{ inputs.ruby-version }}
           bundler-cache: true
 
       - name: Build gem
+        if: steps.version.outputs.changed == 'true'
         run: gem build *.gemspec
 
+      - name: Create git tag
+        if: steps.version.outputs.changed == 'true'
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          git tag "$TAG"
+          git push origin "$TAG"
+
+      - name: Create GitHub release
+        if: steps.version.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+          NOTES_FILE: ${{ steps.changelog.outputs.body_file }}
+        run: gh release create "$TAG" --title "$TAG" --notes-file "$NOTES_FILE" *.gem
+
       - name: Publish to RubyGems
+        if: steps.version.outputs.changed == 'true'
         env:
           GEM_HOST_API_KEY: ${{ secrets.rubygems-api-key }}
-        run: |
-          gem push *.gem
+        run: gem push *.gem
