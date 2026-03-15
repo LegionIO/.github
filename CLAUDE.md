@@ -27,6 +27,9 @@ This repo holds organization-wide GitHub configuration for the LegionIO org. Git
 ├── ISSUE_TEMPLATE/
 │   ├── bug_report.yml         # Structured bug report form
 │   └── feature_request.yml   # Structured feature request form
+├── scripts/
+│   ├── sync-github-labels-topics.sh  # Org-wide label and topic sync (--labels, --topics, --all)
+│   └── apply-labels-one-repo.sh      # Per-repo label worker (called by sync script via xargs -P 5)
 ├── CONTRIBUTING.md            # Org-wide contribution guide
 ├── PULL_REQUEST_TEMPLATE.md   # Default PR checklist
 ├── SECURITY.md                # Vulnerability reporting policy
@@ -79,6 +82,30 @@ jobs:
 
 `workflow-templates/` contains starter workflows shown in the GitHub Actions "new workflow" picker for org repos. These are now superseded by the reusable `ci.yml` and `release.yml` above. New repos should use the reusable workflows, not these starters.
 
+## Maintenance Scripts
+
+`scripts/` contains org-wide maintenance tools for managing all LegionIO repos.
+
+### `sync-github-labels-topics.sh`
+
+Syncs standardized labels and topics across all active repos in the LegionIO org. Uses `gh` CLI with parallel execution (`xargs -P 5`).
+
+```bash
+./scripts/sync-github-labels-topics.sh --labels   # sync 24 labels to all repos
+./scripts/sync-github-labels-topics.sh --topics    # sync topics to all repos
+./scripts/sync-github-labels-topics.sh --all       # both labels and topics
+```
+
+**24 standardized labels:**
+- Type: `type:bug`, `type:enhancement`, `type:docs`, `type:chore`, `type:breaking`
+- Priority: `priority:critical`, `priority:high`, `priority:medium`, `priority:low`
+- Area: `area:transport`, `area:crypt`, `area:data`, `area:cache`, `area:settings`, `area:logging`, `area:json`, `area:cli`, `area:api`, `area:mcp`, `area:extensions`, `area:actors`, `area:runners`
+- Community: `good first issue`, `help wanted`
+
+### `apply-labels-one-repo.sh`
+
+Per-repo worker called by the sync script. Not intended to be run directly.
+
 ## Community Health Files
 
 `CONTRIBUTING.md`, `SECURITY.md`, `PULL_REQUEST_TEMPLATE.md`, and `ISSUE_TEMPLATE/` are GitHub's community health file mechanism. They apply org-wide unless a specific repo overrides them.
@@ -90,7 +117,7 @@ jobs:
 
 ## What Not to Change
 
-- Do not add repo-specific logic to the reusable workflows — they serve all 66 repos
+- Do not add repo-specific logic to the reusable workflows — they serve all 300 repos
 - Do not hardcode gem names in issue templates — they ask the reporter to specify
 - The org profile README (`profile/README.md`) is the public face of the org — keep it current with actual architecture
 - The canonical TODO tracker lives in the `docs` repo (`/Users/miverso2/rubymine/legion/docs/TODO.md`), not here
