@@ -38,6 +38,7 @@ jobs:
   rspec:
     if: ${{ inputs.run-rspec }}
     name: "RSpec (Ruby ${{ matrix.ruby }})"
+    timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
@@ -65,6 +66,7 @@ jobs:
   rubocop:
     if: ${{ inputs.run-rubocop }}
     name: RuboCop
+    timeout-minutes: 10
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
