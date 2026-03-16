@@ -34,15 +34,18 @@ jobs:
         id: version
         run: |
           set -euo pipefail
-          version_file=$(find . -path './.git' -prune -o -name 'version.rb' -print | head -1)
-          if [ -z "$version_file" ]; then
-            echo "No version.rb found"
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-          current=$(grep -oP "VERSION\s*=\s*['\"]\\K[^'\"]*" "$version_file")
+          current=""
+          while IFS= read -r vf; do
+            current=$(grep -oE "VERSION[[:space:]]*=[[:space:]]*['\"][^'\"]*" "$vf" \
+              | sed "s/.*['\"]//" || true)
+            if [ -n "$current" ]; then
+              echo "Found version $current in $vf"
+              break
+            fi
+          done < <(find . -path './.git' -prune -o -path './vendor' -prune -o -name 'version.rb' -print)
+
           if [ -z "$current" ]; then
-            echo "Could not parse version from $version_file"
+            echo "No version.rb with a string literal VERSION found"
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
