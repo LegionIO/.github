@@ -50,12 +50,30 @@ jobs:
         if: ${{ inputs.needs-redis }}
         run: |
           docker run -d --name redis -p 6379:6379 redis:7-alpine
-          until docker exec redis redis-cli ping 2>/dev/null; do sleep 1; done
+          timeout=30; elapsed=0
+          until docker exec redis redis-cli ping 2>/dev/null; do
+            sleep 1; elapsed=$((elapsed + 1))
+            if [ $elapsed -ge $timeout ]; then
+              echo "::error::Redis failed to start within ${timeout}s"
+              docker logs redis
+              exit 1
+            fi
+          done
+          echo "Redis ready after ${elapsed}s"
       - name: Start RabbitMQ
         if: ${{ inputs.needs-rabbitmq }}
         run: |
           docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3-management-alpine
-          until docker exec rabbitmq rabbitmq-diagnostics -q ping 2>/dev/null; do sleep 1; done
+          timeout=60; elapsed=0
+          until docker exec rabbitmq rabbitmq-diagnostics -q ping 2>/dev/null; do
+            sleep 2; elapsed=$((elapsed + 2))
+            if [ $elapsed -ge $timeout ]; then
+              echo "::error::RabbitMQ failed to start within ${timeout}s"
+              docker logs rabbitmq
+              exit 1
+            fi
+          done
+          echo "RabbitMQ ready after ${elapsed}s"
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
