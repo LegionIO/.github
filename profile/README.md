@@ -20,12 +20,35 @@ It's not a wrapper around an LLM. It's a brain built from first principles.
 
 ## The Cognitive Stack
 
-Every LegionIO agent runs a **tick cycle** — an 11-phase cognitive loop modeled on biological neural processing. Each tick, the agent perceives, remembers, predicts, decides, acts, and reflects.
+Every LegionIO agent runs a **tick cycle** — a 13-phase cognitive loop modeled on biological neural processing. Each tick, the agent perceives, remembers, predicts, decides, acts, and reflects. During idle periods, a 7-phase **dream cycle** consolidates and reorganizes memory.
 
-```
-  Perceive → Attend → Retrieve Memory → Integrate Knowledge → Predict
-      ↑                                                          ↓
-  Reflect ← Learn ← Evaluate ← Act ← Decide (emotional bias) ←─┘
+```mermaid
+flowchart LR
+    subgraph TICK["Waking Tick Cycle"]
+        direction LR
+        A["Sensory\nProcessing"] --> B["Emotional\nEvaluation"]
+        B --> C["Memory\nRetrieval"]
+        C --> D["Knowledge\nRetrieval"]
+        D --> E["Identity\nEntropy Check"]
+        E --> F["Working Memory\nIntegration"]
+        F --> G["Procedural\nCheck"]
+        G --> H["Prediction\nEngine"]
+        H --> I["Mesh\nInterface"]
+        I --> J["Gut\nInstinct"]
+        J --> K["Action\nSelection"]
+        K --> L["Memory\nConsolidation"]
+        L --> M["Post-Tick\nReflection"]
+    end
+
+    subgraph DREAM["Dream Cycle"]
+        direction LR
+        D1["Memory\nAudit"] --> D2["Association\nWalk"]
+        D2 --> D3["Contradiction\nResolution"]
+        D3 --> D4["Agenda\nFormation"]
+        D4 --> D5["Consolidation\nCommit"]
+        D5 --> D6["Dream\nReflection"]
+        D6 --> D7["Dream\nNarration"]
+    end
 ```
 
 This isn't theoretical. It's 243 working extensions:
