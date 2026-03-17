@@ -28,6 +28,11 @@ on:
         default: false
         type: boolean
         required: false
+      needs-memcached:
+        description: Start a Memcached service container
+        default: false
+        type: boolean
+        required: false
       needs-rabbitmq:
         description: Start a RabbitMQ service container
         default: false
@@ -60,6 +65,20 @@ jobs:
             fi
           done
           echo "Redis ready after ${elapsed}s"
+      - name: Start Memcached
+        if: ${{ inputs.needs-memcached }}
+        run: |
+          docker run -d --name memcached -p 11211:11211 memcached:1-alpine -m 64 -I 8m
+          timeout=15; elapsed=0
+          until echo "version" | nc -w1 127.0.0.1 11211 2>/dev/null | grep -q VERSION; do
+            sleep 1; elapsed=$((elapsed + 1))
+            if [ $elapsed -ge $timeout ]; then
+              echo "::error::Memcached failed to start within ${timeout}s"
+              docker logs memcached
+              exit 1
+            fi
+          done
+          echo "Memcached ready after ${elapsed}s"
       - name: Start RabbitMQ
         if: ${{ inputs.needs-rabbitmq }}
         run: |
