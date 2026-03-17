@@ -1,130 +1,171 @@
+<div align="center">
+
 # LegionIO
 
-**An extensible async job engine and brain-modeled agentic AI framework for Ruby.**
+### What if your AI agent had a brain — not just a prompt?
 
-LegionIO schedules tasks, creates relationships between services, and runs them concurrently. What started as a job orchestration engine has evolved into a full framework for building autonomous AI agents with human-like cognitive architecture — memory, emotion, trust, prediction, consent, and multi-agent coordination.
+**284 extensions. 243 cognitive modules. One Ruby framework.**
 
-## Brain-Modeled Agentic AI
+[![Ruby](https://img.shields.io/badge/Ruby-%3E%3D%203.4-red)](https://www.ruby-lang.org)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+[![Extensions](https://img.shields.io/badge/Extensions-284-green)](https://github.com/search?q=topic%3Alegionio+org%3ALegionIO&type=repositories)
 
-LegionIO's agentic layer isn't a thin wrapper around an LLM. It's a cognitive architecture built from first principles:
+</div>
 
-| Extension | What It Does |
-|-----------|-------------|
-| **lex-tick** | Atomic cognitive processing cycle — 11 phases, 3 modes. The heartbeat of every agent. |
-| **lex-memory** | Memory traces with consolidation, reinforcement, and natural decay. Agents forget what doesn't matter. |
-| **lex-emotion** | Multi-dimensional emotional valence that influences decision-making. Not sentiment analysis — emergent affect. |
-| **lex-prediction** | Forward-model prediction engine with 4 reasoning modes. Agents anticipate, not just react. |
-| **lex-identity** | Models the human partner — behavioral entropy, interaction patterns, relationship context. |
-| **lex-trust** | Domain-specific trust that's earned over time, not configured. Trust in "code review" is independent of trust in "deployment." |
-| **lex-consent** | Four-tier consent gradient with earned autonomy. Agents gain independence as trust grows. |
-| **lex-coldstart** | Imprint window and bootstrap calibration. How an agent learns who it's working with from zero. |
-| **lex-conflict** | Conflict resolution with severity levels and postures. Agents handle disagreement, not just agreement. |
-| **lex-governance** | Four-layer distributed governance protocol. Ethical guardrails that scale across agent swarms. |
-| **lex-extinction** | Escalation and extinction protocol. Graceful degradation when things go wrong. |
-| **lex-privatecore** | Privacy boundary enforcement with cryptographic erasure. Some things agents should never share. |
+---
 
-### Multi-Agent Coordination
+Most AI agent frameworks give you a loop: prompt, tool call, repeat. LegionIO gives you a **cognitive architecture** — memory that fades, emotions that shift decisions, trust that's earned, predictions that fail and adapt, and agents that dream during idle cycles to consolidate what they've learned.
 
-| Extension | What It Does |
-|-----------|-------------|
-| **lex-swarm** | Swarm orchestration and charter system. Agents form teams, assign roles, and coordinate work. |
-| **lex-swarm-github** | GitHub-specific swarm pipeline — finder/fixer/validator agents that collaborate on code. |
-| **lex-mesh** | Agent-to-agent mesh communication protocol. Direct peer messaging between agents. |
+It's not a wrapper around an LLM. It's a brain built from first principles.
 
-### LLM Integration
+## The Cognitive Stack
+
+Every LegionIO agent runs a **tick cycle** — an 11-phase cognitive loop modeled on biological neural processing. Each tick, the agent perceives, remembers, predicts, decides, acts, and reflects.
+
+```
+  Perceive → Attend → Retrieve Memory → Integrate Knowledge → Predict
+      ↑                                                          ↓
+  Reflect ← Learn ← Evaluate ← Act ← Decide (emotional bias) ←─┘
+```
+
+This isn't theoretical. It's 243 working extensions:
+
+| Layer | Extensions | What's Happening |
+|-------|-----------|-----------------|
+| **Perception** | attention, salience, sensory-filter, global-workspace | Raw input becomes weighted, filtered awareness |
+| **Memory** | memory, working-memory, consolidation, dream, forgetting | Traces form, strengthen with use, decay naturally. Dream cycles compress and reorganize during idle |
+| **Emotion** | emotion, mood, curiosity, surprise, aesthetic | Multi-dimensional affect that *biases decisions* — not sentiment labels, emergent influence |
+| **Prediction** | prediction, anticipation, mental-simulation | Forward models with 4 reasoning modes. Agents plan ahead, detect prediction errors, and adapt |
+| **Identity** | identity, self-model, theory-of-mind, coldstart | Models of self, the human partner, and other agents. Bootstraps from zero via imprint windows |
+| **Social** | trust, consent, conflict, governance, extinction | Trust earned per-domain over time. Four-tier consent gradient. Ethical guardrails that scale |
+| **Knowledge** | apollo, reflection, metacognition, insight | Shared knowledge store with confidence decay, corroboration, and cross-agent retrieval |
+| **Coordination** | swarm, mesh, swarm-github | Multi-agent teams with charters, roles, and peer-to-peer communication |
+
+> **243 cognitive extensions** — from `lex-attention` to `lex-working-memory` — each implementing a discrete aspect of cognition. They compose. They interact. They're all optional.
+
+## GAIA: The Coordination Layer
+
+**GAIA** (General Agentic Intelligence Architecture) is the cognitive coordinator that orchestrates the tick cycle, routes messages between cognitive modules, and manages the channel abstraction that connects perception to action.
+
+Think of it as the thalamus — not doing the thinking, but making sure the right signals reach the right place at the right time.
+
+## The Job Engine Underneath
+
+All of this cognition runs on a production-grade async job engine:
+
+- **RabbitMQ** message broker with priority queues and dead-letter exchanges
+- **Task chaining** — `Task A → [transform] → Task B → [condition] → Task C`
+- **Extension auto-discovery** — drop a `lex-*` gem in your Gemfile and it's live
+- **5 actor types** — subscription, polling, interval, one-shot, loop
+- **Distributed scheduling** with cron expressions and interval locking
+- **HashiCorp Vault** for secrets, dynamic credentials, PKI, and JWT
+- **Multi-database** support — SQLite, PostgreSQL, MySQL via Sequel
+- **Two-tier caching** — Redis/Memcached with local fallback
+- **RBAC** — Vault-style flat policies for fine-grained access control
+
+## Three Ways In
+
+```bash
+# CLI — every command supports --json
+legion start
+legion task run http.request.get url:https://example.com
+legion lex list
+legion lex create myextension
+
+# REST API (Sinatra)
+curl http://localhost:4567/api/v1/tasks
+
+# MCP Server (Model Context Protocol) — plug Legion into any AI agent
+legion mcp
+```
+
+## LLM Integration
+
+LegionIO isn't competing with LLMs — it gives them a body.
 
 | Component | What It Does |
 |-----------|-------------|
-| **legion-llm** | Core LLM layer — chat, embeddings, tool use, and agents via multiple providers (Bedrock, Anthropic, OpenAI, Gemini, Ollama). Vault-backed credential management. |
-| **lex-claude** | Claude API integration (messages, models, batches, token counting) |
-| **lex-openai** | OpenAI API integration (chat, images, audio, embeddings, files, moderations) |
-| **lex-gemini** | Google Gemini API integration (content generation, embeddings, files, caching) |
+| **legion-llm** | Core LLM layer — chat, embeddings, tool use, agents. Routes across Bedrock, Anthropic, OpenAI, Gemini, Ollama. Three-tier model escalation: local → fleet → cloud |
+| **lex-claude** | Claude API — messages, models, batches, token counting |
+| **lex-openai** | OpenAI API — chat, images, audio, embeddings, files, moderations |
+| **lex-gemini** | Gemini API — content generation, embeddings, files, caching |
 
-## The Job Engine
-
-The agentic AI runs on top of a battle-tested async job engine:
-
-- **RabbitMQ** for task distribution (AMQP 0.9.1, priority queues, dead-letter exchanges)
-- **Task chaining** with conditional evaluation and payload transformation between steps
-- **Extension auto-discovery** — drop in a `lex-*` gem and it's live
-- **Multiple actor types** — subscription, polling, interval, one-shot, loop
-- **Cron + interval scheduling** with distributed locking
-- **HashiCorp Vault** integration for secrets, dynamic credentials, and JWT
-- **REST API** (Sinatra) and **MCP server** (Model Context Protocol) for AI agent integration
-- **Unified CLI** (`legion`) with `--json` output on every command
+Credentials resolve through a universal secret resolver: `vault://path#key`, `env://VAR_NAME`, or plain strings — with fallback chains.
 
 ## Architecture
 
 ```
-                        ┌─────────────────────────────┐
-                        │       LegionIO (core)       │
-                        │   CLI / REST API / MCP Server│
-                        └──────────┬──────────────────┘
-                                   │
-            ┌──────────┬───────────┼───────────┬──────────┐
-            │          │           │           │          │
-       legion-     legion-    legion-     legion-    legion-
-       transport    crypt      data       cache      llm
-       (RabbitMQ)  (Vault)   (Sequel)   (Redis)   (ruby_llm)
-            │          │           │           │          │
-            └──────────┴───────────┼───────────┴──────────┘
-                                   │
-                    ┌──────────────┼──────────────┐
-                    │              │              │
-              Built-in LEXs   AI/Cognitive    Service LEXs
-              (tasker, node,  (memory, trust, (slack, redis,
-               scheduler,     emotion, swarm,  http, ssh,
-               conditioner)   prediction...)   s3, chef...)
+                          ┌──────────────────────────────────────┐
+                          │          LegionIO v1.4.29            │
+                          │      CLI  /  REST API  /  MCP        │
+                          └──────────────────┬───────────────────┘
+                                             │
+              ┌──────────┬──────────┬────────┼────────┬──────────┬──────────┐
+              │          │          │        │        │          │          │
+          transport    crypt      data    cache    settings    llm       gaia
+          (RabbitMQ)  (Vault)  (Sequel)  (Redis)  (config)  (ruby_llm) (tick)
+              │          │          │        │        │          │          │
+              └──────────┴──────────┴────────┼────────┴──────────┴──────────┘
+                                             │
+                  ┌──────────────────────────┼──────────────────────────┐
+                  │                          │                          │
+           14 Core LEXs              243 Cognitive LEXs          27 Service LEXs
+         (tasker, node,           (memory, emotion, trust,     (slack, redis, http,
+          scheduler,               prediction, swarm,           ssh, s3, vault,
+          conditioner...)          dream, apollo...)            github, tfe...)
 ```
 
-## Repository Map
-
-Use GitHub topics to navigate:
+## Navigate the Ecosystem
 
 | Filter | What You Get |
 |--------|-------------|
 | [`legionio`](https://github.com/search?q=topic%3Alegionio+org%3ALegionIO&type=repositories) | Everything |
-| [`legion-framework`](https://github.com/search?q=topic%3Allegion-framework+org%3ALegionIO&type=repositories) | Main framework gem |
-| [`legion-core`](https://github.com/search?q=topic%3Allegion-core+org%3ALegionIO&type=repositories) | Core libraries (transport, crypt, data, cache, settings, logging, json, llm) |
-| [`legion-builtin`](https://github.com/search?q=topic%3Allegion-builtin+org%3ALegionIO&type=repositories) | Built-in extensions (cognitive + operational) |
-| [`legion-extension`](https://github.com/search?q=topic%3Allegion-extension+org%3ALegionIO&type=repositories) | All extensions |
+| [`legion-core`](https://github.com/search?q=topic%3Allegion-core+org%3ALegionIO&type=repositories) | Core libraries (transport, crypt, data, cache, settings, logging, json, llm, gaia) |
 | [`ai`](https://github.com/search?q=topic%3Aai+org%3ALegionIO&type=repositories) | AI/cognitive extensions + LLM integrations |
 | [`multi-agent`](https://github.com/search?q=topic%3Amulti-agent+org%3ALegionIO&type=repositories) | Swarm and mesh coordination |
-| [`smart-home`](https://github.com/search?q=topic%3Asmart-home+org%3ALegionIO&type=repositories) | Smart home integrations |
-| [`notifications`](https://github.com/search?q=topic%3Anotifications+org%3ALegionIO&type=repositories) | Slack, SMS, email, push notifications |
+| [`legion-extension`](https://github.com/search?q=topic%3Allegion-extension+org%3ALegionIO&type=repositories) | All extensions |
+| [`legion-builtin`](https://github.com/search?q=topic%3Allegion-builtin+org%3ALegionIO&type=repositories) | Built-in extensions (cognitive + operational) |
 | [`datastore`](https://github.com/search?q=topic%3Adatastore+org%3ALegionIO&type=repositories) | Redis, Elasticsearch, InfluxDB, S3, Memcached |
+| [`notifications`](https://github.com/search?q=topic%3Anotifications+org%3ALegionIO&type=repositories) | Slack, SMS, email, push |
+| [`infrastructure`](https://github.com/search?q=topic%3Ainfrastructure+org%3ALegionIO&type=repositories) | SSH, HTTP, Chef, GitHub, TFE |
+| [`smart-home`](https://github.com/search?q=topic%3Asmart-home+org%3ALegionIO&type=repositories) | Smart home integrations |
 | [`monitoring`](https://github.com/search?q=topic%3Amonitoring+org%3ALegionIO&type=repositories) | Health, ping, PagerDuty |
-| [`infrastructure`](https://github.com/search?q=topic%3Ainfrastructure+org%3ALegionIO&type=repositories) | SSH, HTTP, Chef, GitHub, Pi-hole |
 
 ## Quick Start
 
 ```bash
+# Install
 gem install legionio
 
-# start the daemon
+# Or via Homebrew
+brew tap LegionIO/tap
+brew install legion
+
+# Start the engine
 legion start
 
-# list available extensions
-legion lex list
-
-# run a task
-legion task run http.request.get url:https://example.com
-
-# start the MCP server (for AI agents)
-legion mcp
+# Scaffold a new extension in 10 seconds
+legion lex create my_extension
+legion generate runner my_runner
+legion generate actor my_actor
 ```
 
 ## Requirements
 
 - Ruby >= 3.4
 - RabbitMQ (AMQP 0.9.1)
-- Optional: MySQL/PostgreSQL/SQLite, Redis/Memcached, HashiCorp Vault
+- Optional: PostgreSQL/MySQL/SQLite, Redis/Memcached, HashiCorp Vault
 
 ## License
 
-Core framework: [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)
-Extensions: [MIT](https://opensource.org/licenses/MIT)
+Core framework: [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0) | Extensions: [MIT](https://opensource.org/licenses/MIT)
 
 ---
 
-**Author**: Matthew Iverson ([@Esity](https://github.com/Esity))
+<div align="center">
+
+**Built by [Matthew Iverson](https://github.com/Esity)**
+
+*Agents that think, not just execute.*
+
+</div>
