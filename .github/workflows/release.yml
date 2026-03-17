@@ -20,6 +20,7 @@ on:
 
 permissions:
   contents: write
+  packages: write
 
 jobs:
   release:
@@ -121,3 +122,11 @@ jobs:
         env:
           GEM_HOST_API_KEY: ${{ secrets.rubygems-api-key }}
         run: gem push *.gem
+
+      - name: Publish to GitHub Packages
+        if: steps.version.outputs.changed == 'true'
+        env:
+          GEM_HOST_API_KEY: "Bearer ${{ github.token }}"
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          gem push --host "https://rubygems.pkg.github.com/${OWNER}" *.gem

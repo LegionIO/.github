@@ -62,9 +62,10 @@ jobs:
 
 ### `release.yml` — Gem Release
 
-Triggers on `v*` tags, builds `*.gemspec`, publishes to RubyGems.
+Triggers on `v*` tags, builds `*.gemspec`, publishes to both RubyGems and GitHub Packages.
 
 Required secret: `rubygems-api-key` (org-level secret `RUBYGEMS_API_KEY`)
+Required permission: `packages: write` (for GitHub Packages, uses `GITHUB_TOKEN` automatically)
 
 Usage in a consuming repo:
 ```yaml
@@ -77,6 +78,10 @@ jobs:
     secrets:
       rubygems-api-key: ${{ secrets.RUBYGEMS_API_KEY }}
 ```
+
+Gems are published to:
+- **RubyGems**: `https://rubygems.org/gems/<gem-name>`
+- **GitHub Packages**: `https://rubygems.pkg.github.com/LegionIO`
 
 ## Workflow Templates
 
