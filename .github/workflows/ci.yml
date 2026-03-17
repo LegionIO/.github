@@ -63,9 +63,9 @@ jobs:
       - name: Start RabbitMQ
         if: ${{ inputs.needs-rabbitmq }}
         run: |
-          docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3-management-alpine
-          timeout=60; elapsed=0
-          until docker exec rabbitmq rabbitmq-diagnostics -q ping 2>/dev/null; do
+          docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:4-management-alpine
+          timeout=90; elapsed=0
+          until timeout 5 docker exec rabbitmq rabbitmq-diagnostics -q ping 2>/dev/null; do
             sleep 2; elapsed=$((elapsed + 2))
             if [ $elapsed -ge $timeout ]; then
               echo "::error::RabbitMQ failed to start within ${timeout}s"
