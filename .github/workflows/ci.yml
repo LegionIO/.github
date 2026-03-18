@@ -10,7 +10,7 @@ on:
         required: false
       ruby-versions:
         description: JSON array of Ruby versions for matrix testing (overrides ruby-version)
-        default: ''
+        default: '["3.4", "4.0"]'
         type: string
         required: false
       run-rspec:

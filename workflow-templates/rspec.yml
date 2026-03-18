@@ -3,12 +3,17 @@ on: [push, pull_request]
 
 jobs:
   rspec:
+    name: "RSpec (Ruby ${{ matrix.ruby-version }})"
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby-version: ['3.4', '4.0']
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.4'
+          ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: true
       - name: Run RSpec
         run: bundle exec rspec
