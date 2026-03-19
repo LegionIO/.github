@@ -23,10 +23,10 @@ Callable workflows that individual repos reference via `workflow_call`:
 
 | Workflow | Purpose |
 |----------|---------|
-| `ci.yml` | RSpec + RuboCop CI — accepts matrix of Ruby versions, optional Redis/RabbitMQ service containers |
-| `release.yml` | Build and publish gem to RubyGems on `v*` tags |
+| `ci.yml` | RSpec + RuboCop CI — Ruby 3.4 + 4.0 matrix by default, optional Redis/Memcached/RabbitMQ service containers |
+| `release.yml` | Auto-detect version from `version.rb`, create git tag, extract changelog, publish gem to RubyGems + GitHub Packages |
 
-To use a reusable workflow from any LegionIO repo:
+To use the CI workflow from any LegionIO repo:
 
 ```yaml
 # .github/workflows/ci.yml in your repo
@@ -36,7 +36,7 @@ jobs:
   ci:
     uses: LegionIO/.github/.github/workflows/ci.yml@main
     with:
-      ruby-version: '3.4'
+      ruby-versions: '["3.4", "4.0"]'
       run-rspec: true
       run-rubocop: true
 ```
@@ -48,13 +48,15 @@ For the release workflow:
 name: Release
 on:
   push:
-    tags: ['v*']
+    branches: [main]
 jobs:
   release:
     uses: LegionIO/.github/.github/workflows/release.yml@main
     secrets:
       rubygems-api-key: ${{ secrets.RUBYGEMS_API_KEY }}
 ```
+
+The release workflow auto-detects version changes by reading `version.rb` — if the version has no matching git tag, it creates the tag, builds the gem, creates a GitHub release with changelog notes, and publishes to both RubyGems and GitHub Packages.
 
 ### Workflow Templates (`workflow-templates/`)
 
@@ -66,18 +68,43 @@ Starter workflow templates shown in the GitHub Actions "New workflow" UI for rep
 | `rspec.yml` | RSpec with Redis service |
 | `sourcehawk-scan.yml` | Sourcehawk static analysis scan |
 
+### Maintenance Scripts (`scripts/`)
+
+| Script | Purpose |
+|--------|---------|
+| `sync-github-labels-topics.sh` | Sync 24 standardized labels and topics across all org repos (`--labels`, `--topics`, `--all`) |
+| `apply-labels-one-repo.sh` | Per-repo label worker (called by sync script via `xargs -P 5`) |
+
 ## CI Workflow Reference
 
 The `ci.yml` reusable workflow accepts these inputs:
 
 | Input | Default | Description |
 |-------|---------|-------------|
-| `ruby-version` | `'3.4'` | Single Ruby version to test |
-| `ruby-versions` | `''` | JSON array for matrix (overrides `ruby-version`) |
+| `ruby-version` | `'3.4'` | Single Ruby version to test (used when `ruby-versions` is empty) |
+| `ruby-versions` | `'["3.4", "4.0"]'` | JSON array for matrix testing |
 | `run-rspec` | `true` | Whether to run RSpec |
 | `run-rubocop` | `true` | Whether to run RuboCop |
 | `needs-redis` | `false` | Start Redis service container |
+| `needs-memcached` | `false` | Start Memcached service container (64MB, 8MB value limit) |
 | `needs-rabbitmq` | `false` | Start RabbitMQ service container |
+
+## Release Workflow Reference
+
+The `release.yml` reusable workflow accepts these inputs:
+
+| Input | Default | Description |
+|-------|---------|-------------|
+| `ruby-version` | `'3.4'` | Ruby version for building the gem |
+| `changelog-file` | `'CHANGELOG.md'` | Path to changelog for release notes extraction |
+
+Required secret: `rubygems-api-key` (org-level secret `RUBYGEMS_API_KEY`)
+
+Required permissions: `contents: write` (for git tags), `packages: write` (for GitHub Packages)
+
+Publishes to:
+- **RubyGems**: `https://rubygems.org/gems/<gem-name>`
+- **GitHub Packages**: `https://rubygems.pkg.github.com/LegionIO`
 
 ## Project Tracker
 

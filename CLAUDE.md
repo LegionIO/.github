@@ -46,10 +46,10 @@ The two workflows under `.github/workflows/` are `workflow_call` targets — the
 Parameterized RSpec + RuboCop runner. All LegionIO gems should use this.
 
 Inputs:
-- `ruby-version` (default: `'3.4'`) — single version
-- `ruby-versions` (default: `''`) — JSON array for matrix, overrides `ruby-version`
+- `ruby-version` (default: `'3.4'`) — single version, used when `ruby-versions` is empty
+- `ruby-versions` (default: `'["3.4", "4.0"]'`) — JSON array for matrix testing
 - `run-rspec` / `run-rubocop` — booleans, both default true
-- `needs-redis` / `needs-rabbitmq` — spin up service containers
+- `needs-redis` / `needs-memcached` / `needs-rabbitmq` — spin up service containers
 
 Usage in a consuming repo:
 ```yaml
@@ -57,21 +57,35 @@ jobs:
   ci:
     uses: LegionIO/.github/.github/workflows/ci.yml@main
     with:
-      ruby-version: '3.4'
+      ruby-versions: '["3.4", "4.0"]'
 ```
 
 ### `release.yml` — Gem Release
 
-Triggers on `v*` tags, builds `*.gemspec`, publishes to both RubyGems and GitHub Packages.
+Auto-detects version from `version.rb`, creates git tag if new, extracts changelog notes, builds gem, and publishes to both RubyGems and GitHub Packages. Triggered via `workflow_call` — the calling repo decides when to invoke it (typically on push to main).
+
+Inputs:
+- `ruby-version` (default: `'3.4'`) — Ruby version for building
+- `changelog-file` (default: `'CHANGELOG.md'`) — path to changelog for release notes extraction
 
 Required secret: `rubygems-api-key` (org-level secret `RUBYGEMS_API_KEY`)
-Required permission: `packages: write` (for GitHub Packages, uses `GITHUB_TOKEN` automatically)
+Required permissions: `contents: write` (for git tags), `packages: write` (for GitHub Packages)
+
+Release pipeline steps:
+1. Read `version.rb` to detect current version
+2. Check if `v{version}` tag exists — skip if already released
+3. Extract changelog section for this version (falls back to generic note)
+4. Build gem from `*.gemspec`
+5. Create and push git tag
+6. Create GitHub release with changelog notes and gem artifact
+7. Publish to RubyGems
+8. Publish to GitHub Packages
 
 Usage in a consuming repo:
 ```yaml
 on:
   push:
-    tags: ['v*']
+    branches: [main]
 jobs:
   release:
     uses: LegionIO/.github/.github/workflows/release.yml@main
