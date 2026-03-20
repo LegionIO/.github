@@ -13,6 +13,16 @@ on:
         default: 'CHANGELOG.md'
         type: string
         required: false
+    outputs:
+      changed:
+        description: Whether a new version was released
+        value: ${{ jobs.release.outputs.changed }}
+      version:
+        description: The released version string
+        value: ${{ jobs.release.outputs.version }}
+      tag:
+        description: The git tag created
+        value: ${{ jobs.release.outputs.tag }}
     secrets:
       rubygems-api-key:
         description: RubyGems API key for publishing
