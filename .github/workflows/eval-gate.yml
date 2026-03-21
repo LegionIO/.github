@@ -1,0 +1,98 @@
+name: Eval Gate
+
+on:
+  workflow_call:
+    inputs:
+      evaluator:
+        description: Evaluator name or template
+        type: string
+        required: true
+      dataset:
+        description: Dataset name or path to dataset file
+        type: string
+        required: true
+      threshold:
+        description: Minimum pass rate (0.0-1.0)
+        type: string
+        required: false
+        default: '0.8'
+      ruby-version:
+        description: Ruby version
+        type: string
+        required: false
+        default: '3.4'
+      model:
+        description: LLM model for eval (uses legion-llm default if unset)
+        type: string
+        required: false
+        default: ''
+      config-dir:
+        description: Path to Legion config directory
+        type: string
+        required: false
+        default: ''
+      comment-on-pr:
+        description: Post eval results as a PR comment
+        type: boolean
+        required: false
+        default: true
+
+jobs:
+  eval:
+    name: Legion Eval (${{ inputs.evaluator }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run evaluation
+        id: eval
+        uses: LegionIO/.github/actions/legion-eval@main
+        with:
+          evaluator: ${{ inputs.evaluator }}
+          dataset: ${{ inputs.dataset }}
+          threshold: ${{ inputs.threshold }}
+          ruby-version: ${{ inputs.ruby-version }}
+          model: ${{ inputs.model }}
+          config-dir: ${{ inputs.config-dir }}
+
+      - name: Comment on PR
+        if: ${{ inputs.comment-on-pr && github.event_name == 'pull_request' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          EVALUATOR: ${{ inputs.evaluator }}
+          DATASET: ${{ inputs.dataset }}
+          THRESHOLD: ${{ inputs.threshold }}
+          PASS_RATE: ${{ steps.eval.outputs.pass-rate }}
+          RESULT: ${{ steps.eval.outputs.result }}
+        run: |
+          set -euo pipefail
+
+          if [ "$RESULT" = "pass" ]; then
+            icon="[+]"
+            status="Passed"
+          else
+            icon="[-]"
+            status="Failed"
+          fi
+
+          body="${icon} Legion Eval: ${status}
+
+          | Field | Value |
+          |-------|-------|
+          | Evaluator | \`${EVALUATOR}\` |
+          | Dataset | \`${DATASET}\` |
+          | Pass rate | ${PASS_RATE} |
+          | Threshold | ${THRESHOLD} |
+          | Result | **${status}** |"
+
+          gh pr comment "$PR_NUMBER" --body "$body"
+
+      - name: Enforce threshold
+        if: ${{ steps.eval.outputs.result == 'fail' }}
+        run: |
+          echo "::error::Eval gate failed: pass rate ${{ steps.eval.outputs.pass-rate }} below threshold ${{ inputs.threshold }}"
+          exit 1

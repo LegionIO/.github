@@ -1,0 +1,102 @@
+name: 'Legion Eval Gate'
+description: 'Run LLM evaluations as a CI quality gate using legion eval run'
+
+inputs:
+  evaluator:
+    description: 'Evaluator name or template'
+    required: true
+  dataset:
+    description: 'Dataset name or path to dataset file'
+    required: true
+  threshold:
+    description: 'Minimum pass rate (0.0-1.0)'
+    required: false
+    default: '0.8'
+  ruby-version:
+    description: 'Ruby version'
+    required: false
+    default: '3.4'
+  model:
+    description: 'LLM model for eval (default: use legion-llm default)'
+    required: false
+    default: ''
+  config-dir:
+    description: 'Path to Legion config directory'
+    required: false
+    default: ''
+
+outputs:
+  pass-rate:
+    description: 'Achieved pass rate (0.0-1.0)'
+    value: ${{ steps.eval.outputs.pass-rate }}
+  result:
+    description: "'pass' or 'fail'"
+    value: ${{ steps.eval.outputs.result }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Setup Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ inputs.ruby-version }}
+
+    - name: Install Legion
+      shell: bash
+      run: gem install legionio lex-eval lex-dataset --no-document
+
+    - name: Run Evaluation
+      id: eval
+      shell: bash
+      env:
+        LEGION_EVAL_EVALUATOR: ${{ inputs.evaluator }}
+        LEGION_EVAL_DATASET: ${{ inputs.dataset }}
+        LEGION_EVAL_THRESHOLD: ${{ inputs.threshold }}
+        LEGION_EVAL_MODEL: ${{ inputs.model }}
+        LEGIONIO_CONFIG_DIR: ${{ inputs.config-dir }}
+      run: |
+        set -euo pipefail
+
+        cmd=(legion eval run "$LEGION_EVAL_EVALUATOR" --dataset "$LEGION_EVAL_DATASET" --threshold "$LEGION_EVAL_THRESHOLD")
+
+        if [ -n "$LEGION_EVAL_MODEL" ]; then
+          cmd+=(--model "$LEGION_EVAL_MODEL")
+        fi
+
+        if [ -n "$LEGIONIO_CONFIG_DIR" ]; then
+          cmd+=(--config-dir "$LEGIONIO_CONFIG_DIR")
+        fi
+
+        echo "Running: ${cmd[*]}"
+
+        set +e
+        output=$("${cmd[@]}" 2>&1)
+        exit_code=$?
+        set -e
+
+        echo "$output"
+
+        # Parse pass rate from output (legion eval run prints "Pass rate: 0.95" or similar)
+        pass_rate=$(echo "$output" | grep -oE 'Pass rate:[[:space:]]*[0-9]+\.?[0-9]*' | tail -1 | grep -oE '[0-9]+\.?[0-9]*$' || echo "")
+
+        if [ -z "$pass_rate" ]; then
+          # Fallback: infer from exit code
+          if [ "$exit_code" -eq 0 ]; then
+            pass_rate="$LEGION_EVAL_THRESHOLD"
+          else
+            pass_rate="0.0"
+          fi
+        fi
+
+        if [ "$exit_code" -eq 0 ]; then
+          result="pass"
+        else
+          result="fail"
+        fi
+
+        echo "pass-rate=$pass_rate" >> "$GITHUB_OUTPUT"
+        echo "result=$result" >> "$GITHUB_OUTPUT"
+
+        echo "Eval result: $result (pass rate: $pass_rate, threshold: $LEGION_EVAL_THRESHOLD)"
+
+        exit "$exit_code"
