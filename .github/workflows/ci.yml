@@ -38,11 +38,6 @@ on:
         default: false
         type: boolean
         required: false
-      slack-channel:
-        description: Slack channel for failure notifications (empty = no notifications)
-        default: ''
-        type: string
-        required: false
     secrets:
       slack-bot-token:
         description: Slack bot token for failure notifications
@@ -113,12 +108,13 @@ jobs:
       - name: Run RSpec
         run: bundle exec rspec
       - name: Notify Slack on failure
-        if: ${{ failure() && inputs.slack-channel != '' }}
+        if: ${{ failure() }}
         uses: kpritam/slack-job-status-action@v1
+        continue-on-error: true
         with:
           job-status: ${{ job.status }}
           slack-bot-token: ${{ secrets.slack-bot-token }}
-          channel: ${{ inputs.slack-channel }}
+          channel: cicd
 
   rubocop:
     if: ${{ inputs.run-rubocop }}
@@ -134,9 +130,10 @@ jobs:
       - name: Run RuboCop
         run: bundle exec rubocop
       - name: Notify Slack on failure
-        if: ${{ failure() && inputs.slack-channel != '' }}
+        if: ${{ failure() }}
         uses: kpritam/slack-job-status-action@v1
+        continue-on-error: true
         with:
           job-status: ${{ job.status }}
           slack-bot-token: ${{ secrets.slack-bot-token }}
-          channel: ${{ inputs.slack-channel }}
+          channel: cicd
