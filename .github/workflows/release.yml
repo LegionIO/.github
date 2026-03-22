@@ -49,15 +49,23 @@ jobs:
         id: version
         run: |
           set -euo pipefail
+          # Prefer gemspec version (authoritative), fall back to shallowest version.rb
           current=""
-          while IFS= read -r vf; do
-            current=$(grep -oE "VERSION[[:space:]]*=[[:space:]]*['\"][^'\"]*" "$vf" \
-              | sed "s/.*['\"]//" || true)
-            if [ -n "$current" ]; then
-              echo "Found version $current in $vf"
-              break
-            fi
-          done < <(find . -path './.git' -prune -o -path './vendor' -prune -o -name 'version.rb' -print)
+          if ls *.gemspec 1>/dev/null 2>&1; then
+            current=$(ruby -e "puts Gem::Specification.load(Dir['*.gemspec'].first).version" 2>/dev/null || true)
+          fi
+
+          if [ -z "$current" ]; then
+            # Fall back to version.rb search, shallowest path first
+            while IFS= read -r vf; do
+              current=$(grep -oE "VERSION[[:space:]]*=[[:space:]]*['\"][^'\"]*" "$vf" \
+                | sed "s/.*['\"]//" || true)
+              if [ -n "$current" ]; then
+                echo "Found version $current in $vf"
+                break
+              fi
+            done < <(find . -path './.git' -prune -o -path './vendor' -prune -o -name 'version.rb' -print | awk -F/ '{print NF, $0}' | sort -n | cut -d' ' -f2-)
+          fi
 
           if [ -z "$current" ]; then
             echo "No version.rb with a string literal VERSION found"
