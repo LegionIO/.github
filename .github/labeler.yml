@@ -1,0 +1,31 @@
+core:
+  - changed-files:
+    - any-glob-to-any-file: 'legion-*/**'
+
+extension:
+  - changed-files:
+    - any-glob-to-any-file: 'lex-*/**'
+
+docs:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'docs/**'
+      - '**/*.md'
+
+ci:
+  - changed-files:
+    - any-glob-to-any-file: '.github/**'
+
+cognitive:
+  - changed-files:
+    - any-glob-to-any-file: 'extensions-agentic/**'
+
+llm:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'extensions-ai/**'
+      - 'legion-llm/**'
+
+transport:
+  - changed-files:
+    - any-glob-to-any-file: 'legion-transport/**'
