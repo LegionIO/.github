@@ -2,17 +2,23 @@
 
 # LegionIO
 
-### What if your AI agent had a brain — not just a prompt?
+### Cognitive architecture for AI agents. Not a prompt wrapper.
 
-**73 extension gems. 234 cognitive modules. 23,000+ specs. One Ruby framework.**
+**73 extension gems. 234 cognitive modules. 23,000+ specs. 369 repos.**
 
 [![Ruby](https://img.shields.io/badge/Ruby-%3E%3D%203.4-red)](https://www.ruby-lang.org)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![Extensions](https://img.shields.io/badge/Extensions-73%20gems-green)](https://github.com/search?q=topic%3Alegionio+org%3ALegionIO&type=repositories)
 
-```
+**[legionio.dev](https://legionio.dev)** | [Getting Started](https://legionio.dev/getting-started/) | [Discussions](https://github.com/LegionIO/docs/discussions)
+
+```bash
 gem install legionio
+# or
+brew tap LegionIO/tap && brew install legionio
 ```
+
+*Too lazy for prompts. Built a brain instead.*
 
 </div>
 
