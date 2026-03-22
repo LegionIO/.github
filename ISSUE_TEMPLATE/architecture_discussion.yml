@@ -1,0 +1,56 @@
+name: Architecture Discussion
+description: Propose or discuss a change to LegionIO's architecture or design philosophy
+labels: ["type:architecture"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before submitting, please read the [Philosophy and Design Principles](https://github.com/LegionIO/.github/blob/main/CONTRIBUTING.md) page. Proposals that conflict with the core cognitive architecture model or the extension design contract are unlikely to be accepted without significant justification.
+  - type: input
+    id: area
+    attributes:
+      label: What part of the architecture does this touch?
+      placeholder: e.g., GAIA tick cycle, Synapse routing, extension loading, transport layer
+    validations:
+      required: true
+  - type: dropdown
+    id: nature
+    attributes:
+      label: Nature of the change
+      options:
+        - Additive
+        - Modification
+        - Removal
+        - Conceptual
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What are you proposing?
+      description: Describe the change clearly. Include motivation, expected behavior, and any relevant context.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Any other approaches you evaluated and why you ruled them out.
+    validations:
+      required: false
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Compatibility impact
+      description: Does this break existing extensions, runners, actors, or public APIs? What migration path exists?
+    validations:
+      required: false
+  - type: checkboxes
+    id: acknowledgements
+    attributes:
+      label: Acknowledgements
+      options:
+        - label: I have read the project philosophy and design principles
+          required: true
+        - label: This proposal aligns with the cognitive architecture model
+          required: true
