@@ -160,9 +160,24 @@ jobs:
             REPO_PROFILE["$repo"]="$profile"
           done
 
+          # Fetch archived repos to skip them
+          ARCHIVED_REPOS=$(gh repo list LegionIO --limit 400 --json name,isArchived --jq '[.[] | select(.isArchived) | .name] | .[]')
+          declare -A IS_ARCHIVED
+          for r in $ARCHIVED_REPOS; do
+            IS_ARCHIVED["$r"]=1
+          done
+          echo "Found $(echo "$ARCHIVED_REPOS" | grep -c . || echo 0) archived repos to skip"
+
           # Apply protections
           for repo in "${!REPO_PROFILE[@]}"; do
             profile="${REPO_PROFILE[$repo]}"
+
+            # Skip archived repos
+            if [ -n "${IS_ARCHIVED[$repo]:-}" ]; then
+              echo "${repo} [${profile}] ... SKIP (archived)"
+              SKIPPED=$((SKIPPED + 1))
+              continue
+            fi
 
             # Read profile settings
             reviews_count=$(yq -r ".branch_protection.profiles.${profile}.required_pull_request_reviews.required_approving_review_count // \"null\"" team-config.yml)
@@ -214,7 +229,7 @@ jobs:
               echo "OK"
               APPLIED=$((APPLIED + 1))
             else
-              echo "FAILED (branch may not exist or repo is archived)"
+              echo "FAILED (branch may not exist)"
               FAILED=$((FAILED + 1))
             fi
 
@@ -222,7 +237,7 @@ jobs:
           done
 
           echo ""
-          echo "Branch protection: Applied=${APPLIED} Failed=${FAILED}"
+          echo "Branch protection: Applied=${APPLIED} Skipped=${SKIPPED} Failed=${FAILED}"
 
       - name: Generate diff report
         env:
