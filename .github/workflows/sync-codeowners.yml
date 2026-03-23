@@ -1,4 +1,4 @@
-name: Sync Teams & Generate CODEOWNERS
+name: Sync Teams, CODEOWNERS & Branch Protection
 
 on:
   workflow_dispatch:
@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   sync:
-    name: Sync Teams & Generate CODEOWNERS
+    name: Sync Teams, CODEOWNERS & Branch Protection
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -125,6 +125,104 @@ jobs:
             git commit -m "generate CODEOWNERS from team-config.yml"
             git push
           fi
+
+      - name: Apply branch protection rules
+        env:
+          GH_TOKEN: ${{ secrets.ORG_ADMIN_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          echo "=== Applying branch protection rules ==="
+
+          TEAMS=$(yq -r '.teams | keys | .[]' team-config.yml)
+          APPLIED=0
+          SKIPPED=0
+          FAILED=0
+
+          # Build repo→profile mapping
+          declare -A REPO_PROFILE
+
+          # First pass: assign team defaults
+          for team in $TEAMS; do
+            [ "$team" = "maintainers" ] && continue
+            default_profile=$(yq -r ".branch_protection.team_defaults.${team} // \"standard\"" team-config.yml)
+            repos=$(yq -r ".teams.${team}.repos // [] | .[]" team-config.yml)
+            [ -z "$repos" ] && continue
+            for repo in $repos; do
+              REPO_PROFILE["$repo"]="$default_profile"
+            done
+          done
+
+          # Second pass: apply per-repo overrides
+          override_repos=$(yq -r '.branch_protection.overrides // {} | keys | .[]' team-config.yml)
+          for repo in $override_repos; do
+            profile=$(yq -r ".branch_protection.overrides.\"${repo}\"" team-config.yml)
+            REPO_PROFILE["$repo"]="$profile"
+          done
+
+          # Apply protections
+          for repo in "${!REPO_PROFILE[@]}"; do
+            profile="${REPO_PROFILE[$repo]}"
+
+            # Read profile settings
+            reviews_count=$(yq -r ".branch_protection.profiles.${profile}.required_pull_request_reviews.required_approving_review_count // \"null\"" team-config.yml)
+            dismiss_stale=$(yq -r ".branch_protection.profiles.${profile}.required_pull_request_reviews.dismiss_stale_reviews // false" team-config.yml)
+            enforce_admins=$(yq -r ".branch_protection.profiles.${profile}.enforce_admins // false" team-config.yml)
+            strict_checks=$(yq -r ".branch_protection.profiles.${profile}.required_status_checks.strict // false" team-config.yml)
+            check_contexts=$(yq -r ".branch_protection.profiles.${profile}.required_status_checks.contexts // [] | .[]" team-config.yml 2>/dev/null || true)
+            has_checks=$(yq -r ".branch_protection.profiles.${profile}.required_status_checks // \"null\"" team-config.yml)
+            has_reviews=$(yq -r ".branch_protection.profiles.${profile}.required_pull_request_reviews // \"null\"" team-config.yml)
+            allow_force=$(yq -r ".branch_protection.profiles.${profile}.allow_force_pushes // false" team-config.yml)
+            allow_delete=$(yq -r ".branch_protection.profiles.${profile}.allow_deletions // false" team-config.yml)
+
+            # Build the JSON payload
+            payload="{}"
+            payload=$(echo "$payload" | jq --argjson v "$enforce_admins" '.enforce_admins = $v')
+            payload=$(echo "$payload" | jq --argjson v "$allow_force" '.allow_force_pushes = $v')
+            payload=$(echo "$payload" | jq --argjson v "$allow_delete" '.allow_deletions = $v')
+
+            # Required status checks
+            if [ "$has_checks" != "null" ] && [ -n "$check_contexts" ]; then
+              contexts_json="[]"
+              for ctx in $check_contexts; do
+                contexts_json=$(echo "$contexts_json" | jq --arg c "$ctx" '. + [$c]')
+              done
+              payload=$(echo "$payload" | jq --argjson s "$strict_checks" --argjson c "$contexts_json" \
+                '.required_status_checks = { strict: $s, contexts: $c }')
+            else
+              payload=$(echo "$payload" | jq '.required_status_checks = null')
+            fi
+
+            # Required pull request reviews
+            if [ "$has_reviews" != "null" ] && [ "$reviews_count" != "null" ]; then
+              payload=$(echo "$payload" | jq --argjson n "$reviews_count" --argjson d "$dismiss_stale" \
+                '.required_pull_request_reviews = { required_approving_review_count: $n, dismiss_stale_reviews: $d }')
+            else
+              payload=$(echo "$payload" | jq '.required_pull_request_reviews = null')
+            fi
+
+            # Restrictions (null = no push restrictions)
+            payload=$(echo "$payload" | jq '.restrictions = null')
+
+            echo -n "${repo} [${profile}] ... "
+
+            if echo "$payload" | gh api \
+              "repos/LegionIO/${repo}/branches/main/protection" \
+              --method PUT \
+              --input - \
+              --silent 2>/dev/null; then
+              echo "OK"
+              APPLIED=$((APPLIED + 1))
+            else
+              echo "FAILED (branch may not exist or repo is archived)"
+              FAILED=$((FAILED + 1))
+            fi
+
+            sleep 0.2
+          done
+
+          echo ""
+          echo "Branch protection: Applied=${APPLIED} Failed=${FAILED}"
 
       - name: Generate diff report
         env:

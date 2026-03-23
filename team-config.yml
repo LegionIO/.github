@@ -1,10 +1,11 @@
-# LegionIO GitHub Team & CODEOWNERS Configuration
+# LegionIO GitHub Team, CODEOWNERS & Branch Protection Configuration
 #
-# Source of truth for team membership, repo ownership, and CODEOWNERS generation.
+# Source of truth for team membership, repo ownership, CODEOWNERS, and branch protection.
 #
 # Workflow: sync-codeowners.yml reads this file to:
 #   1. Create/update GitHub teams and memberships
 #   2. Generate CODEOWNERS files into codeowners-generated/
+#   3. Apply branch protection rules to all repos
 #
 # To apply generated CODEOWNERS to repos, run:
 #   scripts/apply-codeowners.sh [repo-name]
@@ -371,3 +372,75 @@ path_overrides:
       team: infra
     - path: "team-config.yml"
       team: infra
+
+# Branch protection profiles.
+# Applied to the default branch (main) of each repo.
+branch_protection:
+  profiles:
+    # Most repos: no required reviews, no required checks, basic safety
+    standard:
+      required_pull_request_reviews: null
+      enforce_admins: false
+      required_status_checks: null
+      allow_force_pushes: false
+      allow_deletions: false
+
+    # All lex-* repos: require CI + code quality (lint-patterns) checks to pass
+    lex:
+      required_pull_request_reviews: null
+      enforce_admins: false
+      required_status_checks:
+        strict: false
+        contexts:
+          - "RSpec (Ruby 3.4)"
+          - "RuboCop"
+          - "Gemfile.lock Check"
+          - "Helper Migration"
+          - "Constant Safety"
+          - "Framework Conventions"
+      allow_force_pushes: false
+      allow_deletions: false
+
+    # Framework + core libraries: require CI, no lint-patterns required
+    # Review count at 0 for solo dev — bump when adding contributors
+    core:
+      required_pull_request_reviews: null
+      enforce_admins: false
+      required_status_checks:
+        strict: false
+        contexts:
+          - "RSpec (Ruby 3.4)"
+          - "RuboCop"
+      allow_force_pushes: false
+      allow_deletions: false
+
+    # Critical infrastructure: strictest rules
+    # Review count at 0 for solo dev — bump when adding contributors
+    strict:
+      required_pull_request_reviews: null
+      enforce_admins: false
+      required_status_checks:
+        strict: true
+        contexts:
+          - "RSpec (Ruby 3.4)"
+          - "RuboCop"
+      allow_force_pushes: false
+      allow_deletions: false
+
+  # Default profile per team
+  team_defaults:
+    core: core
+    ai: core
+    agentic: lex
+    extensions: lex
+    frontend: standard
+    infra: strict
+    sdk: standard
+
+  # Per-repo overrides (takes precedence over team default)
+  overrides:
+    LegionIO: strict
+    legion-llm: core
+    legion-gaia: core
+    homebrew-tap: strict
+    .github: strict
