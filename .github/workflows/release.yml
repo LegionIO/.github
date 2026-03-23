@@ -97,11 +97,11 @@ jobs:
             exit 0
           fi
 
-          # extract the section for this version (between ## vX.Y.Z headers)
+          # extract the section for this version (supports ## [X.Y.Z] and ## vX.Y.Z)
           awk -v ver="$VERSION" '
-            /^## v/ {
+            /^## / {
               if (found) exit
-              if (index($0, "v" ver)) found=1
+              if (index($0, ver)) found=1
               next
             }
             found { print }
