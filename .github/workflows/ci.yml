@@ -40,7 +40,7 @@ on:
         required: false
       runner:
         description: "Runner label (set to 'legion' for self-hosted, 'ubuntu-latest' for GitHub-hosted)"
-        default: 'ubuntu-latest'
+        default: 'legion'
         type: string
         required: false
     secrets:
