@@ -1,0 +1,73 @@
+name: Version & Changelog Check
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  version-bump:
+    name: Version Bump Check
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check version bump on lib/ changes
+        env:
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+
+          LIB_CHANGES=$(git diff --name-only "${PR_BASE_SHA}...${HEAD_SHA}" -- 'lib/**/*.rb' 2>/dev/null || true)
+          if [ -z "$LIB_CHANGES" ]; then
+            echo "No lib/ changes, skipping version check"
+            exit 0
+          fi
+
+          VERSION_CHANGES=$(git diff --name-only "${PR_BASE_SHA}...${HEAD_SHA}" -- '**/version.rb' '*.gemspec' 2>/dev/null || true)
+          if [ -z "$VERSION_CHANGES" ]; then
+            echo "::error::lib/ files changed but version.rb was not bumped. Bump the patch version."
+            echo ""
+            echo "Changed lib/ files:"
+            echo "$LIB_CHANGES"
+            exit 1
+          fi
+
+          echo "Version file updated — check passed"
+
+  changelog:
+    name: Changelog Check
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check changelog on lib/ changes
+        env:
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+
+          LIB_CHANGES=$(git diff --name-only "${PR_BASE_SHA}...${HEAD_SHA}" -- 'lib/**/*.rb' 2>/dev/null || true)
+          if [ -z "$LIB_CHANGES" ]; then
+            echo "No lib/ changes, skipping changelog check"
+            exit 0
+          fi
+
+          CHANGELOG_CHANGES=$(git diff --name-only "${PR_BASE_SHA}...${HEAD_SHA}" -- 'CHANGELOG.md' 2>/dev/null || true)
+          if [ -z "$CHANGELOG_CHANGES" ]; then
+            echo "::warning::lib/ files changed but CHANGELOG.md was not updated."
+            exit 0
+          fi
+
+          echo "Changelog updated — check passed"
