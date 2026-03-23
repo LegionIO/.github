@@ -1,0 +1,373 @@
+# LegionIO GitHub Team & CODEOWNERS Configuration
+#
+# Source of truth for team membership, repo ownership, and CODEOWNERS generation.
+#
+# Workflow: sync-codeowners.yml reads this file to:
+#   1. Create/update GitHub teams and memberships
+#   2. Generate CODEOWNERS files into codeowners-generated/
+#
+# To apply generated CODEOWNERS to repos, run:
+#   scripts/apply-codeowners.sh [repo-name]
+
+teams:
+  maintainers:
+    description: Top-level owners, fallback for all repos
+    members: [Esity]
+
+  core:
+    description: Framework and core Ruby libraries
+    members: [Esity]
+    repos:
+      - LegionIO
+      - legion-cache
+      - legion-crypt
+      - legion-data
+      - legion-json
+      - legion-logging
+      - legion-rbac
+      - legion-settings
+      - legion-transport
+      - legion-tty
+
+  ai:
+    description: LLM, MCP, and AI provider extensions
+    members: [Esity]
+    repos:
+      - legion-llm
+      - legion-mcp
+      - legion-aithena
+      - lex-llm-gateway
+      - lex-azure-ai
+      - lex-bedrock
+      - lex-claude
+      - lex-foundry
+      - lex-gemini
+      - lex-openai
+      - lex-xai
+
+  agentic:
+    description: Cognitive coordination layer and agentic extensions
+    members: [Esity]
+    repos:
+      - legion-gaia
+      - lex-apollo
+      # Consolidated agentic domain gems
+      - lex-agentic-affect
+      - lex-agentic-attention
+      - lex-agentic-defense
+      - lex-agentic-executive
+      - lex-agentic-homeostasis
+      - lex-agentic-imagination
+      - lex-agentic-inference
+      - lex-agentic-integration
+      - lex-agentic-language
+      - lex-agentic-learning
+      - lex-agentic-memory
+      - lex-agentic-self
+      - lex-agentic-social
+      # Cognitive metaphor extensions
+      - lex-cognitive-anchor
+      - lex-cognitive-cocoon
+      - lex-cognitive-coherence
+      - lex-cognitive-compass
+      - lex-cognitive-compression
+      - lex-cognitive-constellation
+      - lex-cognitive-control
+      - lex-cognitive-debt
+      - lex-cognitive-debugging
+      - lex-cognitive-defusion
+      - lex-cognitive-disengagement
+      - lex-cognitive-dissonance-resolution
+      - lex-cognitive-dwell
+      - lex-cognitive-echo
+      - lex-cognitive-echo-chamber
+      - lex-cognitive-empathy
+      - lex-cognitive-entrainment
+      - lex-cognitive-erosion
+      - lex-cognitive-fatigue-model
+      - lex-cognitive-fermentation
+      - lex-cognitive-fingerprint
+      - lex-cognitive-flexibility
+      - lex-cognitive-fossil-fuel
+      - lex-cognitive-friction
+      - lex-cognitive-furnace
+      - lex-cognitive-garden
+      - lex-cognitive-genesis
+      - lex-cognitive-grammar
+      - lex-cognitive-greenhouse
+      - lex-cognitive-hologram
+      - lex-cognitive-homeostasis
+      - lex-cognitive-hourglass
+      - lex-cognitive-immune-memory
+      - lex-cognitive-immune-response
+      - lex-cognitive-inertia
+      - lex-cognitive-integration
+      - lex-cognitive-kaleidoscope
+      - lex-cognitive-lighthouse
+      - lex-cognitive-liminal
+      - lex-cognitive-load
+      - lex-cognitive-load-balancing
+      - lex-cognitive-magnet
+      - lex-cognitive-mirror
+      - lex-cognitive-momentum
+      - lex-cognitive-mosaic
+      - lex-cognitive-mycelium
+      - lex-cognitive-origami
+      - lex-cognitive-paleontology
+      - lex-cognitive-plasticity
+      - lex-cognitive-prism
+      - lex-cognitive-quicksand
+      - lex-cognitive-quicksilver
+      - lex-cognitive-reappraisal
+      - lex-cognitive-reserve
+      - lex-cognitive-rhythm
+      - lex-cognitive-scaffolding
+      - lex-cognitive-surplus
+      - lex-cognitive-symbiosis
+      - lex-cognitive-synesthesia
+      - lex-cognitive-tapestry
+      - lex-cognitive-tectonics
+      - lex-cognitive-telescope
+      - lex-cognitive-tempo
+      - lex-cognitive-tessellation
+      - lex-cognitive-tide
+      - lex-cognitive-triage
+      - lex-cognitive-volcano
+      - lex-cognitive-whirlpool
+      - lex-cognitive-zeitgeist
+      # Individual psychological concept extensions
+      - lex-abductive-reasoning
+      - lex-affordance
+      - lex-anchoring
+      - lex-appraisal
+      - lex-arousal
+      - lex-attention
+      - lex-attention-regulation
+      - lex-attention-schema
+      - lex-conceptual-blending
+      - lex-conceptual-metaphor
+      - lex-confabulation
+      - lex-conflict
+      - lex-conscience
+      - lex-context
+      - lex-cortex
+      - lex-counterfactual
+      - lex-creativity
+      - lex-curiosity
+      - lex-decision-fatigue
+      - lex-default-mode-network
+      - lex-distributed-cognition
+      - lex-dream
+      - lex-dual-process
+      - lex-embodied-simulation
+      - lex-emotion
+      - lex-emotional-regulation
+      - lex-empathy
+      - lex-episodic-buffer
+      - lex-epistemic-vigilance
+      - lex-error-monitoring
+      - lex-executive-function
+      - lex-expectation-violation
+      - lex-extinction
+      - lex-fatigue
+      - lex-feature-binding
+      - lex-flow
+      - lex-frame-semantics
+      - lex-free-energy
+      - lex-gestalt
+      - lex-global-workspace
+      - lex-habit
+      - lex-health
+      - lex-hebbian-assembly
+      - lex-homeostasis
+      - lex-identity
+      - lex-imagination
+      - lex-inhibition
+      - lex-inner-speech
+      - lex-interoception
+      - lex-intuition
+      - lex-joint-attention
+      - lex-language
+      - lex-latent-inhibition
+      - lex-learning-rate
+      - lex-memory
+      - lex-mental-simulation
+      - lex-metacognition
+      - lex-mind-growth
+      - lex-mirror
+      - lex-mood
+      - lex-moral-reasoning
+      - lex-motivation
+      - lex-narrative-identity
+      - lex-narrative-self
+      - lex-narrator
+      - lex-neural-oscillation
+      - lex-neuromodulation
+      - lex-personality
+      - lex-planning
+      - lex-prediction
+      - lex-predictive-coding
+      - lex-predictive-processing
+      - lex-priming
+      - lex-prompt
+      - lex-prospection
+      - lex-qualia
+      - lex-reflection
+      - lex-relevance-theory
+      - lex-resilience
+      - lex-reward
+      - lex-salience
+      - lex-schema
+      - lex-self-model
+      - lex-self-talk
+      - lex-semantic-memory
+      - lex-semantic-priming
+      - lex-semantic-satiation
+      - lex-sensory-gating
+      - lex-signal-detection
+      - lex-situation-model
+      - lex-social
+      - lex-social-learning
+      - lex-somatic-marker
+      - lex-source-monitoring
+      - lex-subliminal
+      - lex-surprise
+      - lex-temporal
+      - lex-theory-of-mind
+      - lex-volition
+      - lex-working-memory
+
+  extensions:
+    description: Core operational extensions and service integrations
+    members: [Esity]
+    repos:
+      # Core operational
+      - lex-node
+      - lex-tasker
+      - lex-scheduler
+      - lex-tick
+      - lex-synapse
+      - lex-conditioner
+      - lex-transformer
+      - lex-detect
+      - lex-telemetry
+      - lex-acp
+      - lex-webhook
+      - lex-metering
+      - lex-mesh
+      - lex-swarm
+      - lex-swarm-github
+      - lex-exec
+      - lex-log
+      - lex-coldstart
+      - lex-onboard
+      - lex-adapter
+      - lex-lex
+      - lex-privatecore
+      - lex-governance
+      - lex-audit
+      - lex-autofix
+      - lex-codegen
+      - lex-eval
+      - lex-dataset
+      - lex-pilot-infra-monitor
+      - lex-pilot-knowledge-assist
+      # Service integrations
+      - lex-consul
+      - lex-github
+      - lex-gitlab
+      - lex-http
+      - lex-kerberos
+      - lex-vault
+      - lex-tfe
+      - lex-chef
+      - lex-jfrog
+      - lex-ssh
+      - lex-slack
+      - lex-smtp
+      - lex-discord
+      - lex-telegram
+      - lex-twilio
+      - lex-jira
+      - lex-jenkins
+      - lex-docker
+      - lex-kubernetes
+      - lex-lambda
+      - lex-nomad
+      - lex-redis
+      - lex-memcached
+      - lex-mongodb
+      - lex-postgres
+      - lex-elasticsearch
+      - lex-elastic_app_search
+      - lex-influxdb
+      - lex-prometheus
+      - lex-grafana
+      - lex-pagerduty
+      - lex-s3
+      - lex-sqs
+      - lex-sftp
+      - lex-mqtt
+      - lex-dns
+      - lex-infoblox
+      - lex-pihole
+      - lex-home-assistant
+      - lex-openweathermap
+      - lex-sleepiq
+      - lex-sonos
+      - lex-wled
+      - lex-pushbullet
+      - lex-pushover
+      - lex-todoist
+      - lex-ping
+      - lex-microsoft_teams
+      - lex-google-calendar
+
+  frontend:
+    description: TypeScript/JS/Electron/Web applications
+    members: [Esity]
+    repos:
+      - legion-interlink
+      - legion-web
+      - vscode-extension
+      - desktop
+      - legionio.dev
+
+  infra:
+    description: CI/CD workflows, packaging, and deployment
+    members: [Esity]
+    repos:
+      - .github
+      - homebrew-tap
+      - operator
+      - packages
+      - task_pruner
+      - legionio-spec
+
+  sdk:
+    description: Cross-language SDKs and FFI bindings
+    members: [Esity]
+    repos:
+      - legion-sdk-python
+      - sdk-python
+      - legion-ffi
+
+# Granular path-level overrides for multi-team repos.
+# These add additional team reviewers for specific paths.
+path_overrides:
+  LegionIO:
+    - path: "lib/legion/cli/chat/"
+      team: ai
+    - path: "lib/legion/api/"
+      team: core
+    - path: "lib/legion/extensions/"
+      team: extensions
+    - path: ".github/"
+      team: infra
+  .github:
+    - path: ".github/workflows/"
+      team: infra
+    - path: "labels.yml"
+      team: infra
+    - path: "team-config.yml"
+      team: infra

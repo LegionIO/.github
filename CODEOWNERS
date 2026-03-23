@@ -1,27 +1,19 @@
 # Default owner — all files
-* @Esity
+* @LegionIO/maintainers
+* @LegionIO/infra
+
+# Team and CODEOWNERS configuration
+team-config.yml @LegionIO/maintainers
+scripts/apply-codeowners.sh @LegionIO/maintainers
 
 # Reusable CI/CD workflows
-# .github/workflows/ @Esity @future-platform-team
-
-# Issue and PR templates
-# ISSUE_TEMPLATE/ @Esity @future-community-team
-# PULL_REQUEST_TEMPLATE.md @Esity @future-community-team
-
-# Org-wide community health files
-# CONTRIBUTING.md @Esity @future-community-team
-# SECURITY.md @Esity @future-security-team
-# CODE_OF_CONDUCT.md @Esity @future-community-team
-# GOVERNANCE.md @Esity @future-community-team
+.github/workflows/ @LegionIO/infra
 
 # Maintenance scripts
-# scripts/ @Esity @future-platform-team
+scripts/ @LegionIO/infra
 
 # Workflow templates (starter templates for new repos)
-# workflow-templates/ @Esity @future-platform-team
+workflow-templates/ @LegionIO/infra
 
 # Actions
-# actions/ @Esity @future-platform-team
-
-# Documentation
-# *.md @Esity @future-docs-team
+actions/ @LegionIO/infra

@@ -1,0 +1,170 @@
+name: Sync Teams & Generate CODEOWNERS
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [team-config.yml]
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    name: Sync Teams & Generate CODEOWNERS
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sync GitHub teams and memberships
+        env:
+          GH_TOKEN: ${{ secrets.ORG_ADMIN_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${GH_TOKEN:-}" ]; then
+            echo "::error::ORG_ADMIN_TOKEN secret is not set. Create a PAT with admin:org scope."
+            exit 1
+          fi
+
+          echo "=== Syncing GitHub teams ==="
+
+          TEAMS=$(yq -r '.teams | keys | .[]' team-config.yml)
+
+          for team in $TEAMS; do
+            desc=$(yq -r ".teams.${team}.description" team-config.yml)
+            members=$(yq -r ".teams.${team}.members // [] | .[]" team-config.yml)
+
+            if gh api "orgs/LegionIO/teams/${team}" >/dev/null 2>&1; then
+              echo "Team '${team}' exists, updating description"
+              gh api "orgs/LegionIO/teams/${team}" \
+                --method PATCH \
+                -f description="${desc}" \
+                --silent 2>/dev/null || true
+            else
+              echo "Creating team '${team}'"
+              gh api orgs/LegionIO/teams \
+                --method POST \
+                -f name="${team}" \
+                -f description="${desc}" \
+                -f privacy="closed" \
+                --silent
+            fi
+
+            for member in $members; do
+              echo "  Adding ${member} to ${team}"
+              gh api "orgs/LegionIO/teams/${team}/memberships/${member}" \
+                --method PUT \
+                -f role="maintainer" \
+                --silent 2>/dev/null || echo "  WARN: failed to add ${member} to ${team}"
+            done
+          done
+
+          echo ""
+          echo "Team sync complete."
+
+      - name: Generate CODEOWNERS files
+        run: |
+          set -euo pipefail
+
+          echo "=== Generating CODEOWNERS files ==="
+
+          mkdir -p codeowners-generated
+          TEAMS=$(yq -r '.teams | keys | .[]' team-config.yml)
+          GENERATED=0
+
+          for team in $TEAMS; do
+            [ "$team" = "maintainers" ] && continue
+
+            repos=$(yq -r ".teams.${team}.repos // [] | .[]" team-config.yml)
+            [ -z "$repos" ] && continue
+
+            for repo in $repos; do
+              dir="codeowners-generated/${repo}"
+              mkdir -p "$dir"
+
+              {
+                echo "# Auto-generated from team-config.yml"
+                echo "# Team: ${team}"
+                echo "#"
+                echo "# To apply: scripts/apply-codeowners.sh ${repo}"
+                echo ""
+                echo "* @LegionIO/maintainers"
+                echo "* @LegionIO/${team}"
+              } > "${dir}/CODEOWNERS"
+
+              overrides=$(yq -r ".path_overrides.\"${repo}\" // [] | length" team-config.yml)
+              if [ "$overrides" -gt 0 ]; then
+                echo "" >> "${dir}/CODEOWNERS"
+                echo "# Path-specific reviewers" >> "${dir}/CODEOWNERS"
+                count=$(yq -r ".path_overrides.\"${repo}\" | length" team-config.yml)
+                for i in $(seq 0 $((count - 1))); do
+                  path=$(yq -r ".path_overrides.\"${repo}\"[${i}].path" team-config.yml)
+                  override_team=$(yq -r ".path_overrides.\"${repo}\"[${i}].team" team-config.yml)
+                  echo "${path} @LegionIO/${override_team}" >> "${dir}/CODEOWNERS"
+                done
+              fi
+
+              GENERATED=$((GENERATED + 1))
+            done
+          done
+
+          echo "Generated CODEOWNERS for ${GENERATED} repos"
+
+      - name: Commit generated CODEOWNERS
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add codeowners-generated/
+          if git diff --cached --quiet; then
+            echo "No CODEOWNERS changes to commit"
+          else
+            git commit -m "generate CODEOWNERS from team-config.yml"
+            git push
+          fi
+
+      - name: Generate diff report
+        env:
+          GH_TOKEN: ${{ secrets.ORG_ADMIN_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          echo "=== CODEOWNERS Diff Report ==="
+          echo ""
+
+          TOTAL=0
+          MATCHING=0
+          MISSING=0
+          OUTDATED=0
+
+          for dir in codeowners-generated/*/; do
+            repo=$(basename "$dir")
+            TOTAL=$((TOTAL + 1))
+            local_file="${dir}CODEOWNERS"
+
+            remote_content=$(gh api "repos/LegionIO/${repo}/contents/.github/CODEOWNERS" \
+              --jq '.content' 2>/dev/null | base64 -d 2>/dev/null || true)
+
+            if [ -z "$remote_content" ]; then
+              echo "MISSING  ${repo}"
+              MISSING=$((MISSING + 1))
+            elif diff -q <(echo "$remote_content") "$local_file" >/dev/null 2>&1; then
+              MATCHING=$((MATCHING + 1))
+            else
+              echo "OUTDATED ${repo}"
+              OUTDATED=$((OUTDATED + 1))
+            fi
+          done
+
+          echo ""
+          echo "Total: ${TOTAL} | Current: ${MATCHING} | Missing: ${MISSING} | Outdated: ${OUTDATED}"
+          echo ""
+
+          if [ $((MISSING + OUTDATED)) -gt 0 ]; then
+            echo "Run 'scripts/apply-codeowners.sh' locally to push CODEOWNERS to repos."
+          else
+            echo "All repos are up to date."
+          fi
