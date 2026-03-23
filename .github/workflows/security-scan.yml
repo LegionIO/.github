@@ -47,8 +47,8 @@ jobs:
           bundler-cache: true
       - name: Install ruby_audit
         run: gem install ruby_audit
-      - name: Run ruby_audit
-        run: ruby_audit check
+      - name: Run ruby-audit
+        run: ruby-audit check
 
   brakeman:
     if: ${{ inputs.brakeman-enabled }}
