@@ -14,9 +14,9 @@ on:
         type: string
         required: false
     outputs:
-      changed:
+      released:
         description: Whether a new version was released
-        value: ${{ jobs.release.outputs.changed }}
+        value: ${{ jobs.release.outputs.released }}
       version:
         description: The released version string
         value: ${{ jobs.release.outputs.version }}
@@ -37,57 +37,68 @@ jobs:
     name: Release
     runs-on: ubuntu-latest
     outputs:
-      changed: ${{ steps.version.outputs.changed }}
-      version: ${{ steps.version.outputs.current }}
-      tag: ${{ steps.version.outputs.tag }}
+      released: ${{ steps.check.outputs.needed }}
+      version: ${{ steps.detect.outputs.version }}
+      tag: ${{ steps.detect.outputs.tag }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Detect version from source
-        id: version
+        id: detect
         run: |
           set -euo pipefail
-          # Prefer gemspec version (authoritative), fall back to shallowest version.rb
-          current=""
+          version=""
+
+          # Prefer gemspec version (authoritative)
           if ls *.gemspec 1>/dev/null 2>&1; then
-            current=$(ruby -e "puts Gem::Specification.load(Dir['*.gemspec'].first).version" 2>/dev/null || true)
+            version=$(ruby -e "puts Gem::Specification.load(Dir['*.gemspec'].first).version" 2>/dev/null || true)
           fi
 
-          if [ -z "$current" ]; then
-            # Fall back to version.rb search, shallowest path first
+          # Fall back to shallowest version.rb
+          if [ -z "$version" ]; then
             while IFS= read -r vf; do
-              current=$(grep -oE "VERSION[[:space:]]*=[[:space:]]*['\"][^'\"]*" "$vf" \
+              version=$(grep -oE "VERSION[[:space:]]*=[[:space:]]*['\"][^'\"]*" "$vf" \
                 | sed "s/.*['\"]//" || true)
-              if [ -n "$current" ]; then
-                echo "Found version $current in $vf"
+              if [ -n "$version" ]; then
+                echo "Found version $version in $vf"
                 break
               fi
             done < <(find . -path './.git' -prune -o -path './vendor' -prune -o -name 'version.rb' -print | awk -F/ '{print NF, $0}' | sort -n | cut -d' ' -f2-)
           fi
 
-          if [ -z "$current" ]; then
-            echo "No version.rb with a string literal VERSION found"
-            echo "changed=false" >> "$GITHUB_OUTPUT"
+          if [ -z "$version" ]; then
+            echo "No version found in gemspec or version.rb"
+            echo "version=" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          echo "current=$current" >> "$GITHUB_OUTPUT"
-          echo "tag=v$current" >> "$GITHUB_OUTPUT"
 
-          if git rev-parse "v$current" >/dev/null 2>&1; then
-            echo "Tag v$current already exists, skipping release"
-            echo "changed=false" >> "$GITHUB_OUTPUT"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "tag=v$version" >> "$GITHUB_OUTPUT"
+          echo "Detected version: $version"
+
+      - name: Check if release already exists
+        if: steps.detect.outputs.version != ''
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.detect.outputs.tag }}
+        run: |
+          set -euo pipefail
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release $TAG already exists, skipping"
+            echo "needed=false" >> "$GITHUB_OUTPUT"
           else
-            echo "New version detected: $current"
-            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "No release found for $TAG, proceeding"
+            echo "needed=true" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Extract changelog
-        if: steps.version.outputs.changed == 'true'
+        if: steps.check.outputs.needed == 'true'
         id: changelog
         env:
-          VERSION: ${{ steps.version.outputs.current }}
+          VERSION: ${{ steps.detect.outputs.version }}
           CHANGELOG_PATH: ${{ inputs.changelog-file }}
         run: |
           set -euo pipefail
@@ -114,44 +125,48 @@ jobs:
           echo "body_file=/tmp/release_notes.md" >> "$GITHUB_OUTPUT"
 
       - uses: ruby/setup-ruby@v1
-        if: steps.version.outputs.changed == 'true'
+        if: steps.check.outputs.needed == 'true'
         with:
           ruby-version: ${{ inputs.ruby-version }}
           bundler-cache: true
 
       - name: Build gem
-        if: steps.version.outputs.changed == 'true'
+        if: steps.check.outputs.needed == 'true'
         id: build
         run: |
           gem build *.gemspec
           echo "gem_file=$(ls -t *.gem | head -1)" >> "$GITHUB_OUTPUT"
 
       - name: Create git tag
-        if: steps.version.outputs.changed == 'true'
+        if: steps.check.outputs.needed == 'true'
         env:
-          TAG: ${{ steps.version.outputs.tag }}
+          TAG: ${{ steps.detect.outputs.tag }}
         run: |
-          git tag "$TAG"
-          git push origin "$TAG"
+          if git rev-parse "$TAG" >/dev/null 2>&1; then
+            echo "Tag $TAG already exists, skipping"
+          else
+            git tag "$TAG"
+            git push origin "$TAG"
+          fi
 
       - name: Create GitHub release
-        if: steps.version.outputs.changed == 'true'
+        if: steps.check.outputs.needed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
-          TAG: ${{ steps.version.outputs.tag }}
+          TAG: ${{ steps.detect.outputs.tag }}
           NOTES_FILE: ${{ steps.changelog.outputs.body_file }}
           GEM_FILE: ${{ steps.build.outputs.gem_file }}
         run: gh release create "$TAG" --title "$TAG" --notes-file "$NOTES_FILE" "$GEM_FILE"
 
       - name: Publish to RubyGems
-        if: steps.version.outputs.changed == 'true'
+        if: steps.check.outputs.needed == 'true'
         env:
           GEM_HOST_API_KEY: ${{ secrets.rubygems-api-key }}
           GEM_FILE: ${{ steps.build.outputs.gem_file }}
         run: gem push "$GEM_FILE"
 
       - name: Publish to GitHub Packages
-        if: steps.version.outputs.changed == 'true'
+        if: steps.check.outputs.needed == 'true'
         env:
           GEM_HOST_API_KEY: "Bearer ${{ github.token }}"
           OWNER: ${{ github.repository_owner }}
