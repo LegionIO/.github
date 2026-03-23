@@ -1,0 +1,179 @@
+# Anti-pattern lint rules for LegionIO LEX repos.
+# Checked by .github/workflows/lint-patterns.yml on PRs.
+# Each rule produces a GitHub annotation on the matching line.
+#
+# Fields:
+#   id:          unique rule identifier
+#   pattern:     Ruby-compatible regex matched against each line
+#   message:     annotation message (shown inline on the PR diff)
+#   severity:    error | warning | notice
+#   category:    grouping for summary output
+#   paths:       optional glob filter (default: **/*.rb)
+#   exclude:     optional glob to skip (e.g., spec/**)
+
+# ── Helper migration: use per-extension helpers, not global singletons ──
+
+- id: helper-logging-direct
+  pattern: 'Legion::Logging\.(info|warn|error|debug|fatal)\b'
+  message: "Use `log.info(msg)` (per-extension tagged logger) instead of `Legion::Logging.info`. Include `Helpers::Lex` or `Legion::Logging::Helper`."
+  severity: warning
+  category: helper-migration
+  exclude: "spec/**"
+
+- id: helper-logging-old-methods
+  pattern: '\blog_(info|warn|error|debug|fatal)\b'
+  message: "Old helper `log_info`/`log_warn` etc removed. Use `log.info(msg)` instead."
+  severity: warning
+  category: helper-migration
+  exclude: "spec/**"
+
+- id: helper-json-direct
+  pattern: 'Legion::JSON\.(load|dump)\b'
+  message: "In runner/actor code, prefer `json_load(str)` / `json_dump(obj)` helpers. Direct calls are for framework code only."
+  severity: notice
+  category: helper-migration
+  exclude: "spec/**"
+
+- id: helper-cache-direct
+  pattern: 'Legion::Cache\.(get|set|delete)\b'
+  message: "Use `cache_get(key)` / `cache_set(key, val)` helpers (auto-namespaced per extension)."
+  severity: warning
+  category: helper-migration
+  exclude: "spec/**"
+
+- id: helper-cache-local-direct
+  pattern: 'Legion::Cache::Local\.(get|set)\b'
+  message: "Use `local_cache_get(key)` / `local_cache_set(key, val)` helpers."
+  severity: warning
+  category: helper-migration
+  exclude: "spec/**"
+
+- id: helper-crypt-direct
+  pattern: 'Legion::Crypt\.(get|exist\?)\b'
+  message: "Use `vault_get(path)` / `vault_exist?(path)` helpers (auto-namespaced per extension)."
+  severity: warning
+  category: helper-migration
+  exclude: "spec/**"
+
+# ── Constant resolution pitfalls ──
+
+- id: const-resolution-inherit
+  pattern: '\bconst_(defined\?|get)\([^,)]+\)\s*$'
+  message: "On dynamic modules, pass `false` as inherit param: `const_defined?(name, false)`. Default `true` leaks through Object."
+  severity: notice
+  category: constant-resolution
+
+- id: const-bare-data-define
+  pattern: '(?<!:)Data\.define\b'
+  message: "Inside `module Legion`, bare `Data.define` resolves to `Legion::Data.define`. Use `::Data.define`."
+  severity: error
+  category: constant-resolution
+
+- id: const-bare-process
+  pattern: '(?<!:)(?<!::)\bProcess\.(pid|ppid|kill|detach|fork|wait|wait2|waitpid|waitpid2|getpgid|setpgid|daemon|exit|spawn|times|groups|uid|gid|euid|egid)\b'
+  message: "Inside `module Legion`, bare `Process` resolves to `Legion::Process`. Use `::Process`."
+  severity: error
+  category: constant-resolution
+
+- id: const-bare-json
+  pattern: '(?<!:)(?<!::)\bJSON\.(parse|generate|pretty_generate|dump|load|fast_generate)\b'
+  message: "Inside `module Legion`, bare `JSON` resolves to `Legion::JSON`. Use `::JSON` for stdlib."
+  severity: error
+  category: constant-resolution
+
+# ── Sequel model gotchas ──
+
+- id: sequel-eager-model
+  pattern: 'class\s+\w+\s*<\s*Sequel::Model\('
+  message: "Sequel::Model(:table) introspects schema at require time. Use lazy `def self.define_model` pattern with `table_exists?` guard."
+  severity: warning
+  category: sequel
+
+# ── Singleton misuse ──
+
+- id: singleton-new
+  pattern: '\b(TokenCache|Registry|Catalog)\.new\b'
+  message: "This class uses the singleton pattern. Use `.instance` not `.new` to share state across actors."
+  severity: error
+  category: singleton
+
+# ── Mutex deadlock risk ──
+
+- id: mutex-nested-sync
+  pattern: '@mutex\.synchronize\b'
+  message: "Mutex detected. Verify no method called inside this block re-acquires the same mutex (deadlock risk)."
+  severity: notice
+  category: concurrency
+
+# ── API gotchas ──
+
+- id: api-json-dump-kwargs
+  pattern: 'Legion::JSON\.dump\([^)]*\w+:\s'
+  message: "`Legion::JSON.dump` takes exactly 1 positional arg. Wrap kwargs in explicit `{}`: `Legion::JSON.dump({ key: val })`."
+  severity: error
+  category: api
+
+- id: api-string-keys
+  pattern: "body\\[.'"
+  message: "`Legion::JSON.load` returns symbol keys. Use `body[:data]` not `body['data']`."
+  severity: warning
+  category: api
+  paths: "lib/**/*.rb"
+  exclude: "spec/**"
+
+# ── Sinatra 4.0 ──
+
+- id: sinatra-host-auth
+  pattern: 'class\s+\w+\s*<\s*Sinatra::Base'
+  message: "Sinatra 4.0+ requires `set :host_authorization, permitted: :any` or all requests get 403."
+  severity: notice
+  category: api
+
+# ── Thor gotchas ──
+
+- id: thor-reserved-run
+  pattern: 'def\s+run\b'
+  message: "Thor 1.5+ reserves `run`. Use `map 'run' => :trigger` or similar alias."
+  severity: warning
+  category: cli
+  paths: "lib/**/cli/**/*.rb"
+
+# ── Extension build gotchas ──
+
+- id: ext-faraday-xml
+  pattern: '\.request\s+:xml\b|\.response\s+:xml\b'
+  message: "Faraday >= 2.0 removed built-in `:xml` middleware. Don't add it to connection builder."
+  severity: error
+  category: extension
+
+- id: ext-module-function-private
+  pattern: 'module_function'
+  message: "`private` after `module_function` resets to instance-only. Don't use both together."
+  severity: notice
+  category: extension
+
+# ── Cache round-trip type safety ──
+
+- id: cache-time-coercion
+  pattern: '\bcache_get\b.*\b-\b'
+  message: "Time objects become Strings after cache round-trip. Coerce with `Time.parse(val)` at read boundaries."
+  severity: notice
+  category: cache
+
+# ── Once actor timing ──
+
+- id: once-actor-enabled-side-effects
+  pattern: 'def\s+enabled\?'
+  message: "`enabled?` runs during extension loading, before `delay`. Keep it cheap and side-effect-free (no network/mutex)."
+  severity: notice
+  category: actor
+  exclude: "spec/**"
+
+# ── Runner callability ──
+
+- id: runner-missing-extend-self
+  pattern: 'module\s+Runners\b'
+  message: "Runner modules need `include Helpers::Lex` (or `extend self`) so actors can call functions via `klass.send(:func)`."
+  severity: notice
+  category: runner
+  exclude: "spec/**"

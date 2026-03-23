@@ -1,0 +1,304 @@
+name: Code Quality
+
+on:
+  workflow_call:
+    inputs:
+      patterns-repo:
+        description: "Repo containing lint-patterns.yml (org/.github by default)"
+        default: "LegionIO/.github"
+        type: string
+        required: false
+      patterns-ref:
+        description: "Branch or tag of the patterns repo"
+        default: "main"
+        type: string
+        required: false
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: read
+
+jobs:
+  gemfile-lock:
+    name: Gemfile.lock Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check for committed Gemfile.lock
+        env:
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          BEFORE_SHA: ${{ github.event.before }}
+          HEAD_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+
+          if [ -n "${PR_BASE_SHA:-}" ]; then
+            BASE="$PR_BASE_SHA"
+          elif [ -n "${BEFORE_SHA:-}" ] && [ "$BEFORE_SHA" != "0000000000000000000000000000000000000000" ]; then
+            BASE="$BEFORE_SHA"
+          else
+            BASE="${HEAD_SHA}~1"
+          fi
+
+          LOCKFILES=$(git diff --name-only --diff-filter=ACMR "${BASE}...${HEAD_SHA}" -- 'Gemfile.lock' '**/Gemfile.lock' 2>/dev/null \
+                   || git diff --name-only --diff-filter=ACMR "${BASE}..${HEAD_SHA}" -- 'Gemfile.lock' '**/Gemfile.lock' 2>/dev/null \
+                   || true)
+
+          if [ -z "$LOCKFILES" ]; then
+            echo "No Gemfile.lock changes detected"
+            exit 0
+          fi
+
+          while IFS= read -r f; do
+            echo "::error file=${f},line=1,title=gemfile-lock-committed::Gemfile.lock should not be committed in gem repos. Add it to .gitignore."
+          done <<< "$LOCKFILES"
+          exit 1
+
+  helper-migration:
+    name: Helper Migration
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch lint patterns
+        env:
+          PATTERNS_REPO: ${{ inputs.patterns-repo }}
+          PATTERNS_REF: ${{ inputs.patterns-ref }}
+        run: |
+          gh api "repos/${PATTERNS_REPO}/contents/lint-patterns.yml?ref=${PATTERNS_REF}" \
+            --jq '.content' | base64 -d > /tmp/lint-patterns.yml
+
+      - name: Get changed files
+        id: changed
+        env:
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          BEFORE_SHA: ${{ github.event.before }}
+          HEAD_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          if [ -n "${PR_BASE_SHA:-}" ]; then
+            BASE="$PR_BASE_SHA"
+          elif [ -n "${BEFORE_SHA:-}" ] && [ "$BEFORE_SHA" != "0000000000000000000000000000000000000000" ]; then
+            BASE="$BEFORE_SHA"
+          else
+            BASE="${HEAD_SHA}~1"
+          fi
+          FILES=$(git diff --name-only --diff-filter=ACMR "${BASE}...${HEAD_SHA}" -- '*.rb' '*.gemspec' 'Gemfile' 2>/dev/null \
+               || git diff --name-only --diff-filter=ACMR "${BASE}..${HEAD_SHA}" -- '*.rb' '*.gemspec' 'Gemfile' 2>/dev/null \
+               || true)
+          if [ -z "$FILES" ]; then
+            echo "files=" >> "$GITHUB_OUTPUT"
+          else
+            echo "files<<EOF" >> "$GITHUB_OUTPUT"
+            echo "$FILES" >> "$GITHUB_OUTPUT"
+            echo "EOF" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check helper usage patterns
+        if: steps.changed.outputs.files != ''
+        env:
+          CHANGED_FILES: ${{ steps.changed.outputs.files }}
+        run: |
+          set -euo pipefail
+          RULES=$(yq -o=json /tmp/lint-patterns.yml | jq '[.[] | select(.category == "helper-migration")]')
+          RULE_COUNT=$(echo "$RULES" | jq length)
+          TOTAL_HITS=0; ERROR_HITS=0
+
+          while IFS= read -r file; do
+            [ -f "$file" ] || continue
+            for i in $(seq 0 $((RULE_COUNT - 1))); do
+              id=$(echo "$RULES"       | jq -r ".[$i].id")
+              pattern=$(echo "$RULES"  | jq -r ".[$i].pattern")
+              message=$(echo "$RULES"  | jq -r ".[$i].message")
+              severity=$(echo "$RULES" | jq -r ".[$i].severity")
+              paths=$(echo "$RULES"    | jq -r ".[$i].paths // empty")
+              exclude=$(echo "$RULES"  | jq -r ".[$i].exclude // empty")
+              if [ -n "$paths" ]; then
+                # shellcheck disable=SC2053
+                [[ "$file" == $paths ]] || continue
+              fi
+              if [ -n "$exclude" ]; then
+                # shellcheck disable=SC2053
+                [[ "$file" == $exclude ]] && continue
+              fi
+              while IFS=: read -r lineno _; do
+                TOTAL_HITS=$((TOTAL_HITS + 1))
+                [ "$severity" = "error" ] && ERROR_HITS=$((ERROR_HITS + 1))
+                echo "::${severity} file=${file},line=${lineno},title=${id}::${message}"
+              done < <(grep -nP "$pattern" "$file" 2>/dev/null || true)
+            done
+          done <<< "$CHANGED_FILES"
+
+          echo "Helper migration: ${TOTAL_HITS} findings (${ERROR_HITS} errors)"
+          [ "$ERROR_HITS" -gt 0 ] && exit 1 || exit 0
+
+  constant-safety:
+    name: Constant Safety
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch lint patterns
+        env:
+          PATTERNS_REPO: ${{ inputs.patterns-repo }}
+          PATTERNS_REF: ${{ inputs.patterns-ref }}
+        run: |
+          gh api "repos/${PATTERNS_REPO}/contents/lint-patterns.yml?ref=${PATTERNS_REF}" \
+            --jq '.content' | base64 -d > /tmp/lint-patterns.yml
+
+      - name: Get changed files
+        id: changed
+        env:
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          BEFORE_SHA: ${{ github.event.before }}
+          HEAD_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          if [ -n "${PR_BASE_SHA:-}" ]; then
+            BASE="$PR_BASE_SHA"
+          elif [ -n "${BEFORE_SHA:-}" ] && [ "$BEFORE_SHA" != "0000000000000000000000000000000000000000" ]; then
+            BASE="$BEFORE_SHA"
+          else
+            BASE="${HEAD_SHA}~1"
+          fi
+          FILES=$(git diff --name-only --diff-filter=ACMR "${BASE}...${HEAD_SHA}" -- '*.rb' '*.gemspec' 'Gemfile' 2>/dev/null \
+               || git diff --name-only --diff-filter=ACMR "${BASE}..${HEAD_SHA}" -- '*.rb' '*.gemspec' 'Gemfile' 2>/dev/null \
+               || true)
+          if [ -z "$FILES" ]; then
+            echo "files=" >> "$GITHUB_OUTPUT"
+          else
+            echo "files<<EOF" >> "$GITHUB_OUTPUT"
+            echo "$FILES" >> "$GITHUB_OUTPUT"
+            echo "EOF" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check constant resolution patterns
+        if: steps.changed.outputs.files != ''
+        env:
+          CHANGED_FILES: ${{ steps.changed.outputs.files }}
+        run: |
+          set -euo pipefail
+          RULES=$(yq -o=json /tmp/lint-patterns.yml | jq '[.[] | select(.category == "constant-resolution" or .category == "singleton")]')
+          RULE_COUNT=$(echo "$RULES" | jq length)
+          TOTAL_HITS=0; ERROR_HITS=0
+
+          while IFS= read -r file; do
+            [ -f "$file" ] || continue
+            for i in $(seq 0 $((RULE_COUNT - 1))); do
+              id=$(echo "$RULES"       | jq -r ".[$i].id")
+              pattern=$(echo "$RULES"  | jq -r ".[$i].pattern")
+              message=$(echo "$RULES"  | jq -r ".[$i].message")
+              severity=$(echo "$RULES" | jq -r ".[$i].severity")
+              paths=$(echo "$RULES"    | jq -r ".[$i].paths // empty")
+              exclude=$(echo "$RULES"  | jq -r ".[$i].exclude // empty")
+              if [ -n "$paths" ]; then
+                # shellcheck disable=SC2053
+                [[ "$file" == $paths ]] || continue
+              fi
+              if [ -n "$exclude" ]; then
+                # shellcheck disable=SC2053
+                [[ "$file" == $exclude ]] && continue
+              fi
+              while IFS=: read -r lineno _; do
+                TOTAL_HITS=$((TOTAL_HITS + 1))
+                [ "$severity" = "error" ] && ERROR_HITS=$((ERROR_HITS + 1))
+                echo "::${severity} file=${file},line=${lineno},title=${id}::${message}"
+              done < <(grep -nP "$pattern" "$file" 2>/dev/null || true)
+            done
+          done <<< "$CHANGED_FILES"
+
+          echo "Constant safety: ${TOTAL_HITS} findings (${ERROR_HITS} errors)"
+          [ "$ERROR_HITS" -gt 0 ] && exit 1 || exit 0
+
+  framework-conventions:
+    name: Framework Conventions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch lint patterns
+        env:
+          PATTERNS_REPO: ${{ inputs.patterns-repo }}
+          PATTERNS_REF: ${{ inputs.patterns-ref }}
+        run: |
+          gh api "repos/${PATTERNS_REPO}/contents/lint-patterns.yml?ref=${PATTERNS_REF}" \
+            --jq '.content' | base64 -d > /tmp/lint-patterns.yml
+
+      - name: Get changed files
+        id: changed
+        env:
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          BEFORE_SHA: ${{ github.event.before }}
+          HEAD_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          if [ -n "${PR_BASE_SHA:-}" ]; then
+            BASE="$PR_BASE_SHA"
+          elif [ -n "${BEFORE_SHA:-}" ] && [ "$BEFORE_SHA" != "0000000000000000000000000000000000000000" ]; then
+            BASE="$BEFORE_SHA"
+          else
+            BASE="${HEAD_SHA}~1"
+          fi
+          FILES=$(git diff --name-only --diff-filter=ACMR "${BASE}...${HEAD_SHA}" -- '*.rb' '*.gemspec' 'Gemfile' 2>/dev/null \
+               || git diff --name-only --diff-filter=ACMR "${BASE}..${HEAD_SHA}" -- '*.rb' '*.gemspec' 'Gemfile' 2>/dev/null \
+               || true)
+          if [ -z "$FILES" ]; then
+            echo "files=" >> "$GITHUB_OUTPUT"
+          else
+            echo "files<<EOF" >> "$GITHUB_OUTPUT"
+            echo "$FILES" >> "$GITHUB_OUTPUT"
+            echo "EOF" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check framework convention patterns
+        if: steps.changed.outputs.files != ''
+        env:
+          CHANGED_FILES: ${{ steps.changed.outputs.files }}
+        run: |
+          set -euo pipefail
+          CATEGORIES='["api","sequel","cli","extension","concurrency","cache","actor","runner"]'
+          RULES=$(yq -o=json /tmp/lint-patterns.yml | jq --argjson cats "$CATEGORIES" '[.[] | select(.category as $c | $cats | index($c))]')
+          RULE_COUNT=$(echo "$RULES" | jq length)
+          TOTAL_HITS=0; ERROR_HITS=0
+
+          while IFS= read -r file; do
+            [ -f "$file" ] || continue
+            for i in $(seq 0 $((RULE_COUNT - 1))); do
+              id=$(echo "$RULES"       | jq -r ".[$i].id")
+              pattern=$(echo "$RULES"  | jq -r ".[$i].pattern")
+              message=$(echo "$RULES"  | jq -r ".[$i].message")
+              severity=$(echo "$RULES" | jq -r ".[$i].severity")
+              paths=$(echo "$RULES"    | jq -r ".[$i].paths // empty")
+              exclude=$(echo "$RULES"  | jq -r ".[$i].exclude // empty")
+              if [ -n "$paths" ]; then
+                # shellcheck disable=SC2053
+                [[ "$file" == $paths ]] || continue
+              fi
+              if [ -n "$exclude" ]; then
+                # shellcheck disable=SC2053
+                [[ "$file" == $exclude ]] && continue
+              fi
+              while IFS=: read -r lineno _; do
+                TOTAL_HITS=$((TOTAL_HITS + 1))
+                [ "$severity" = "error" ] && ERROR_HITS=$((ERROR_HITS + 1))
+                echo "::${severity} file=${file},line=${lineno},title=${id}::${message}"
+              done < <(grep -nP "$pattern" "$file" 2>/dev/null || true)
+            done
+          done <<< "$CHANGED_FILES"
+
+          echo "Framework conventions: ${TOTAL_HITS} findings (${ERROR_HITS} errors)"
+          [ "$ERROR_HITS" -gt 0 ] && exit 1 || exit 0
