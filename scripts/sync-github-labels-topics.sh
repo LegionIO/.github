@@ -11,6 +11,7 @@ set -euo pipefail
 
 ORG="LegionIO"
 MODE="${1:---labels}"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # ─────────────────────────────────────────────
 # Functions
@@ -21,37 +22,19 @@ apply_labels_to_repo() {
   local full_repo="${ORG}/${repo}"
   echo "  [labels] ${full_repo}"
 
-  # Type labels
-  gh label create "type:bug"         --color "#d73a4a" --description "Something isn't working"     --repo "${full_repo}" --force 2>/dev/null || true
-  gh label create "type:enhancement" --color "#a2eeef" --description "New feature or improvement"  --repo "${full_repo}" --force 2>/dev/null || true
-  gh label create "type:docs"        --color "#0075ca" --description "Documentation only"           --repo "${full_repo}" --force 2>/dev/null || true
-  gh label create "type:chore"       --color "#e4e669" --description "Maintenance, deps, CI"        --repo "${full_repo}" --force 2>/dev/null || true
-  gh label create "type:breaking"    --color "#b60205" --description "Breaking change"              --repo "${full_repo}" --force 2>/dev/null || true
+  local labels
+  labels=$(yq -o=json "${SCRIPT_DIR}/../labels.yml")
+  local count
+  count=$(echo "$labels" | jq length)
 
-  # Priority labels
-  gh label create "priority:critical" --color "#b60205" --description "Must fix immediately" --repo "${full_repo}" --force 2>/dev/null || true
-  gh label create "priority:high"     --color "#d93f0b" --description "Next up"              --repo "${full_repo}" --force 2>/dev/null || true
-  gh label create "priority:medium"   --color "#fbca04" --description "Normal priority"      --repo "${full_repo}" --force 2>/dev/null || true
-  gh label create "priority:low"      --color "#0e8a16" --description "Nice to have"         --repo "${full_repo}" --force 2>/dev/null || true
-
-  # Area labels (light blue)
-  gh label create "area:transport"  --color "#c5def5" --description "RabbitMQ / AMQP messaging"    --repo "${full_repo}" --force 2>/dev/null || true
-  gh label create "area:crypt"      --color "#c5def5" --description "Encryption, Vault, JWT"       --repo "${full_repo}" --force 2>/dev/null || true
-  gh label create "area:data"       --color "#c5def5" --description "Database / Sequel ORM"        --repo "${full_repo}" --force 2>/dev/null || true
-  gh label create "area:cache"      --color "#c5def5" --description "Redis / Memcached caching"    --repo "${full_repo}" --force 2>/dev/null || true
-  gh label create "area:settings"   --color "#c5def5" --description "Configuration management"     --repo "${full_repo}" --force 2>/dev/null || true
-  gh label create "area:logging"    --color "#c5def5" --description "Logging"                      --repo "${full_repo}" --force 2>/dev/null || true
-  gh label create "area:json"       --color "#c5def5" --description "JSON serialization"           --repo "${full_repo}" --force 2>/dev/null || true
-  gh label create "area:cli"        --color "#c5def5" --description "CLI commands"                 --repo "${full_repo}" --force 2>/dev/null || true
-  gh label create "area:api"        --color "#c5def5" --description "REST API"                     --repo "${full_repo}" --force 2>/dev/null || true
-  gh label create "area:mcp"        --color "#c5def5" --description "MCP server"                   --repo "${full_repo}" --force 2>/dev/null || true
-  gh label create "area:extensions" --color "#c5def5" --description "Extension system / LEX"       --repo "${full_repo}" --force 2>/dev/null || true
-  gh label create "area:actors"     --color "#c5def5" --description "Actor execution modes"        --repo "${full_repo}" --force 2>/dev/null || true
-  gh label create "area:runners"    --color "#c5def5" --description "Runner functions"             --repo "${full_repo}" --force 2>/dev/null || true
-
-  # Community labels
-  gh label create "good first issue" --color "#7057ff" --description "Good for newcomers"       --repo "${full_repo}" --force 2>/dev/null || true
-  gh label create "help wanted"      --color "#008672" --description "Extra attention needed"   --repo "${full_repo}" --force 2>/dev/null || true
+  for i in $(seq 0 $((count - 1))); do
+    local name color desc
+    name=$(echo "$labels"  | jq -r ".[$i].name")
+    color=$(echo "$labels" | jq -r ".[$i].color")
+    desc=$(echo "$labels"  | jq -r ".[$i].description")
+    gh label create "$name" --color "$color" --description "$desc" \
+      --repo "${full_repo}" --force 2>/dev/null || true
+  done
 }
 
 get_topics_for_repo() {

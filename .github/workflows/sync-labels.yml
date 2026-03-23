@@ -1,0 +1,62 @@
+name: Sync Labels
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [labels.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Sync labels to all repos
+        env:
+          GH_TOKEN: ${{ secrets.ORG_ADMIN_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${GH_TOKEN:-}" ]; then
+            echo "::error::ORG_ADMIN_TOKEN secret is not set."
+            exit 1
+          fi
+
+          REPOS=$(gh repo list LegionIO --limit 400 --json name --jq '.[].name')
+          TOTAL=$(echo "$REPOS" | wc -l | tr -d ' ')
+          echo "Found ${TOTAL} repos"
+
+          LABELS=$(yq -o=json labels.yml)
+          LABEL_COUNT=$(echo "$LABELS" | jq length)
+          echo "Applying ${LABEL_COUNT} labels to each repo"
+          echo ""
+
+          FAILED=0
+          while IFS= read -r repo; do
+            echo "--- LegionIO/${repo} ---"
+            for i in $(seq 0 $((LABEL_COUNT - 1))); do
+              name=$(echo "$LABELS"  | jq -r ".[$i].name")
+              color=$(echo "$LABELS" | jq -r ".[$i].color")
+              desc=$(echo "$LABELS"  | jq -r ".[$i].description")
+
+              if ! gh label create "$name" \
+                --color "$color" \
+                --description "$desc" \
+                --repo "LegionIO/${repo}" \
+                --force 2>/dev/null; then
+                echo "  WARN: failed to create label '${name}' on ${repo}"
+                FAILED=$((FAILED + 1))
+              fi
+            done
+          done <<< "$REPOS"
+
+          echo ""
+          echo "Done. Applied ${LABEL_COUNT} labels to ${TOTAL} repos."
+          if [ "$FAILED" -gt 0 ]; then
+            echo "::warning::${FAILED} label(s) failed to apply (likely archived repos)."
+          fi

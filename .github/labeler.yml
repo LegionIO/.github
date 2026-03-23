@@ -29,3 +29,39 @@ llm:
 transport:
   - changed-files:
     - any-glob-to-any-file: 'legion-transport/**'
+
+chat:
+  - changed-files:
+    - any-glob-to-any-file: '**/cli/chat/**'
+
+workers:
+  - changed-files:
+    - any-glob-to-any-file: '**/digital_worker/**'
+
+telemetry:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/telemetry/**'
+      - '**/metrics/**'
+
+audit:
+  - changed-files:
+    - any-glob-to-any-file: '**/audit/**'
+
+rbac:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'legion-rbac/**'
+      - '**/rbac/**'
+
+gaia:
+  - changed-files:
+    - any-glob-to-any-file: 'legion-gaia/**'
+
+tty:
+  - changed-files:
+    - any-glob-to-any-file: 'legion-tty/**'
+
+webhooks:
+  - changed-files:
+    - any-glob-to-any-file: '**/webhooks/**'
