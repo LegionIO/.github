@@ -1,0 +1,12 @@
+# Auto-generated from team-config.yml
+# Team: infra
+#
+# To apply: scripts/apply-codeowners.sh .github
+
+* @LegionIO/maintainers
+* @LegionIO/infra
+
+# Path-specific reviewers
+.github/workflows/ @LegionIO/infra
+labels.yml @LegionIO/infra
+team-config.yml @LegionIO/infra

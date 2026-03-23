@@ -1,0 +1,7 @@
+# Auto-generated from team-config.yml
+# Team: sdk
+#
+# To apply: scripts/apply-codeowners.sh sdk-python
+
+* @LegionIO/maintainers
+* @LegionIO/sdk
