@@ -38,6 +38,11 @@ on:
         default: false
         type: boolean
         required: false
+      runner:
+        description: "Runner label (set to 'legion' for self-hosted, 'ubuntu-latest' for GitHub-hosted)"
+        default: 'ubuntu-latest'
+        type: string
+        required: false
     secrets:
       slack-bot-token:
         description: Slack bot token for failure notifications
@@ -52,7 +57,7 @@ jobs:
       fail-fast: false
       matrix:
         ruby: ${{ inputs.ruby-versions != '' && fromJSON(inputs.ruby-versions) || fromJSON(format('["{0}"]', inputs.ruby-version)) }}
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.runner || 'ubuntu-latest' }}
     steps:
       - uses: actions/checkout@v4
       - name: Start Redis
@@ -120,7 +125,7 @@ jobs:
     if: ${{ inputs.run-rubocop }}
     name: RuboCop
     timeout-minutes: 10
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.runner || 'ubuntu-latest' }}
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1

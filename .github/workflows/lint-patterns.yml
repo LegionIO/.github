@@ -3,6 +3,11 @@ name: Code Quality
 on:
   workflow_call:
     inputs:
+      runner:
+        description: "Runner label (set to 'legion' for self-hosted, 'ubuntu-latest' for GitHub-hosted)"
+        default: 'ubuntu-latest'
+        type: string
+        required: false
       patterns-repo:
         description: "Repo containing lint-patterns.yml (org/.github by default)"
         default: "LegionIO/.github"
@@ -22,7 +27,7 @@ permissions:
 jobs:
   gemfile-lock:
     name: Gemfile.lock Check
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.runner || 'ubuntu-latest' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -61,7 +66,7 @@ jobs:
 
   helper-migration:
     name: Helper Migration
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.runner || 'ubuntu-latest' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -142,7 +147,7 @@ jobs:
 
   constant-safety:
     name: Constant Safety
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.runner || 'ubuntu-latest' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -223,7 +228,7 @@ jobs:
 
   framework-conventions:
     name: Framework Conventions
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.runner || 'ubuntu-latest' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4

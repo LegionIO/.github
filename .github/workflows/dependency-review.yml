@@ -2,6 +2,12 @@ name: Dependency Review
 
 on:
   workflow_call:
+    inputs:
+      runner:
+        description: "Runner label (set to 'legion' for self-hosted, 'ubuntu-latest' for GitHub-hosted)"
+        default: 'ubuntu-latest'
+        type: string
+        required: false
 
 permissions:
   contents: read
@@ -10,7 +16,7 @@ permissions:
 jobs:
   dependency-review:
     name: Dependency Review
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.runner || 'ubuntu-latest' }}
     if: github.event_name == 'pull_request'
     steps:
       - name: Checkout

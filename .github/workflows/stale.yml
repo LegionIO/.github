@@ -3,6 +3,11 @@ name: Stale Cleanup
 on:
   workflow_call:
     inputs:
+      runner:
+        description: "Runner label (set to 'legion' for self-hosted, 'ubuntu-latest' for GitHub-hosted)"
+        default: 'ubuntu-latest'
+        type: string
+        required: false
       days-before-stale:
         description: Days of inactivity before marking stale
         default: 60
@@ -21,7 +26,7 @@ permissions:
 jobs:
   stale:
     name: Stale Cleanup
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.runner || 'ubuntu-latest' }}
     steps:
       - uses: actions/stale@v9
         with:

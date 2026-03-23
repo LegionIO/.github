@@ -8,6 +8,11 @@ on:
         default: '3.4'
         type: string
         required: false
+      runner:
+        description: "Runner label (set to 'legion' for self-hosted, 'ubuntu-latest' for GitHub-hosted)"
+        default: 'ubuntu-latest'
+        type: string
+        required: false
       brakeman-enabled:
         description: Run Brakeman SAST scan (enable for gems with API/Sinatra routes)
         default: false
@@ -18,7 +23,7 @@ jobs:
   bundler-audit:
     name: Bundler Audit
     timeout-minutes: 10
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.runner || 'ubuntu-latest' }}
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
@@ -31,7 +36,7 @@ jobs:
   ruby-audit:
     name: Ruby Audit
     timeout-minutes: 10
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.runner || 'ubuntu-latest' }}
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
@@ -45,7 +50,7 @@ jobs:
     if: ${{ inputs.brakeman-enabled }}
     name: Brakeman
     timeout-minutes: 10
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.runner || 'ubuntu-latest' }}
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1

@@ -8,6 +8,11 @@ on:
         default: '3.4'
         type: string
         required: false
+      runner:
+        description: "Runner label (set to 'legion' for self-hosted, 'ubuntu-latest' for GitHub-hosted)"
+        default: 'ubuntu-latest'
+        type: string
+        required: false
       changelog-file:
         description: 'Path to CHANGELOG.md'
         default: 'CHANGELOG.md'
@@ -35,7 +40,7 @@ permissions:
 jobs:
   release:
     name: Release
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.runner || 'ubuntu-latest' }}
     outputs:
       released: ${{ steps.check.outputs.needed }}
       version: ${{ steps.detect.outputs.version }}
