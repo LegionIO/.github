@@ -4,8 +4,9 @@
 #
 # Workflow: sync-codeowners.yml reads this file to:
 #   1. Create/update GitHub teams and memberships
-#   2. Generate CODEOWNERS files into codeowners-generated/
-#   3. Apply branch protection rules to all repos
+#   2. Assign team→repo permissions (pull/push/admin)
+#   3. Generate CODEOWNERS files into codeowners-generated/
+#   4. Apply branch protection rules to all repos
 #
 # To apply generated CODEOWNERS to repos, run:
 #   scripts/apply-codeowners.sh [repo-name]
@@ -14,10 +15,12 @@ teams:
   maintainers:
     description: Top-level owners, fallback for all repos
     members: [Esity]
+    permission: admin  # admin on all repos (applied via maintainers fallback)
 
   core:
     description: Framework and core Ruby libraries
     members: [Esity]
+    permission: push
     repos:
       - LegionIO
       - legion-cache
@@ -33,6 +36,7 @@ teams:
   ai:
     description: LLM, MCP, and AI provider extensions
     members: [Esity]
+    permission: push
     repos:
       - legion-llm
       - legion-mcp
@@ -49,6 +53,7 @@ teams:
   agentic:
     description: Cognitive coordination layer and agentic extensions
     members: [Esity]
+    permission: push
     repos:
       - legion-gaia
       - lex-apollo
@@ -241,6 +246,7 @@ teams:
   extensions:
     description: Core operational extensions and service integrations
     members: [Esity]
+    permission: push
     repos:
       # Core operational
       - lex-node
@@ -327,6 +333,7 @@ teams:
   frontend:
     description: TypeScript/JS/Electron/Web applications
     members: [Esity]
+    permission: push
     repos:
       - legion-interlink
       - legion-web
@@ -337,6 +344,7 @@ teams:
   infra:
     description: CI/CD workflows, packaging, and deployment
     members: [Esity]
+    permission: admin
     repos:
       - .github
       - homebrew-tap
@@ -348,6 +356,7 @@ teams:
   sdk:
     description: Cross-language SDKs and FFI bindings
     members: [Esity]
+    permission: push
     repos:
       - legion-sdk-python
       - sdk-python

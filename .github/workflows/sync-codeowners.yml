@@ -63,6 +63,56 @@ jobs:
           echo ""
           echo "Team sync complete."
 
+      - name: Assign team repo permissions
+        env:
+          GH_TOKEN: ${{ secrets.ORG_ADMIN_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          echo "=== Assigning team repo permissions ==="
+
+          # Fetch archived repos to skip
+          ARCHIVED_REPOS=$(gh repo list LegionIO --limit 400 --json name,isArchived --jq '[.[] | select(.isArchived) | .name] | .[]')
+          declare -A IS_ARCHIVED
+          for r in $ARCHIVED_REPOS; do
+            IS_ARCHIVED["$r"]=1
+          done
+
+          TEAMS=$(yq -r '.teams | keys | .[]' team-config.yml)
+          ASSIGNED=0
+          SKIPPED=0
+
+          for team in $TEAMS; do
+            [ "$team" = "maintainers" ] && continue
+
+            permission=$(yq -r ".teams.${team}.permission // \"push\"" team-config.yml)
+            repos=$(yq -r ".teams.${team}.repos // [] | .[]" team-config.yml)
+            [ -z "$repos" ] && continue
+
+            echo "--- ${team} (${permission}) ---"
+
+            for repo in $repos; do
+              if [ -n "${IS_ARCHIVED[$repo]:-}" ]; then
+                SKIPPED=$((SKIPPED + 1))
+                continue
+              fi
+
+              if gh api "orgs/LegionIO/teams/${team}/repos/LegionIO/${repo}" \
+                --method PUT \
+                -f permission="${permission}" \
+                --silent 2>/dev/null; then
+                ASSIGNED=$((ASSIGNED + 1))
+              else
+                echo "  WARN: failed to assign ${repo}"
+              fi
+
+              sleep 0.1
+            done
+          done
+
+          echo ""
+          echo "Repo permissions: Assigned=${ASSIGNED} Skipped=${SKIPPED}"
+
       - name: Generate CODEOWNERS files
         run: |
           set -euo pipefail
