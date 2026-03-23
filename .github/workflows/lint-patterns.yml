@@ -113,7 +113,7 @@ jobs:
           CHANGED_FILES: ${{ steps.changed.outputs.files }}
         run: |
           set -euo pipefail
-          RULES=$(yq -o=json /tmp/lint-patterns.yml | jq '[.[] | select(.category == "helper-migration")]')
+          RULES=$(ruby -ryaml -rjson -e 'puts JSON.generate(YAML.safe_load(File.read("/tmp/lint-patterns.yml")))' | jq '[.[] | select(.category == "helper-migration")]')
           RULE_COUNT=$(echo "$RULES" | jq length)
           TOTAL_HITS=0; ERROR_HITS=0
 
@@ -194,7 +194,7 @@ jobs:
           CHANGED_FILES: ${{ steps.changed.outputs.files }}
         run: |
           set -euo pipefail
-          RULES=$(yq -o=json /tmp/lint-patterns.yml | jq '[.[] | select(.category == "constant-resolution" or .category == "singleton")]')
+          RULES=$(ruby -ryaml -rjson -e 'puts JSON.generate(YAML.safe_load(File.read("/tmp/lint-patterns.yml")))' | jq '[.[] | select(.category == "constant-resolution" or .category == "singleton")]')
           RULE_COUNT=$(echo "$RULES" | jq length)
           TOTAL_HITS=0; ERROR_HITS=0
 
@@ -276,7 +276,7 @@ jobs:
         run: |
           set -euo pipefail
           CATEGORIES='["api","sequel","cli","extension","concurrency","cache","actor","runner"]'
-          RULES=$(yq -o=json /tmp/lint-patterns.yml | jq --argjson cats "$CATEGORIES" '[.[] | select(.category as $c | $cats | index($c))]')
+          RULES=$(ruby -ryaml -rjson -e 'puts JSON.generate(YAML.safe_load(File.read("/tmp/lint-patterns.yml")))' | jq --argjson cats "$CATEGORIES" '[.[] | select(.category as $c | $cats | index($c))]')
           RULE_COUNT=$(echo "$RULES" | jq length)
           TOTAL_HITS=0; ERROR_HITS=0
 

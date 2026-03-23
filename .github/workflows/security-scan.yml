@@ -30,8 +30,10 @@ jobs:
         with:
           ruby-version: ${{ inputs.ruby-version }}
           bundler-cache: true
+      - name: Install bundler-audit
+        run: gem install bundler-audit
       - name: Run bundler-audit
-        run: bundle exec bundler-audit check --update
+        run: bundler-audit check --update
 
   ruby-audit:
     name: Ruby Audit
@@ -43,8 +45,10 @@ jobs:
         with:
           ruby-version: ${{ inputs.ruby-version }}
           bundler-cache: true
+      - name: Install ruby_audit
+        run: gem install ruby_audit
       - name: Run ruby_audit
-        run: bundle exec ruby_audit check
+        run: ruby_audit check
 
   brakeman:
     if: ${{ inputs.brakeman-enabled }}
