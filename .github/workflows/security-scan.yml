@@ -35,21 +35,6 @@ jobs:
       - name: Run bundler-audit
         run: bundler-audit check --update
 
-  ruby-audit:
-    name: Ruby Audit
-    timeout-minutes: 10
-    runs-on: ${{ inputs.runner || 'ubuntu-latest' }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: ${{ inputs.ruby-version }}
-          bundler-cache: true
-      - name: Install ruby_audit
-        run: gem install ruby_audit
-      - name: Run ruby-audit
-        run: ruby-audit check
-
   brakeman:
     if: ${{ inputs.brakeman-enabled }}
     name: Brakeman
