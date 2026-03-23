@@ -5,7 +5,7 @@ on:
     inputs:
       runner:
         description: "Runner label (set to 'legion' for self-hosted, 'ubuntu-latest' for GitHub-hosted)"
-        default: 'legion'
+        default: 'ubuntu-latest'
         type: string
         required: false
       patterns-repo:
