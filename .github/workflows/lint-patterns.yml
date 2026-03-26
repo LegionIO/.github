@@ -244,6 +244,123 @@ jobs:
           echo "Constant safety: ${TOTAL_HITS} findings (${ERROR_HITS} errors)"
           [ "$ERROR_HITS" -gt 0 ] && exit 1 || exit 0
 
+  rescue-logging:
+    name: Rescue Logging
+    runs-on: ${{ inputs.runner || 'ubuntu-latest' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch lint patterns
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PATTERNS_REPO: ${{ inputs.patterns-repo }}
+          PATTERNS_REF: ${{ inputs.patterns-ref }}
+        run: |
+          set -euo pipefail
+          gh api "repos/${PATTERNS_REPO}/contents/lint-patterns.yml?ref=${PATTERNS_REF}" \
+            --jq '.content' | base64 -d > /tmp/lint-patterns.yml
+          if [ ! -s /tmp/lint-patterns.yml ]; then
+            echo "::error::Failed to fetch lint-patterns.yml from ${PATTERNS_REPO}@${PATTERNS_REF}"
+            exit 1
+          fi
+
+      - name: Fetch rescue-logging script
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PATTERNS_REPO: ${{ inputs.patterns-repo }}
+          PATTERNS_REF: ${{ inputs.patterns-ref }}
+        run: |
+          set -euo pipefail
+          gh api "repos/${PATTERNS_REPO}/contents/scripts/check-rescue-logging.rb?ref=${PATTERNS_REF}" \
+            --jq '.content' | base64 -d > /tmp/check-rescue-logging.rb
+          if [ ! -s /tmp/check-rescue-logging.rb ]; then
+            echo "::error::Failed to fetch check-rescue-logging.rb from ${PATTERNS_REPO}@${PATTERNS_REF}"
+            exit 1
+          fi
+
+      - name: Get changed files
+        id: changed
+        env:
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          BEFORE_SHA: ${{ github.event.before }}
+          HEAD_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          if [ -n "${PR_BASE_SHA:-}" ]; then
+            BASE="$PR_BASE_SHA"
+          elif [ -n "${BEFORE_SHA:-}" ] && [ "$BEFORE_SHA" != "0000000000000000000000000000000000000000" ]; then
+            BASE="$BEFORE_SHA"
+          else
+            BASE="${HEAD_SHA}~1"
+          fi
+          FILES=$(git diff --name-only --diff-filter=ACMR "${BASE}...${HEAD_SHA}" -- '*.rb' 2>/dev/null \
+               || git diff --name-only --diff-filter=ACMR "${BASE}..${HEAD_SHA}" -- '*.rb' 2>/dev/null \
+               || true)
+          if [ -z "$FILES" ]; then
+            echo "files=" >> "$GITHUB_OUTPUT"
+          else
+            echo "files<<EOF" >> "$GITHUB_OUTPUT"
+            echo "$FILES" >> "$GITHUB_OUTPUT"
+            echo "EOF" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check rescue logging patterns (regex)
+        if: steps.changed.outputs.files != ''
+        env:
+          CHANGED_FILES: ${{ steps.changed.outputs.files }}
+          REPO_NAME: ${{ github.event.repository.name }}
+        run: |
+          set -euo pipefail
+          RULES=$(ruby -ryaml -rjson -e 'puts JSON.generate(YAML.safe_load(File.read("/tmp/lint-patterns.yml")) || [])' | jq '[.[] | select(.category == "rescue-logging")]')
+          RULE_COUNT=$(echo "$RULES" | jq length)
+          TOTAL_HITS=0; ERROR_HITS=0
+
+          IS_LEX=false
+          [[ "$REPO_NAME" == lex-* ]] && IS_LEX=true
+
+          while IFS= read -r file; do
+            [ -f "$file" ] || continue
+            for i in $(seq 0 $((RULE_COUNT - 1))); do
+              id=$(echo "$RULES"       | jq -r ".[$i].id")
+              pattern=$(echo "$RULES"  | jq -r ".[$i].pattern")
+              message=$(echo "$RULES"  | jq -r ".[$i].message")
+              severity=$(echo "$RULES" | jq -r ".[$i].severity")
+              paths=$(echo "$RULES"    | jq -r ".[$i].paths // empty")
+              exclude=$(echo "$RULES"  | jq -r ".[$i].exclude // empty")
+              [ "$IS_LEX" = true ] && severity="error"
+              if [ -n "$paths" ]; then
+                # shellcheck disable=SC2053
+                [[ "$file" == $paths ]] || continue
+              fi
+              if [ -n "$exclude" ]; then
+                # shellcheck disable=SC2053
+                [[ "$file" == $exclude ]] && continue
+              fi
+              while IFS=: read -r lineno _; do
+                TOTAL_HITS=$((TOTAL_HITS + 1))
+                [ "$severity" = "error" ] && ERROR_HITS=$((ERROR_HITS + 1))
+                echo "::${severity} file=${file},line=${lineno},title=${id}::${message}"
+              done < <(grep -nP "$pattern" "$file" 2>/dev/null || true)
+            done
+          done <<< "$CHANGED_FILES"
+
+          echo "Rescue logging (regex): ${TOTAL_HITS} findings (${ERROR_HITS} errors)"
+          [ "$ERROR_HITS" -gt 0 ] && exit 1 || exit 0
+
+      - name: Check rescue logging patterns (multi-line)
+        if: steps.changed.outputs.files != ''
+        env:
+          CHANGED_FILES: ${{ steps.changed.outputs.files }}
+          REPO_NAME: ${{ github.event.repository.name }}
+        run: |
+          set -euo pipefail
+          SEVERITY="warning"
+          [[ "$REPO_NAME" == lex-* ]] && SEVERITY="error"
+          echo "$CHANGED_FILES" | ruby /tmp/check-rescue-logging.rb --stdin --severity "$SEVERITY"
+
   framework-conventions:
     name: Framework Conventions
     runs-on: ${{ inputs.runner || 'ubuntu-latest' }}
