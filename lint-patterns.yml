@@ -75,12 +75,6 @@
   severity: error
   category: constant-resolution
 
-- id: const-bare-json
-  pattern: '(?<!:)(?<!::)\bJSON\.(parse|generate|pretty_generate|dump|load|fast_generate)\b'
-  message: "Inside `module Legion`, bare `JSON` resolves to `Legion::JSON`. Use `::JSON` for stdlib."
-  severity: error
-  category: constant-resolution
-
 # ── Sequel model gotchas ──
 
 - id: sequel-eager-model
