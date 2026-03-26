@@ -58,6 +58,21 @@ jobs:
 
 The release workflow auto-detects version changes by reading `version.rb` — if the version has no matching git tag, it creates the tag, builds the gem, creates a GitHub release with changelog notes, and publishes to both RubyGems and GitHub Packages.
 
+### Composite Actions (`actions/`)
+
+| Action | Description |
+|--------|-------------|
+| `legion-eval` | Run LLM evaluations as a CI quality gate via `legion eval run` — inputs: evaluator, dataset, threshold (0.0-1.0), ruby-version, model |
+
+Usage:
+```yaml
+- uses: LegionIO/.github/actions/legion-eval@main
+  with:
+    evaluator: my-evaluator
+    dataset: my-dataset
+    threshold: '0.9'
+```
+
 ### Workflow Templates (`workflow-templates/`)
 
 Starter workflow templates shown in the GitHub Actions "New workflow" UI for repos in the org. These are legacy starters — active repos use the reusable workflows above instead.

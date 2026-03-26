@@ -18,6 +18,12 @@ This repo holds organization-wide GitHub configuration for the LegionIO org. Git
 │   └── workflows/
 │       ├── ci.yml             # Reusable CI workflow (RSpec + RuboCop)
 │       └── release.yml        # Reusable release workflow (gem push)
+├── actions/
+│   └── legion-eval/
+│       ├── action.yml         # Composite action: LLM eval CI gate (legion eval run)
+│       └── README.md          # Usage documentation
+├── nomad/
+│   └── github_runners.nomad.hcl  # Nomad job spec for self-hosted GitHub Actions runners
 ├── workflow-templates/
 │   ├── rubocop.yml            # Starter template for new repos
 │   ├── rubocop.svg            # Badge for the rubocop template
@@ -26,13 +32,19 @@ This repo holds organization-wide GitHub configuration for the LegionIO org. Git
 │   └── sourcehawk-scan.yml    # Sourcehawk starter template
 ├── ISSUE_TEMPLATE/
 │   ├── bug_report.yml         # Structured bug report form
-│   └── feature_request.yml   # Structured feature request form
+│   └── feature_request.yml    # Structured feature request form
 ├── scripts/
 │   ├── sync-github-labels-topics.sh  # Org-wide label and topic sync (--labels, --topics, --all)
 │   └── apply-labels-one-repo.sh      # Per-repo label worker (called by sync script via xargs -P 5)
+├── codeowners-generated/      # Auto-generated CODEOWNERS data for org repos
 ├── CONTRIBUTING.md            # Org-wide contribution guide
 ├── PULL_REQUEST_TEMPLATE.md   # Default PR checklist
 ├── SECURITY.md                # Vulnerability reporting policy
+├── GOVERNANCE.md              # Project governance policy
+├── CODE_OF_CONDUCT.md         # Contributor code of conduct
+├── labels.yml                 # Canonical label definitions (24 standardized labels)
+├── lint-patterns.yml          # Shared lint pattern definitions
+├── team-config.yml            # Team configuration for org-wide tools
 ├── README.md                  # This repo's own README
 └── LICENSE                    # Apache-2.0
 ```
@@ -96,6 +108,26 @@ jobs:
 Gems are published to:
 - **RubyGems**: `https://rubygems.org/gems/<gem-name>`
 - **GitHub Packages**: `https://rubygems.pkg.github.com/LegionIO`
+
+## Composite Actions
+
+### `actions/legion-eval` — LLM Eval CI Gate
+
+Runs `legion eval run` as a CI quality gate. Fails the workflow if the evaluator pass rate falls below the threshold.
+
+```yaml
+- uses: LegionIO/.github/actions/legion-eval@main
+  with:
+    evaluator: my-evaluator      # required
+    dataset: my-dataset          # required
+    threshold: '0.9'             # optional, default 0.8
+    ruby-version: '3.4'          # optional
+    model: claude-3-5-haiku      # optional
+```
+
+## Nomad Self-Hosted Runners
+
+`nomad/github_runners.nomad.hcl` defines a Nomad job for running self-hosted GitHub Actions runners within the LegionIO infrastructure cluster. Allows CI jobs to run in the same network as RabbitMQ, Vault, and other services.
 
 ## Workflow Templates
 
