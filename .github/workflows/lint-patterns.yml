@@ -357,7 +357,12 @@ jobs:
           set -euo pipefail
           SEVERITY="warning"
           [[ "$REPO_NAME" == lex-* ]] && SEVERITY="error"
-          echo "$CHANGED_FILES" | ruby /tmp/check-rescue-logging.rb --stdin --severity "$SEVERITY"
+          FILTERED_FILES=$(printf '%s\n' "$CHANGED_FILES" | awk '/^lib\//')
+          if [ -z "$FILTERED_FILES" ]; then
+            echo "No lib/**/*.rb files changed; skipping multi-line rescue logging check."
+            exit 0
+          fi
+          printf '%s\n' "$FILTERED_FILES" | ruby /tmp/check-rescue-logging.rb --stdin --severity "$SEVERITY"
 
   framework-conventions:
     name: Framework Conventions

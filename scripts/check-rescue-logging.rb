@@ -39,6 +39,7 @@ while args.first&.start_with?('--')
   when '--severity'
     severity = args.shift
     abort "Error: --severity requires a value (e.g. warning, error, notice)" if severity.nil? || severity.start_with?('--')
+    abort "Error: --severity must be one of: error, warning, notice" unless %w[error warning notice].include?(severity)
   when '--stdin'
     use_stdin = true
   else

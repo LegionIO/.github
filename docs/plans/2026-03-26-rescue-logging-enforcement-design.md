@@ -72,6 +72,6 @@ Added to `lint-patterns.yml` workflow as a fourth job alongside `gemfile-lock`, 
 
 ## Trade-offs
 
-- **False positives**: The Tier 2 script may flag rescue blocks where logging happens in a called method (e.g., `handle_error(e)` which internally logs). The `notice` severity mitigates this.
-- **Existing violations**: There will be many existing findings. The `warning`/`notice` severity means CI won't break — this is a gradual migration, not a flag day.
+- **False positives**: The Tier 2 script may flag rescue blocks where logging happens in a called method (e.g., `handle_error(e)` which internally logs). In legion-* repos and the LegionIO main repo, this is mitigated by running Tier 2 findings at `warning` (not `error`) severity, while lex-* repos intentionally treat all rescue-logging findings as `error`.
+- **Existing violations**: There will be many existing findings. The `warning` severity for Tier 2 (and `notice` for some Tier 1 regex rules) means CI won't break — this is a gradual migration, not a flag day.
 - **Script maintenance**: The Ruby script is an additional artifact to maintain, but it's small and self-contained.
