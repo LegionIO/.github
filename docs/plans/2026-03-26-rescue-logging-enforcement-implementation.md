@@ -84,7 +84,7 @@ rescue-logging:
 
 ### Task 3.1: Update CLAUDE.md
 
-Add rescue-logging convention to the `.github/CLAUDE.md` file under the lint-patterns section.
+Add rescue-logging convention to the `CLAUDE.md` file under the lint-patterns section.
 
 ### Task 3.2: Update CONTRIBUTING.md
 

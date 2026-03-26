@@ -54,7 +54,7 @@ files = if use_stdin
         end
 
 total = 0
-errors = 0
+error_hits = 0
 
 files.each do |file|
   next unless File.exist?(file)
@@ -92,7 +92,7 @@ files.each do |file|
 
       unless body_has_log || body_has_raise
         total += 1
-        errors += 1 if severity == 'error'
+        error_hits += 1 if severity == 'error'
         puts "::#{severity} file=#{file},line=#{rescue_line},title=rescue-silent-capture" \
              "::Exception captured as `#{var}` but never logged or re-raised. " \
              "Add `log.error(#{var}.message)` or `Legion::Logging.error(#{var}.message)`."
@@ -102,5 +102,5 @@ files.each do |file|
   end
 end
 
-$stderr.puts "Rescue logging (multi-line): #{total} findings (#{errors} errors)"
-exit(errors.positive? ? 1 : 0)
+$stderr.puts "Rescue logging (multi-line): #{total} findings (#{error_hits} errors, severity=#{severity})"
+exit(error_hits.positive? ? 1 : 0)
