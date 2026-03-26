@@ -117,11 +117,16 @@ jobs:
         if: steps.changed.outputs.files != ''
         env:
           CHANGED_FILES: ${{ steps.changed.outputs.files }}
+          REPO_NAME: ${{ github.event.repository.name }}
         run: |
           set -euo pipefail
           RULES=$(ruby -ryaml -rjson -e 'puts JSON.generate(YAML.safe_load(File.read("/tmp/lint-patterns.yml")) || [])' | jq '[.[] | select(.category == "helper-migration")]')
           RULE_COUNT=$(echo "$RULES" | jq length)
           TOTAL_HITS=0; ERROR_HITS=0
+
+          # lex-* repos enforce helper migration as errors
+          IS_LEX=false
+          [[ "$REPO_NAME" == lex-* ]] && IS_LEX=true
 
           while IFS= read -r file; do
             [ -f "$file" ] || continue
@@ -132,6 +137,7 @@ jobs:
               severity=$(echo "$RULES" | jq -r ".[$i].severity")
               paths=$(echo "$RULES"    | jq -r ".[$i].paths // empty")
               exclude=$(echo "$RULES"  | jq -r ".[$i].exclude // empty")
+              [ "$IS_LEX" = true ] && severity="error"
               if [ -n "$paths" ]; then
                 # shellcheck disable=SC2053
                 [[ "$file" == $paths ]] || continue
