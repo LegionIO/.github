@@ -332,12 +332,10 @@ jobs:
               exclude=$(echo "$RULES"  | jq -r ".[$i].exclude // empty")
               [ "$IS_LEX" = true ] && severity="error"
               if [ -n "$paths" ]; then
-                # shellcheck disable=SC2053
-                [[ "$file" == $paths ]] || continue
+                ruby -e 'exit(File.fnmatch?(ARGV[0], ARGV[1], File::FNM_PATHNAME) ? 0 : 1)' "$paths" "$file" || continue
               fi
               if [ -n "$exclude" ]; then
-                # shellcheck disable=SC2053
-                [[ "$file" == $exclude ]] && continue
+                ruby -e 'exit(File.fnmatch?(ARGV[0], ARGV[1], File::FNM_PATHNAME) ? 0 : 1)' "$exclude" "$file" && continue
               fi
               while IFS=: read -r lineno _; do
                 TOTAL_HITS=$((TOTAL_HITS + 1))

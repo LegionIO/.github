@@ -168,7 +168,7 @@ Per-repo worker called by the sync script. Not intended to be run directly.
 
 ## Lint Pattern Categories
 
-The `lint-patterns.yml` file defines regex-based anti-pattern rules checked on PRs. Rules are grouped by category, and each category maps to a workflow job in `lint-patterns.yml`:
+The `lint-patterns.yml` file defines regex-based anti-pattern rules checked on PRs. Rules are grouped by category, and each category maps to a workflow job defined in `.github/workflows/lint-patterns.yml`:
 
 | Job | Categories | Severity escalation |
 |-----|-----------|---------------------|

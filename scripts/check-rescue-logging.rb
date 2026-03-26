@@ -38,8 +38,11 @@ while args.first&.start_with?('--')
   case flag
   when '--severity'
     severity = args.shift
+    abort "Error: --severity requires a value (e.g. warning, error, notice)" if severity.nil? || severity.start_with?('--')
   when '--stdin'
     use_stdin = true
+  else
+    abort "Error: unknown flag #{flag}\nUsage: check-rescue-logging.rb [--severity warning|error|notice] [--stdin] [file ...]"
   end
 end
 
@@ -74,7 +77,7 @@ files.each do |file|
         body_line = lines[j]
 
         # Stop at the next block boundary at the same or lesser indentation
-        if j > i + 1 && body_line.match?(BLOCK_END)
+        if body_line.match?(BLOCK_END)
           body_indent = body_line[/^\s*/].length
           break if body_indent <= rescue_indent
         end
