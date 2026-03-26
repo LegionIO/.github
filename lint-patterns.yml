@@ -177,3 +177,21 @@
   severity: notice
   category: runner
   exclude: "spec/**"
+
+# ── Rescue block logging ──
+
+- id: rescue-bare-swallow
+  pattern: '^\s*rescue\s*$'
+  message: "Bare `rescue` swallows all StandardError silently. Capture the exception (`rescue => e`) and log it via `log.error(e.message)`."
+  severity: warning
+  category: rescue-logging
+  paths: "lib/**/*.rb"
+  exclude: "spec/**"
+
+- id: rescue-no-capture
+  pattern: '^\s*rescue\s+[\w:]+(?:\s*,\s*[\w:]+)*\s*$'
+  message: "Exception class specified but not captured. Use `rescue SomeError => e` and log via `log.error(e.message)` or `Legion::Logging.error(e.message)`."
+  severity: notice
+  category: rescue-logging
+  paths: "lib/**/*.rb"
+  exclude: "spec/**"
