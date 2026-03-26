@@ -58,7 +58,7 @@ error_hits = 0
 
 files.each do |file|
   next unless File.exist?(file)
-  next if EXCLUDE_GLOBS.any? { |glob| File.fnmatch?(glob, file, File::FNM_PATHNAME) }
+  next if EXCLUDE_GLOBS.any? { |glob| Dir.glob(glob).include?(file) }
 
   lines = File.readlines(file)
   i = 0
