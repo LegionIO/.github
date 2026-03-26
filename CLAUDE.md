@@ -166,6 +166,21 @@ Per-repo worker called by the sync script. Not intended to be run directly.
 - `SECURITY.md`: Vuln reporting (GitHub advisories preferred, email fallback), response SLAs, security notes for Vault/transport/API components
 - `PULL_REQUEST_TEMPLATE.md`: Minimal checklist (tests, rubocop, changelog)
 
+## Lint Pattern Categories
+
+The `lint-patterns.yml` file defines regex-based anti-pattern rules checked on PRs. Rules are grouped by category, and each category maps to a workflow job defined in `.github/workflows/lint-patterns.yml`:
+
+| Job | Categories | Severity escalation |
+|-----|-----------|---------------------|
+| `helper-migration` | `helper-migration` | `error` in lex-* repos |
+| `constant-safety` | `constant-resolution`, `singleton` | as declared |
+| `rescue-logging` | `rescue-logging` | `error` in lex-* repos |
+| `framework-conventions` | `api`, `sequel`, `cli`, `extension`, `concurrency`, `cache`, `actor`, `runner` | as declared |
+
+The `rescue-logging` job also runs a multi-line Ruby script (`scripts/check-rescue-logging.rb`) that detects rescue blocks that capture an exception variable but never log or re-raise it. This goes beyond what single-line regex can detect.
+
+**Rescue logging rule**: All rescue blocks in `lib/**/*.rb` must either log the exception (via `Legion::Logging.*` or `log.*` helper) or re-raise it. Bare `rescue` without a variable capture is a warning. `legion-logging/lib/**` is excluded to prevent recursive logging.
+
 ## What Not to Change
 
 - Do not add repo-specific logic to the reusable workflows — they serve all 300 repos
