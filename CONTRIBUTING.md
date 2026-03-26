@@ -50,6 +50,37 @@ bundle exec rubocop
 bundle exec rubocop -a
 ```
 
+## Exception Handling
+
+All rescue blocks in `lib/` code must log the exception or re-raise it. Silent rescues create invisible failure modes.
+
+```ruby
+# bad — exception is silently swallowed
+rescue StandardError
+  nil
+
+# bad — variable captured but never logged
+rescue StandardError => e
+  default_value
+
+# good — log via Helper mixin
+rescue StandardError => e
+  log.error("widget failed: #{e.message}")
+  default_value
+
+# good — log via direct singleton
+rescue StandardError => e
+  Legion::Logging.warn("fallback triggered: #{e.message}")
+  default_value
+
+# good — re-raise (exception is not swallowed)
+rescue StandardError => e
+  cleanup
+  raise
+```
+
+This is enforced by CI via the `rescue-logging` lint check.
+
 ## Commit Messages
 
 - Lowercase, imperative mood: `add vault namespace lookup`, `fix queue reconnection on timeout`
