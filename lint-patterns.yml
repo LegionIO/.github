@@ -107,11 +107,7 @@
 
 # ── API gotchas ──
 
-- id: api-json-dump-kwargs
-  pattern: 'Legion::JSON\.dump\([^)]*\w+:\s'
-  message: "`Legion::JSON.dump` takes exactly 1 positional arg. Wrap kwargs in explicit `{}`: `Legion::JSON.dump({ key: val })`."
-  severity: error
-  category: api
+## Removed: api-json-dump-kwargs — Legion::JSON.dump now accepts **kwargs (v1.3.1)
 
 - id: api-string-keys
   pattern: "body\\[.'"
