@@ -43,6 +43,13 @@ on:
         default: 'ubuntu-latest'
         type: string
         required: false
+    secrets:
+      docker-hub-username:
+        description: Docker Hub username (avoids pull rate limits)
+        required: false
+      docker-hub-token:
+        description: Docker Hub access token (avoids pull rate limits)
+        required: false
 
 jobs:
   rspec:
@@ -56,9 +63,20 @@ jobs:
     runs-on: ${{ inputs.runner || 'ubuntu-latest' }}
     steps:
       - uses: actions/checkout@v4
+      - name: Docker Hub login
+        if: ${{ secrets.docker-hub-username != '' && secrets.docker-hub-token != '' }}
+        run: echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USER" --password-stdin
+        env:
+          DOCKER_USER: ${{ secrets.docker-hub-username }}
+          DOCKER_TOKEN: ${{ secrets.docker-hub-token }}
       - name: Start Redis
         if: ${{ inputs.needs-redis }}
         run: |
+          for i in 1 2 3; do
+            docker pull redis:7-alpine && break
+            echo "::warning::Docker pull failed (attempt $i/3), retrying in ${i}0s..."
+            sleep "${i}0"
+          done
           docker run -d --name redis -p 6379:6379 redis:7-alpine
           timeout=30; elapsed=0
           until docker exec redis redis-cli ping 2>/dev/null; do
@@ -73,6 +91,11 @@ jobs:
       - name: Start Memcached
         if: ${{ inputs.needs-memcached }}
         run: |
+          for i in 1 2 3; do
+            docker pull memcached:1-alpine && break
+            echo "::warning::Docker pull failed (attempt $i/3), retrying in ${i}0s..."
+            sleep "${i}0"
+          done
           docker run -d --name memcached -p 11211:11211 memcached:1-alpine -m 64 -I 8m
           timeout=15; elapsed=0
           until echo "version" | nc -w1 127.0.0.1 11211 2>/dev/null | grep -q VERSION; do
@@ -87,11 +110,15 @@ jobs:
       - name: Start RabbitMQ
         if: ${{ inputs.needs-rabbitmq }}
         run: |
+          for i in 1 2 3; do
+            docker pull rabbitmq:4-management-alpine && break
+            echo "::warning::Docker pull failed (attempt $i/3), retrying in ${i}0s..."
+            sleep "${i}0"
+          done
           docker run -d --name rabbitmq \
             -p 5672:5672 -p 15672:15672 \
             -e RABBITMQ_ERLANG_COOKIE='ci-test-cookie' \
-            rabbitmq:3.13-management-alpine \
-            sh -c 'echo "ci-test-cookie" > /var/lib/rabbitmq/.erlang.cookie && chmod 400 /var/lib/rabbitmq/.erlang.cookie && chown rabbitmq:rabbitmq /var/lib/rabbitmq/.erlang.cookie && exec docker-entrypoint.sh rabbitmq-server'
+            rabbitmq:4-management-alpine
           timeout=90; elapsed=0
           until timeout 5 docker exec rabbitmq rabbitmq-diagnostics -q ping 2>/dev/null; do
             sleep 2; elapsed=$((elapsed + 2))
