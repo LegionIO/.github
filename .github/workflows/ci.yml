@@ -44,10 +44,10 @@ on:
         type: string
         required: false
     secrets:
-      docker-hub-username:
+      dockerhub-username:
         description: Docker Hub username (avoids pull rate limits)
         required: false
-      docker-hub-token:
+      dockerhub-token:
         description: Docker Hub access token (avoids pull rate limits)
         required: false
 
@@ -64,11 +64,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Docker Hub login
-        if: ${{ secrets.docker-hub-username != '' && secrets.docker-hub-token != '' }}
+        if: ${{ secrets.dockerhub-username != '' && secrets.dockerhub-token != '' }}
         run: echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USER" --password-stdin
         env:
-          DOCKER_USER: ${{ secrets.docker-hub-username }}
-          DOCKER_TOKEN: ${{ secrets.docker-hub-token }}
+          DOCKER_USER: ${{ secrets.dockerhub-username }}
+          DOCKER_TOKEN: ${{ secrets.dockerhub-token }}
       - name: Start Redis
         if: ${{ inputs.needs-redis }}
         run: |
