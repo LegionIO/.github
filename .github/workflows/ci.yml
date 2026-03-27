@@ -58,6 +58,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Docker Hub login
         if: ${{ env.DOCKER_USER != '' }}
+        continue-on-error: true
         run: echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USER" --password-stdin
         env:
           DOCKER_USER: ${{ secrets.DOCKERHUB_USERNAME }}
