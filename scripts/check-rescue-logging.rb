@@ -13,6 +13,7 @@
 LOG_PATTERN = /
   Legion::Logging\.(debug|info|warn|error|fatal)\b |
   \blog\.(debug|info|warn|error|fatal)\b           |
+  \blog\.log_exception\b                            |
   \blogger\.(debug|info|warn|error|fatal)\b         |
   \brunner_exception\b
 /x
