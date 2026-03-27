@@ -43,13 +43,6 @@ on:
         default: 'ubuntu-latest'
         type: string
         required: false
-    secrets:
-      dockerhub-username:
-        description: Docker Hub username (avoids pull rate limits)
-        required: false
-      dockerhub-token:
-        description: Docker Hub access token (avoids pull rate limits)
-        required: false
 
 jobs:
   rspec:
@@ -64,11 +57,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Docker Hub login
-        if: ${{ secrets.dockerhub-username != '' && secrets.dockerhub-token != '' }}
+        if: ${{ env.DOCKER_USER != '' }}
         run: echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USER" --password-stdin
         env:
-          DOCKER_USER: ${{ secrets.dockerhub-username }}
-          DOCKER_TOKEN: ${{ secrets.dockerhub-token }}
+          DOCKER_USER: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKER_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Start Redis
         if: ${{ inputs.needs-redis }}
         run: |
