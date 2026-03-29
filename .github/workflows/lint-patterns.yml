@@ -75,13 +75,12 @@ jobs:
 
       - name: Fetch lint patterns
         env:
-          GH_TOKEN: ${{ github.token }}
           PATTERNS_REPO: ${{ inputs.patterns-repo }}
           PATTERNS_REF: ${{ inputs.patterns-ref }}
         run: |
           set -euo pipefail
-          gh api "repos/${PATTERNS_REPO}/contents/lint-patterns.yml?ref=${PATTERNS_REF}" \
-            --jq '.content' | base64 -d > /tmp/lint-patterns.yml
+          curl -sfL "https://raw.githubusercontent.com/${PATTERNS_REPO}/${PATTERNS_REF}/lint-patterns.yml" \
+            -o /tmp/lint-patterns.yml
           if [ ! -s /tmp/lint-patterns.yml ]; then
             echo "::error::Failed to fetch lint-patterns.yml from ${PATTERNS_REPO}@${PATTERNS_REF}"
             exit 1
@@ -168,13 +167,12 @@ jobs:
 
       - name: Fetch lint patterns
         env:
-          GH_TOKEN: ${{ github.token }}
           PATTERNS_REPO: ${{ inputs.patterns-repo }}
           PATTERNS_REF: ${{ inputs.patterns-ref }}
         run: |
           set -euo pipefail
-          gh api "repos/${PATTERNS_REPO}/contents/lint-patterns.yml?ref=${PATTERNS_REF}" \
-            --jq '.content' | base64 -d > /tmp/lint-patterns.yml
+          curl -sfL "https://raw.githubusercontent.com/${PATTERNS_REPO}/${PATTERNS_REF}/lint-patterns.yml" \
+            -o /tmp/lint-patterns.yml
           if [ ! -s /tmp/lint-patterns.yml ]; then
             echo "::error::Failed to fetch lint-patterns.yml from ${PATTERNS_REPO}@${PATTERNS_REF}"
             exit 1
@@ -255,13 +253,12 @@ jobs:
 
       - name: Fetch lint patterns
         env:
-          GH_TOKEN: ${{ github.token }}
           PATTERNS_REPO: ${{ inputs.patterns-repo }}
           PATTERNS_REF: ${{ inputs.patterns-ref }}
         run: |
           set -euo pipefail
-          gh api "repos/${PATTERNS_REPO}/contents/lint-patterns.yml?ref=${PATTERNS_REF}" \
-            --jq '.content' | base64 -d > /tmp/lint-patterns.yml
+          curl -sfL "https://raw.githubusercontent.com/${PATTERNS_REPO}/${PATTERNS_REF}/lint-patterns.yml" \
+            -o /tmp/lint-patterns.yml
           if [ ! -s /tmp/lint-patterns.yml ]; then
             echo "::error::Failed to fetch lint-patterns.yml from ${PATTERNS_REPO}@${PATTERNS_REF}"
             exit 1
@@ -375,13 +372,12 @@ jobs:
 
       - name: Fetch lint patterns
         env:
-          GH_TOKEN: ${{ github.token }}
           PATTERNS_REPO: ${{ inputs.patterns-repo }}
           PATTERNS_REF: ${{ inputs.patterns-ref }}
         run: |
           set -euo pipefail
-          gh api "repos/${PATTERNS_REPO}/contents/lint-patterns.yml?ref=${PATTERNS_REF}" \
-            --jq '.content' | base64 -d > /tmp/lint-patterns.yml
+          curl -sfL "https://raw.githubusercontent.com/${PATTERNS_REPO}/${PATTERNS_REF}/lint-patterns.yml" \
+            -o /tmp/lint-patterns.yml
           if [ ! -s /tmp/lint-patterns.yml ]; then
             echo "::error::Failed to fetch lint-patterns.yml from ${PATTERNS_REPO}@${PATTERNS_REF}"
             exit 1
