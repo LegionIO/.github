@@ -1,0 +1,125 @@
+name: Excluded Files
+
+on:
+  workflow_call:
+    inputs:
+      extra-patterns:
+        description: "Additional file patterns to reject (space-separated git pathspecs)"
+        default: ''
+        type: string
+        required: false
+      runner:
+        description: "Runner label (set to 'legion' for self-hosted, 'ubuntu-latest' for GitHub-hosted)"
+        default: 'ubuntu-latest'
+        type: string
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  excluded-files:
+    name: Excluded Files Check
+    runs-on: ${{ inputs.runner || 'ubuntu-latest' }}
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check for excluded files
+        env:
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          BEFORE_SHA: ${{ github.event.before }}
+          HEAD_SHA: ${{ github.sha }}
+          EXTRA_PATTERNS: ${{ inputs.extra-patterns }}
+        run: |
+          set -euo pipefail
+
+          # --- Compute diff base ---
+          if [ -n "${PR_BASE_SHA:-}" ]; then
+            BASE="$PR_BASE_SHA"
+          elif [ -n "${BEFORE_SHA:-}" ] && [ "$BEFORE_SHA" != "0000000000000000000000000000000000000000" ]; then
+            BASE="$BEFORE_SHA"
+          else
+            BASE="${HEAD_SHA}~1"
+          fi
+
+          # --- Default excluded patterns ---
+          # Gem repos must not commit lock files
+          # Sensitive material: certs, keys, credentials
+          # Ephemeral files: logs, env
+          PATTERNS=(
+            'Gemfile.lock'
+            '**/Gemfile.lock'
+            '*.pem'
+            '**/*.pem'
+            '*.crt'
+            '**/*.crt'
+            '*.key'
+            '**/*.key'
+            '*.p12'
+            '**/*.p12'
+            '*.log'
+            '**/*.log'
+            '.env'
+            '**/.env'
+            '.env.*'
+            '**/.env.*'
+            'credentials.json'
+            '**/credentials.json'
+          )
+
+          # --- Append extra patterns from input ---
+          if [ -n "${EXTRA_PATTERNS:-}" ]; then
+            for p in $EXTRA_PATTERNS; do
+              PATTERNS+=("$p" "**/$p")
+            done
+          fi
+
+          # --- Query git diff for each pattern individually ---
+          VIOLATIONS=""
+          for p in "${PATTERNS[@]}"; do
+            FOUND=$(git diff --name-only --diff-filter=ACMR "${BASE}...${HEAD_SHA}" -- "$p" 2>/dev/null \
+                 || git diff --name-only --diff-filter=ACMR "${BASE}..${HEAD_SHA}" -- "$p" 2>/dev/null \
+                 || true)
+            if [ -n "$FOUND" ]; then
+              VIOLATIONS="${VIOLATIONS}${FOUND}"$'\n'
+            fi
+          done
+
+          # --- Deduplicate ---
+          VIOLATIONS=$(echo "$VIOLATIONS" | sort -u | sed '/^$/d')
+
+          if [ -z "$VIOLATIONS" ]; then
+            echo "No excluded files detected in changeset."
+            exit 0
+          fi
+
+          # --- Report violations ---
+          echo "::group::Excluded files found"
+          COUNT=0
+          while IFS= read -r file; do
+            COUNT=$((COUNT + 1))
+            # Classify the violation for a helpful message
+            case "$file" in
+              *Gemfile.lock)
+                MSG="Gemfile.lock should not be committed in gem repos. Add it to .gitignore." ;;
+              *.pem|*.crt|*.key|*.p12)
+                MSG="Certificate/key files must not be committed. Use secret management (Vault, CI secrets)." ;;
+              *.log)
+                MSG="Log files should not be committed. Add *.log to .gitignore." ;;
+              *.env|*.env.*)
+                MSG="Environment files may contain secrets. Use CI secrets or Vault instead." ;;
+              *credentials.json)
+                MSG="Credential files must not be committed. Use secret management." ;;
+              *)
+                MSG="This file matches an excluded pattern and should not be committed." ;;
+            esac
+            echo "::error file=${file},line=1,title=excluded-file::${MSG}"
+          done <<< "$VIOLATIONS"
+          echo "::endgroup::"
+
+          echo "Found ${COUNT} excluded file(s) in changeset."
+          exit 1
