@@ -72,7 +72,6 @@ teams:
       - lex-agentic-self
       - lex-agentic-social
       # Individual extensions (not archived)
-      - lex-cortex
       - lex-extinction
       - lex-health
       - lex-mind-growth
