@@ -63,6 +63,7 @@
   severity: notice
   category: constant-resolution
   paths: "lib/**/*.rb"
+  exclude: "spec/**"
 
 - id: const-bare-data-define
   pattern: '(?<!:)Data\.define\b'
@@ -70,6 +71,7 @@
   severity: error
   category: constant-resolution
   paths: "lib/**/*.rb"
+  exclude: "spec/**"
 
 - id: const-bare-process
   pattern: '(?<!:)(?<!::)\bProcess\.(pid|ppid|kill|detach|fork|wait|wait2|waitpid|waitpid2|getpgid|setpgid|daemon|exit|spawn|times|groups|uid|gid|euid|egid)\b'
@@ -77,6 +79,7 @@
   severity: error
   category: constant-resolution
   paths: "lib/**/*.rb"
+  exclude: "spec/**"
 
 - id: const-bare-json
   pattern: '(?<!:)(?<!::)\bJSON\.(parse|generate|pretty_generate|dump|load|fast_generate)\b'
@@ -84,6 +87,7 @@
   severity: error
   category: constant-resolution
   paths: "lib/**/*.rb"
+  exclude: "spec/**"
 
 # ── Sequel model gotchas ──
 
@@ -101,6 +105,7 @@
   severity: error
   category: singleton
   paths: "lib/**/*.rb"
+  exclude: "spec/**"
 
 # ── Mutex deadlock risk ──
 
