@@ -62,24 +62,28 @@
   message: "On dynamic modules, pass `false` as inherit param: `const_defined?(name, false)`. Default `true` leaks through Object."
   severity: notice
   category: constant-resolution
+  paths: "lib/**/*.rb"
 
 - id: const-bare-data-define
   pattern: '(?<!:)Data\.define\b'
   message: "Inside `module Legion`, bare `Data.define` resolves to `Legion::Data.define`. Use `::Data.define`."
   severity: error
   category: constant-resolution
+  paths: "lib/**/*.rb"
 
 - id: const-bare-process
   pattern: '(?<!:)(?<!::)\bProcess\.(pid|ppid|kill|detach|fork|wait|wait2|waitpid|waitpid2|getpgid|setpgid|daemon|exit|spawn|times|groups|uid|gid|euid|egid)\b'
   message: "Inside `module Legion`, bare `Process` resolves to `Legion::Process`. Use `::Process`."
   severity: error
   category: constant-resolution
+  paths: "lib/**/*.rb"
 
 - id: const-bare-json
   pattern: '(?<!:)(?<!::)\bJSON\.(parse|generate|pretty_generate|dump|load|fast_generate)\b'
   message: "Inside `module Legion`, bare `JSON` resolves to `Legion::JSON`. Use `::JSON` for stdlib."
   severity: error
   category: constant-resolution
+  paths: "lib/**/*.rb"
 
 # ── Sequel model gotchas ──
 
@@ -96,6 +100,7 @@
   message: "This class uses the singleton pattern. Use `.instance` not `.new` to share state across actors."
   severity: error
   category: singleton
+  paths: "lib/**/*.rb"
 
 # ── Mutex deadlock risk ──
 
