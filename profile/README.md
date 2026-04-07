@@ -182,21 +182,21 @@ Credentials resolve through a universal secret resolver: `vault://path#key`, `en
 
 ```
                           ┌──────────────────────────────────────┐
-                          │          LegionIO v1.4.74            │
-                          │    CLI  /  REST API  /  MCP  / Chat  │
+                          │           LegionIO v1.4.74           │
+                          │   CLI  /  REST API  /  MCP  / Chat   │
                           └──────────────────┬───────────────────┘
                                              │
               ┌──────────┬──────────┬────────┼────────┬──────────┬──────────┐
               │          │          │        │        │          │          │
-          transport    crypt      data    cache    settings    llm       gaia
-          (RabbitMQ)  (Vault)  (Sequel)  (Redis)  (config)  (ruby_llm) (tick)
+          transport    crypt      data     cache   settings     llm       gaia
+          (RabbitMQ)  (Vault)   (Sequel)  (Redis)  (config)  (ruby_llm)  (tick)
               │          │          │        │        │          │          │
               └──────────┴──────────┴────────┼────────┴──────────┴──────────┘
                                              │
                   ┌──────────────────────────┼──────────────────────────┐
                   │                          │                          │
-           18 Core LEXs              13 Cognitive Domains        29 Service LEXs
-         (tasker, synapse,         (234 sub-modules:            (slack, redis, http,
+           18 Core LEXs             13 Cognitive Domains         29 Service LEXs
+         (tasker, synapse,          (234 sub-modules:          (slack, redis, http,
           scheduler, node,          memory, emotion,             ssh, s3, vault,
           conditioner...)           trust, prediction...)        github, chef...)
 ```
