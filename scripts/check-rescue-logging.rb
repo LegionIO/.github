@@ -15,7 +15,8 @@ LOG_PATTERN = /
   \blog\.(debug|info|warn|error|fatal)\b           |
   \blog\.log_exception\b                            |
   \blogger\.(debug|info|warn|error|fatal)\b         |
-  \brunner_exception\b
+  \brunner_exception\b                              |
+  \bhandle_exception\b
 /x
 
 RAISE_PATTERN = /\braise\b/
