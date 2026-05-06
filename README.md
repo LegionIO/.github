@@ -25,6 +25,7 @@ Callable workflows that individual repos reference via `workflow_call`:
 |----------|---------|
 | `ci.yml` | RSpec + RuboCop CI — Ruby 3.4 + 4.0 matrix by default, optional Redis/Memcached/RabbitMQ service containers |
 | `release.yml` | Auto-detect version from `version.rb`, create git tag, extract changelog, publish gem to RubyGems + GitHub Packages |
+| `lex-release-container.yml` | Release a lex gem, then build and publish a repo-named container image with Packer |
 
 To use the CI workflow from any LegionIO repo:
 
@@ -57,6 +58,31 @@ jobs:
 ```
 
 The release workflow auto-detects version changes by reading `version.rb` — if the version has no matching git tag, it creates the tag, builds the gem, creates a GitHub release with changelog notes, and publishes to both RubyGems and GitHub Packages.
+
+For lex repos that should publish a runnable container after release:
+
+```yaml
+# .github/workflows/ci.yml in a lex repo
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  ci:
+    uses: LegionIO/.github/.github/workflows/ci.yml@main
+
+  release-container:
+    needs: ci
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    uses: LegionIO/.github/.github/workflows/lex-release-container.yml@main
+    secrets:
+      rubygems-api-key: ${{ secrets.RUBYGEMS_API_KEY }}
+      dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
+      dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
+```
+
+The lex container workflow uses `ghcr.io/legionio/legion-core:latest` as its default base image, installs `legionio`, `lex-node`, and the newly published lex gem into `/opt/legion/gems`, then publishes `${repo}:vX.Y.Z` and `${repo}:latest` to GHCR and Docker Hub.
 
 ### Composite Actions (`actions/`)
 
@@ -120,6 +146,23 @@ Required permissions: `contents: write` (for git tags), `packages: write` (for G
 Publishes to:
 - **RubyGems**: `https://rubygems.org/gems/<gem-name>`
 - **GitHub Packages**: `https://rubygems.pkg.github.com/LegionIO`
+
+## Lex Container Workflow Reference
+
+The `lex-release-container.yml` reusable workflow accepts these inputs:
+
+| Input | Default | Description |
+|-------|---------|-------------|
+| `ruby-version` | `'3.4'` | Ruby version for building the gem |
+| `changelog-file` | `'CHANGELOG.md'` | Path to changelog for release notes extraction |
+| `base-image` | `ghcr.io/legionio/legion-core:latest` | Docker image used as the Packer source image |
+| `image-name` | repo name | Container image name |
+| `ghcr-registry` | `ghcr.io/legionio` | GHCR registry prefix |
+| `dockerhub-namespace` | `legionio` | Docker Hub namespace |
+
+Required secrets: `rubygems-api-key`, `dockerhub-username`, `dockerhub-token`.
+
+Required permissions in the called workflow: `contents: write` for tags/releases and `packages: write` for GHCR.
 
 ## Project Tracker
 
