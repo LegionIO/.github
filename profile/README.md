@@ -75,8 +75,8 @@ will correctly find nothing, because it lives in
 chats, channels, meetings, transcripts, presence, files, adaptive cards). The
 authoritative list is the
 **[capability catalog](https://github.com/LegionIO/.github/blob/main/capabilities.md)** —
-774 runners exposing 4,590 functions across the extension gems, generated from source
-on every release.
+more than 770 runners exposing over 4,500 functions across the extension gems
+(current exact counts in the generated catalog, regenerated from source on every release).
 
 When traffic routes through LegionIO, exposed runner functions automatically become
 tools: your client sees a server-side tool, LegionIO executes it directly and returns
