@@ -91,6 +91,48 @@ lex-postgres, lex-redis, lex-elasticsearch, lex-prometheus, lex-home_assistant,
 lex-apollo and lex-knowledge (RAG activation), and lex-mesh (cross-node agent
 coordination).
 
+## The fleet tier: idle workstations as inference capacity
+
+`fleet` is a first-class tier in the LLM router's cost ladder (rank 2, between
+`local`/`direct` and `cloud`), implemented in
+[legion-llm/lib/legion/llm/fleet.rb](https://github.com/LegionIO/legion-llm/blob/main/lib/legion/llm/fleet.rb)
+and [lex-llm/lib/legion/extensions/llm/fleet](https://github.com/LegionIO/lex-llm/tree/main/lib/legion/extensions/llm/fleet).
+Inference work is dispatched over AMQP to any LegionIO node running a local
+model: requests carry signed work tokens (issuer/validator pair) and go
+through envelope validation before a per-lane router hands them to a worker,
+with responses returned over dedicated fleet exchanges. The design intent is
+to pool idle workstation GPUs — for example Apple-silicon laptops running
+MLX or Ollama via the `lex-llm-mlx` / `lex-llm-ollama` adapters — into a
+shared inference tier the router can reach for before falling back to cloud
+providers.
+
+## The Fleet Pipeline: issues in, validated PRs out
+
+```
+lex-assessor → lex-planner → lex-developer → lex-validator → ship
+                                                   ↓
+                                        (rejected) → lex-developer (feedback loop)
+```
+
+The Fleet Pipeline is the autonomous coding flow built on top of that fleet
+tier.
+[lex-assessor](https://github.com/LegionIO/lex-assessor) fingerprints
+incoming work items with SHA256 and claims them atomically via Redis
+`SETNX` to reject duplicates, then classifies priority, complexity, work
+type, and difficulty with an LLM.
+[lex-planner](https://github.com/LegionIO/lex-planner) gathers repository
+context and decomposes the work into a structured plan.
+[lex-developer](https://github.com/LegionIO/lex-developer) materializes the
+target repo, generates the code change, commits it, and opens a draft PR —
+looping back through `incorporate_feedback` whenever a later stage rejects
+the work.
+[lex-validator](https://github.com/LegionIO/lex-validator) runs the draft
+through a four-stage gauntlet — tests, lint, a security scan, and an
+adversarial multi-model LLM review — before the item is marked ready,
+labeled, and summarized for ship. The pipeline has been
+[integration-tested end to end](https://github.com/LegionIO/LegionIO/pull/138),
+but it's early: first labeled production runs are the next milestone.
+
 ## The experimental part, labeled as such
 
 Sixteen `lex-agentic-*` gems (369 actor/runner modules) explore one research
