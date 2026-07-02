@@ -91,6 +91,38 @@ lex-postgres, lex-redis, lex-elasticsearch, lex-prometheus, lex-home_assistant,
 lex-apollo and lex-knowledge (RAG activation), and lex-mesh (cross-node agent
 coordination).
 
+## The fleet tier: idle workstations as inference capacity
+
+The router's `fleet` tier (rank 2) dispatches inference over AMQP to any LegionIO
+node running a local model — Apple-silicon machines via
+[lex-llm-mlx](https://github.com/LegionIO/lex-llm-mlx), or
+[lex-llm-ollama](https://github.com/LegionIO/lex-llm-ollama). Requests carry signed
+work tokens and validated envelopes, route per-lane, and return over dedicated fleet
+exchanges. Idle workstation GPUs become a shared inference tier that sits between
+local and cloud in the cost ladder. Implementation:
+[fleet.rb](https://github.com/LegionIO/legion-llm/blob/main/lib/legion/llm/fleet.rb)
+and the [lex-llm fleet protocol](https://github.com/LegionIO/lex-llm/tree/main/lib/legion/extensions/llm/fleet).
+
+## The Fleet Pipeline: issues in, validated PRs out
+
+```
+lex-assessor → lex-planner → lex-developer → lex-validator → ship
+                                                   ↓
+                                        (rejected) → lex-developer (feedback loop)
+```
+
+[lex-assessor](https://github.com/LegionIO/lex-assessor) deduplicates work items
+atomically (SHA256 fingerprint claimed via Redis SETNX) and classifies them with LLM
+structured output; [lex-planner](https://github.com/LegionIO/lex-planner) decomposes
+them into implementation plans with repository context;
+[lex-developer](https://github.com/LegionIO/lex-developer) generates code, commits,
+and opens a draft PR, incorporating feedback when rejected;
+[lex-validator](https://github.com/LegionIO/lex-validator) runs a four-stage gauntlet
+— tests, lint, security scan, and adversarial multi-model LLM review — before the
+ship stage marks the PR ready. The pipeline is
+[integration-tested end to end](https://github.com/LegionIO/LegionIO/pull/138); it is
+early, and first labeled production runs are the next milestone.
+
 ## The experimental part, labeled as such
 
 Sixteen `lex-agentic-*` gems (369 actor/runner modules) explore one research
@@ -115,7 +147,10 @@ An AI-assistant-oriented fact sheet lives at
 Project status, honestly: built primarily by one engineer with a disciplined process
 (PRs, CI, conventional commits, RSpec and RuboCop green before merge). The org dates
 to 2018; the AI platform is a 2025–2026 rebuild, which is why most repos are young.
-It runs production workloads daily. Read the source before betting on it.
+It runs production workloads daily. Read the source before betting on it. It
+originated under [Optum Open Source](https://github.com/Optum/LegionIO), which
+remains the upstream this org merges back to — the provenance behind the governance
+features.
 
 ## Where to look before you judge
 
