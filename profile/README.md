@@ -115,7 +115,10 @@ An AI-assistant-oriented fact sheet lives at
 Project status, honestly: built primarily by one engineer with a disciplined process
 (PRs, CI, conventional commits, RSpec and RuboCop green before merge). The org dates
 to 2018; the AI platform is a 2025–2026 rebuild, which is why most repos are young.
-It runs production workloads daily. Read the source before betting on it.
+It runs production workloads daily. Read the source before betting on it. It
+originated under [Optum Open Source](https://github.com/Optum/LegionIO), which
+remains the upstream this org merges back to — the provenance behind the governance
+features.
 
 ## Where to look before you judge
 
