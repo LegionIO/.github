@@ -1,0 +1,5696 @@
+# LegionIO Extension Capability Catalog
+
+Generated from source by `scripts/generate_extension_catalog.rb` — do not hand-edit.
+Every function listed here is an extension runner method; when routed through
+LegionIO, exposed runner functions are automatically available as tools
+(server-executed, discovered at runtime — see legion-mcp function discovery).
+
+**103 gems · 774 runners · 4590 functions**
+
+## AI & LLM
+
+### lex-llm — Shared LegionIO LLM provider framework
+
+
+### lex-llm-anthropic — LegionIO LLM Anthropic provider extension
+
+- **fleet_worker**
+  - `handle_fleet_request`
+
+### lex-llm-azure-foundry — LegionIO LLM Azure AI Foundry provider extension
+
+- **fleet_worker**
+  - `handle_fleet_request`
+
+### lex-llm-bedrock — LegionIO LLM Amazon Bedrock provider extension
+
+- **fleet_worker**
+  - `handle_fleet_request`
+  - `payload_value`
+
+### lex-llm-gemini — LegionIO LLM Gemini provider extension
+
+- **fleet_worker**
+  - `handle_fleet_request`
+
+### lex-llm-ledger
+
+- **context_accounting_events**
+  - `fetch`
+  - `insert`
+  - `invalidate`
+  - `cache_available?`
+- **conversations**
+  - `fetch`
+  - `find_or_create`
+  - `invalidate`
+  - `cache_available?`
+- **escalations**
+  - `insert`
+- **messages**
+  - `fetch`
+  - `find_or_create`
+  - `invalidate`
+  - `cache_available?`
+- **metering**
+  - `insert`
+- **metrics**
+  - `fetch`
+  - `find_or_create`
+  - `enrich`
+  - `invalidate`
+  - `cache_available?`
+- **prompts**
+  - `insert`
+  - `write_metering`
+  - `link`
+- **provider_stats**
+  - `health_report`
+  - `circuit_summary`
+  - `provider_detail`
+- **reconciliation**
+  - `link_orphaned_tool_calls`
+  - `link_metering_messages`
+- **registry_availability**
+  - `insert`
+- **requests**
+  - `fetch`
+  - `find_or_create`
+  - `enrich`
+  - `invalidate`
+  - `cache_available?`
+- **responses**
+  - `fetch`
+  - `find_or_create`
+  - `enrich`
+  - `invalidate`
+  - `cache_available?`
+- **retention_purge**
+  - `purge_expired`
+- **route_attempts**
+  - `fetch`
+  - `insert`
+  - `invalidate`
+  - `cache_available?`
+- **skills**
+  - `insert`
+- **tools**
+  - `insert`
+- **usage_reporter**
+  - `summary`
+  - `worker_usage`
+  - `budget_check`
+  - `top_consumers`
+
+### lex-llm-mlx — LegionIO LLM MLX provider extension
+
+- **fleet_worker**
+  - `handle_fleet_request`
+
+### lex-llm-ollama — LegionIO LLM Ollama provider extension
+
+- **fleet_worker**
+  - `handle_fleet_request`
+
+### lex-llm-openai — LegionIO LLM OpenAI provider extension
+
+- **fleet_worker**
+  - `handle_fleet_request`
+  - `payload_value`
+
+### lex-llm-vertex — LegionIO LLM Google Cloud Vertex AI provider extension
+
+- **fleet_worker**
+  - `handle_fleet_request`
+
+### lex-llm-vllm — LegionIO LLM vLLM provider extension
+
+- **fleet_worker**
+  - `handle_fleet_request`
+  - `payload_field`
+
+## Agentic (Experimental)
+
+### lex-agentic-affect
+
+- **appraisal**
+  - `appraise_event`
+  - `reappraise_event`
+  - `select_coping_strategy`
+  - `add_coping_strategy`
+  - `evaluate_coping`
+  - `emotional_pattern`
+  - `update_appraisal`
+  - `appraisal_stats`
+- **cognitive_empathy**
+  - `process_human_observations`
+  - `take_empathic_perspective`
+  - `record_empathic_outcome`
+  - `empathic_accuracy_for`
+  - `overall_empathic_accuracy`
+  - `apply_emotional_contagion`
+  - `current_empathic_state`
+  - `perspectives_for_agent`
+  - `empathic_blind_spots`
+  - `update_cognitive_empathy`
+  - `cognitive_empathy_stats`
+- **cognitive_contagion**
+  - `create_meme`
+  - `register_agent`
+  - `attempt_transmission`
+  - `recover_agent`
+  - `infect_agent`
+  - `immunize_agent`
+  - `spread_step`
+  - `epidemic_report`
+  - `most_viral`
+  - `agent_status`
+  - `susceptible_agents`
+  - `contagion_status`
+- **cognitive_defusion**
+  - `register_thought`
+  - `apply_defusion`
+  - `apply_all_techniques`
+  - `visit_thought`
+  - `fuse_thought`
+  - `enmeshed_thoughts`
+  - `defused_thoughts`
+  - `ruminating_thoughts`
+  - `most_fused`
+  - `recommend_technique`
+  - `defusion_report`
+  - `defusion_state`
+- **gut**
+  - `gut_instinct`
+  - `decay_momentum`
+  - `emotional_state`
+- **valence**
+  - `evaluate_valence`
+  - `aggregate_valences`
+  - `modulate_attention`
+  - `compute_arousal`
+  - `evaluate_partner_absence`
+  - `raise_urgency_for_knowledge_vulnerability`
+- **empathy**
+  - `observe_human_observations`
+  - `observe_agent`
+  - `predict_reaction`
+  - `record_outcome`
+  - `perspective_take`
+  - `social_landscape`
+  - `decay_models`
+  - `empathy_stats`
+- **fatigue**
+  - `update_fatigue`
+  - `energy_status`
+  - `enter_rest`
+  - `exit_rest`
+  - `energy_forecast`
+  - `fatigue_stats`
+- **flow**
+  - `update_flow`
+  - `flow_status`
+  - `flow_effects`
+  - `flow_history`
+  - `flow_stats`
+- **interoception**
+  - `report_vital`
+  - `create_somatic_marker`
+  - `query_bias`
+  - `reinforce_somatic`
+  - `deviating_vitals`
+  - `body_status`
+  - `update_interoception`
+  - `interoception_stats`
+- **mood**
+  - `update_mood`
+  - `current_mood`
+  - `mood_modulation`
+  - `mood_history`
+  - `mood_stats`
+- **motivation**
+  - `update_motivation`
+  - `signal_drive`
+  - `commit_to_goal`
+  - `release_goal`
+  - `motivation_for`
+  - `most_motivated_goal`
+  - `drive_status`
+  - `motivation_stats`
+- **cognitive_reappraisal**
+  - `register_event`
+  - `reappraise_event`
+  - `auto_reappraise_event`
+  - `negative_events`
+  - `intense_events`
+  - `most_regulated_events`
+  - `reappraisal_status`
+  - `reappraisal_report`
+  - `regulate_pending_events`
+- **emotional_regulation**
+  - `regulate_emotion`
+  - `recommend_strategy`
+  - `update_emotional_regulation`
+  - `regulation_profile`
+  - `regulation_history`
+  - `emotional_regulation_stats`
+- **resilience**
+  - `update_resilience`
+  - `register_adversity`
+  - `resilience_status`
+  - `adversity_report`
+  - `dimension_detail`
+  - `resilience_stats`
+- **cognitive_resonance**
+  - `present_input`
+  - `classify`
+  - `adjust_vigilance`
+  - `resonance_report`
+  - `category_count`
+  - `reset_engine`
+- **reward**
+  - `compute_reward`
+  - `reward_status`
+  - `reward_for`
+  - `reward_history`
+  - `domain_rewards`
+  - `reward_stats`
+- **somatic_marker**
+  - `register_marker`
+  - `evaluate_option`
+  - `make_decision`
+  - `reinforce`
+  - `update_body`
+  - `body_state`
+  - `markers_for_action`
+  - `recent_decisions`
+  - `update_somatic_markers`
+  - `somatic_marker_stats`
+
+### lex-agentic-attention
+
+- **arousal**
+  - `stimulate`
+  - `calm`
+  - `update_arousal`
+  - `check_performance`
+  - `arousal_status`
+  - `arousal_guidance`
+- **cognitive_blindspot**
+  - `register_blindspot`
+  - `acknowledge_blindspot`
+  - `mitigate_blindspot`
+  - `resolve_blindspot`
+  - `set_knowledge_boundary`
+  - `detect_boundary_gap`
+  - `active_blindspots_report`
+  - `most_severe_report`
+  - `mitigation_strategies_report`
+  - `coverage_report`
+  - `johari_report`
+  - `awareness_score_report`
+  - `blindspot_stats`
+- **attentional_blink**
+  - `submit_stimulus`
+  - `check_blink_status`
+  - `force_blink`
+  - `force_recover`
+  - `adjust_blink_duration`
+  - `recent_stimuli_report`
+  - `missed_stimuli_report`
+  - `stimuli_by_type_report`
+  - `blink_report`
+  - `attentional_blink_stats`
+  - `decay_blink`
+- **attention_economy**
+  - `add_demand`
+  - `allocate_demand`
+  - `deallocate_demand`
+  - `recover_budget`
+  - `prioritized_demands`
+  - `best_roi_demands`
+  - `rebalance_budget`
+  - `attention_economy_status`
+  - `attention_snapshot`
+- **feature_binding**
+  - `register_feature`
+  - `bind_features`
+  - `attend_object`
+  - `unbind_object`
+  - `features_of_object`
+  - `objects_with`
+  - `illusory_conjunctions`
+  - `unbound_features`
+  - `search_features`
+  - `update_feature_binding`
+  - `feature_binding_stats`
+- **attention**
+  - `filter_signals`
+  - `attention_status`
+  - `focus_on`
+  - `release_focus`
+  - `habituation_stats`
+- **cognitive_kaleidoscope**
+  - `create_facet`
+  - `create_pattern`
+  - `add_to_pattern`
+  - `rotate`
+  - `polish`
+  - `list_facets`
+  - `kaleidoscope_status`
+- **latent_inhibition**
+  - `expose`
+  - `associate`
+  - `disinhibit`
+  - `novel_stimuli`
+  - `most_inhibited`
+  - `inhibition_report`
+- **cognitive_lens**
+  - `create_lens`
+  - `stack_lenses`
+  - `view_through_stack`
+  - `degrade_all`
+  - `lens_report`
+  - `clearest_lenses`
+  - `most_distorted`
+- **cognitive_lighthouse**
+  - `light_beacon`
+  - `create_fog`
+  - `sweep`
+  - `list_beacons`
+  - `navigation_status`
+- **priming**
+  - `network`
+  - `prime_concept`
+  - `add_concept`
+  - `link_concepts`
+  - `update_priming`
+  - `check_primed`
+  - `primed_concepts`
+  - `strongest_primes`
+  - `neighbors_for`
+  - `priming_stats`
+- **cognitive_prism**
+  - `create_beam`
+  - `decompose`
+  - `recompose`
+  - `attenuate_all`
+  - `dominant_bands`
+  - `most_intense`
+  - `spectral_report`
+- **attention_regulation**
+  - `add_attention_target`
+  - `focus_attention`
+  - `defocus_attention`
+  - `scan_attention`
+  - `rest_attention`
+  - `zoom_attention_in`
+  - `zoom_attention_out`
+  - `current_attention_target`
+  - `most_salient_target`
+  - `update_attention`
+  - `attention_regulation_stats`
+- **relevance_theory**
+  - `submit_relevance_input`
+  - `assess_input_relevance`
+  - `strengthen_relevance`
+  - `weaken_relevance`
+  - `worth_processing_report`
+  - `most_relevant_inputs`
+  - `context_relevance_report`
+  - `attention_budget_report`
+  - `update_relevance_theory`
+  - `relevance_theory_stats`
+- **salience**
+  - `compute_salience`
+  - `salience_status`
+  - `salience_for`
+  - `salience_history`
+  - `salience_stats`
+- **attention_schema**
+  - `focus_on`
+  - `defocus`
+  - `am_i_aware_of`
+  - `report_awareness`
+  - `attention_state`
+  - `model_other_attention`
+  - `query_other_attention`
+  - `meta_check`
+  - `update_meta_accuracy`
+  - `decay_schema`
+  - `schema_stats`
+- **sensory_gating**
+  - `create_filter`
+  - `process_stimulus`
+  - `open_gate`
+  - `close_gate`
+  - `sensitize`
+  - `average_pass_rate`
+  - `gating_report`
+- **signal_detection**
+  - `create_detector`
+  - `record_detection_trial`
+  - `compute_detector_sensitivity`
+  - `adjust_detector_bias`
+  - `best_detectors`
+  - `domain_detectors`
+  - `optimal_detector_criterion`
+  - `detector_roc_point`
+  - `update_signal_detection`
+  - `signal_detection_stats`
+- **attention_spotlight**
+  - `register_target`
+  - `focus_spotlight`
+  - `broaden_spotlight`
+  - `narrow_spotlight`
+  - `scan_targets`
+  - `check_peripheral`
+  - `check_capture`
+  - `release_spotlight`
+  - `spotlight_report`
+  - `most_salient`
+  - `spotlight_state`
+- **subliminal**
+  - `create_subliminal_trace`
+  - `boost_trace`
+  - `process_influences`
+  - `decay_all`
+  - `active_traces`
+  - `near_threshold`
+  - `influence_on`
+  - `subliminal_status`
+- **surprise**
+  - `evaluate_surprise`
+  - `update_surprise`
+  - `surprise_stats`
+  - `domain_sensitivity`
+  - `recent_surprises`
+  - `reset_habituation`
+- **attention_switching**
+  - `register_task`
+  - `switch_to`
+  - `warmup`
+  - `decay_residuals`
+  - `active_task`
+  - `residual_tasks`
+  - `recent_switches`
+  - `average_switch_cost`
+  - `switch_cost_between`
+  - `switching_report`
+  - `status`
+- **cognitive_synesthesia**
+  - `register_mapping`
+  - `trigger`
+  - `decay_mappings`
+  - `cross_modal_richness`
+  - `dominant_modality_pairs`
+  - `event_history`
+  - `modality_coverage`
+  - `synesthesia_report`
+- **cognitive_telescope**
+  - `create_telescope`
+  - `zoom_in`
+  - `zoom_out`
+  - `observe`
+  - `focus`
+  - `survey_mode`
+  - `deep_focus`
+  - `list_observations`
+  - `observatory_status`
+
+### lex-agentic-defense
+
+- **cognitive_avalanche**
+  - `create_snowpack`
+  - `trigger`
+  - `accumulate`
+  - `list_snowpacks`
+  - `terrain_status`
+- **bias**
+  - `check_for_bias`
+  - `record_anchor`
+  - `update_bias`
+  - `bias_report`
+  - `susceptibility_profile`
+  - `bias_stats`
+- **confabulation**
+  - `register_claim`
+  - `verify_claim`
+  - `flag_confabulation`
+  - `confabulation_report`
+  - `high_risk_claims`
+  - `confabulation_status`
+  - `decay_claims`
+- **dissonance**
+  - `add_belief`
+  - `update_dissonance`
+  - `resolve_dissonance`
+  - `dissonance_status`
+  - `domain_dissonance`
+  - `beliefs_for`
+  - `unresolved`
+  - `dissonance_stats`
+- **epistemic_vigilance**
+  - `register_epistemic_source`
+  - `submit_epistemic_claim`
+  - `assess_epistemic_claim`
+  - `support_epistemic_claim`
+  - `challenge_epistemic_claim`
+  - `adjudicate_epistemic_claim`
+  - `source_reliability_report`
+  - `contested_claims_report`
+  - `domain_vigilance_report`
+  - `update_epistemic_vigilance`
+  - `epistemic_vigilance_stats`
+- **cognitive_erosion**
+  - `create_formation`
+  - `erode`
+  - `weather_all`
+  - `deepest_channels`
+  - `most_eroded`
+  - `erosion_report`
+  - `get_formation`
+- **error_monitoring**
+  - `report_error`
+  - `report_success`
+  - `report_conflict`
+  - `apply_correction`
+  - `recent_errors`
+  - `errors_in_domain`
+  - `uncorrected_errors`
+  - `monitoring_state`
+  - `update_error_monitoring`
+  - `error_monitoring_stats`
+- **extinction**
+  - `escalate`
+  - `deescalate`
+  - `extinction_status`
+  - `monitor_protocol`
+  - `check_reversibility`
+- **cognitive_friction**
+  - `set_current_state`
+  - `set_friction`
+  - `get_friction`
+  - `attempt_transition`
+  - `force_transition`
+  - `transition_history`
+  - `success_rate`
+  - `average_friction`
+  - `highest_friction_paths`
+  - `friction_report`
+- **cognitive_immune_response**
+  - `register_antigen`
+  - `encounter_antigen`
+  - `create_antibody`
+  - `vaccinate`
+  - `escalate_threat`
+  - `de_escalate_threat`
+  - `immunity_for`
+  - `decay_all`
+  - `critical_antigens`
+  - `memory_cells`
+  - `most_threatening`
+  - `strongest_antibodies`
+  - `immune_report`
+  - `immune_status`
+- **cognitive_immunology**
+  - `detect_threat`
+  - `quarantine_threat`
+  - `release_threat`
+  - `inoculate`
+  - `create_antibody`
+  - `scan_for_tactic`
+  - `trigger_inflammatory_response`
+  - `resolve_inflammation`
+  - `overall_immunity`
+  - `vulnerability_report`
+  - `threat_history`
+  - `decay_all`
+  - `prune_ineffective`
+  - `immune_status`
+- **cognitive_phantom**
+  - `register_removal`
+  - `process_stimulus`
+  - `acknowledge_phantom`
+  - `phantom_status`
+  - `decay_all`
+- **cognitive_quicksand**
+  - `create_trap`
+  - `create_pit`
+  - `struggle`
+  - `calm_down`
+  - `attempt_escape`
+  - `list_traps`
+  - `quicksand_status`
+- **cognitive_quicksilver**
+  - `create_droplet`
+  - `create_pool`
+  - `shift_form`
+  - `merge`
+  - `split`
+  - `capture`
+  - `release`
+  - `add_to_pool`
+  - `list_droplets`
+  - `quicksilver_status`
+- **cognitive_whirlpool**
+  - `create_vortex`
+  - `inject_thought`
+  - `tick_all`
+  - `dissipate_all`
+  - `vortex_report`
+  - `deepest_vortices`
+  - `remove_vortex`
+  - `clear_engine`
+
+### lex-agentic-executive
+
+- **cognitive_autopilot**
+  - `register_routine`
+  - `execute_routine`
+  - `switch_to_deliberate`
+  - `switch_to_autopilot`
+  - `rest`
+  - `decay_all`
+  - `autopilot_routines`
+  - `novel_routines`
+  - `most_familiar`
+  - `get_routine`
+  - `autopilot_status`
+- **cognitive_chunking**
+  - `add_item`
+  - `create_chunk`
+  - `merge_chunks`
+  - `load_to_working_memory`
+  - `unload_from_working_memory`
+  - `working_memory_status`
+  - `decay_all`
+  - `reinforce_chunk`
+  - `chunking_report`
+  - `strongest_chunks`
+  - `unchunked_items`
+- **cognitive_debt**
+  - `create_debt`
+  - `repay_debt`
+  - `accrue_interest`
+  - `total_debt`
+  - `debt_by_type`
+  - `debt_by_domain`
+  - `most_costly`
+  - `oldest_debts`
+  - `debt_report`
+  - `prune_repaid`
+- **cognitive_compass**
+  - `take_bearing`
+  - `register_bias`
+  - `calibrate`
+  - `list_bearings`
+  - `list_biases`
+  - `compass_status`
+- **cognitive_control**
+  - `set_control_goal`
+  - `advance_control_goal`
+  - `suspend_control_goal`
+  - `evaluate_control`
+  - `current_control_mode`
+  - `active_control_goals`
+  - `top_control_goal`
+  - `update_cognitive_control`
+  - `cognitive_control_stats`
+- **decision_fatigue**
+  - `make_decision`
+  - `fatigue_status`
+  - `rest`
+  - `full_rest`
+  - `recent_decisions`
+  - `decisions_by_type`
+  - `quality_trend`
+  - `should_rest`
+- **cognitive_disengagement**
+  - `create_disengagement_goal`
+  - `check_goal_progress`
+  - `assess_goal_disengagement`
+  - `disengage_from_goal`
+  - `stalled_goals_report`
+  - `active_goals_report`
+  - `most_invested_goals`
+  - `highest_disengage_candidates`
+  - `update_cognitive_disengagement`
+  - `cognitive_disengagement_stats`
+- **cognitive_dissonance_resolution**
+  - `create_dissonance_conflict`
+  - `apply_resolution_strategy`
+  - `escalate_dissonance`
+  - `abandon_dissonance`
+  - `ongoing_dissonance_report`
+  - `most_tense_report`
+  - `strategy_effectiveness_report`
+  - `dissonance_report`
+  - `update_dissonance_resolution`
+  - `dissonance_resolution_stats`
+- **dual_process**
+  - `register_heuristic`
+  - `route_decision`
+  - `execute_system_one`
+  - `execute_system_two`
+  - `record_decision_outcome`
+  - `effort_assessment`
+  - `best_heuristics`
+  - `system_usage_stats`
+  - `update_dual_process`
+  - `dual_process_stats`
+- **cognitive_dwell**
+  - `add_topic`
+  - `focus_on`
+  - `disengage`
+  - `decay`
+  - `current_topic`
+  - `sticky_topics`
+  - `ruminating_topics`
+  - `most_engaging`
+  - `dwell_report`
+  - `status`
+- **executive_function**
+  - `inhibit`
+  - `shift_task`
+  - `update_wm`
+  - `common_ef_status`
+  - `component_status`
+  - `can_perform`
+  - `task_switch_cost`
+  - `executive_load`
+  - `update_executive_function`
+  - `executive_function_stats`
+- **cognitive_flexibility**
+  - `create_task_set`
+  - `add_rule`
+  - `switch_set`
+  - `current_task_set`
+  - `available_sets`
+  - `flexibility_level`
+  - `update_cognitive_flexibility`
+  - `cognitive_flexibility_stats`
+- **cognitive_flexibility_training**
+  - `register_task`
+  - `perform_switch`
+  - `start_training_session`
+  - `end_training_session`
+  - `average_switch_cost`
+  - `switch_cost_between`
+  - `flexibility_score`
+  - `improvement_rate`
+  - `hardest_switches`
+  - `easiest_switches`
+  - `training_report`
+  - `list_tasks`
+  - `get_task`
+  - `list_trials`
+- **goal_management**
+  - `add_goal`
+  - `decompose_goal`
+  - `auto_decompose_goal`
+  - `activate_goal`
+  - `complete_goal`
+  - `abandon_goal`
+  - `block_goal`
+  - `unblock_goal`
+  - `advance_goal_progress`
+  - `detect_goal_conflicts`
+  - `list_active_goals`
+  - `list_blocked_goals`
+  - `list_overdue_goals`
+  - `list_completed_goals`
+  - `get_goal_tree`
+  - `highest_priority_goals`
+  - `decay_priorities`
+  - `goal_status`
+  - `dispatch_leaf_goals`
+  - `update_goal_from_task`
+  - `start_feedback_listener`
+- **cognitive_inertia**
+  - `form_belief`
+  - `challenge_belief`
+  - `reinforce_belief`
+  - `entrenched_beliefs`
+  - `flexible_beliefs`
+  - `average_inertia`
+  - `overall_flexibility`
+  - `inertia_report`
+- **inhibition**
+  - `update_inhibition`
+  - `evaluate_impulse`
+  - `delay_gratification`
+  - `check_stroop`
+  - `willpower_status`
+  - `inhibition_history`
+  - `inhibition_stats`
+- **cognitive_load**
+  - `report_intrinsic`
+  - `report_extraneous`
+  - `report_germane`
+  - `reduce_overhead`
+  - `update_cognitive_load`
+  - `adjust_capacity`
+  - `load_status`
+  - `load_recommendation`
+  - `cognitive_load_stats`
+- **cognitive_load_balancing**
+  - `register_cognitive_subsystem`
+  - `assign_cognitive_load`
+  - `shed_cognitive_load`
+  - `auto_assign_load`
+  - `rebalance_cognitive_load`
+  - `overloaded_subsystems_report`
+  - `most_loaded_report`
+  - `cognitive_load_balance_report`
+  - `cognitive_load_balancing_stats`
+- **planning**
+  - `update_planning`
+  - `create_plan`
+  - `advance_plan`
+  - `fail_plan_step`
+  - `replan`
+  - `abandon_plan`
+  - `plan_status`
+  - `active_plans`
+  - `planning_stats`
+- **prospective_memory**
+  - `create_intention`
+  - `monitor_intention`
+  - `trigger_intention`
+  - `execute_intention`
+  - `cancel_intention`
+  - `check_expirations`
+  - `pending_intentions`
+  - `monitoring_intentions`
+  - `triggered_intentions`
+  - `intentions_by_domain`
+  - `intentions_by_urgency`
+  - `most_urgent_intentions`
+  - `decay_urgency`
+  - `execution_rate`
+  - `intention_report`
+- **cognitive_triage**
+  - `add_demand`
+  - `process_demand`
+  - `complete_demand`
+  - `defer_demand`
+  - `drop_demand`
+  - `next_demand`
+  - `active_demands`
+  - `red_demands`
+  - `demands_by_severity`
+  - `demands_by_domain`
+  - `capacity_status`
+  - `triage_report`
+- **volition**
+  - `form_intentions`
+  - `current_intention`
+  - `complete_intention`
+  - `suspend_intention`
+  - `resume_intention`
+  - `reinforce_intention`
+  - `form_absorption_intention`
+  - `volition_status`
+  - `intention_history`
+- **working_memory**
+  - `buffer`
+  - `update_working_memory`
+  - `store_item`
+  - `retrieve_item`
+  - `rehearse_item`
+  - `retrieve_by_tag`
+  - `retrieve_by_type`
+  - `remove_item`
+  - `buffer_status`
+  - `consolidation_candidates`
+  - `working_memory_stats`
+  - `clear_buffer`
+  - `find_interference`
+
+### lex-agentic-homeostasis
+
+- **cognitive_cocoon**
+  - `create_cocoon`
+  - `gestate_all`
+  - `harvest_ready`
+  - `force_emerge`
+  - `cocoon_status`
+  - `list_by_stage`
+- **homeostasis**
+  - `regulate`
+  - `modulation_for`
+  - `allostatic_status`
+  - `regulation_overview`
+  - `homeostasis_stats`
+- **cognitive_fatigue_model**
+  - `process_cognitive_task`
+  - `rest_cognitive_channel`
+  - `rest_all_channels`
+  - `channel_fatigue_status`
+  - `overall_fatigue_report`
+  - `fatigue_recommendations`
+  - `cognitive_quality_report`
+  - `update_cognitive_fatigue_model`
+  - `cognitive_fatigue_model_stats`
+- **cognitive_fossil_fuel**
+  - `create_reserve`
+  - `extract`
+  - `combust`
+  - `list_reserves`
+  - `fuel_status`
+- **cognitive_furnace**
+  - `add_ore`
+  - `create_crucible`
+  - `load_ore`
+  - `heat`
+  - `smelt`
+  - `list_ores`
+  - `furnace_status`
+- **cognitive_homeostasis**
+  - `create_cognitive_variable`
+  - `perturb_variable`
+  - `correct_variable`
+  - `correct_all_variables`
+  - `drift_all_variables`
+  - `reset_variable`
+  - `out_of_range_report`
+  - `variables_by_category_report`
+  - `most_deviated_report`
+  - `homeostasis_report`
+  - `update_cognitive_homeostasis`
+  - `cognitive_homeostasis_stats`
+- **cognitive_hourglass**
+  - `create_grain`
+  - `create_hourglass`
+  - `flow_tick`
+  - `flip`
+  - `list_hourglasses`
+  - `time_status`
+- **cognitive_metabolism**
+  - `create_reserve`
+  - `spend_energy`
+  - `recover`
+  - `catabolize`
+  - `anabolize`
+  - `metabolic_status`
+  - `run_cycle`
+  - `run_all_cycles`
+- **neural_oscillation**
+  - `add_oscillator`
+  - `activate_band`
+  - `suppress_band`
+  - `couple_oscillators`
+  - `decouple_oscillators`
+  - `global_rhythm`
+  - `synchrony_for_band`
+  - `desynchronize_band`
+  - `update_neural_oscillations`
+  - `neural_oscillation_stats`
+- **neuromodulation**
+  - `boost_modulator`
+  - `suppress_modulator`
+  - `modulator_level`
+  - `all_modulator_levels`
+  - `cognitive_influence`
+  - `is_optimal`
+  - `system_balance`
+  - `modulator_history`
+  - `update_neuromodulation`
+  - `neuromodulation_stats`
+- **cognitive_pendulum**
+  - `create_pendulum`
+  - `swing`
+  - `damp_all`
+  - `check_resonance`
+  - `get_dominant_pole`
+  - `most_active`
+  - `most_damped`
+  - `pendulum_report`
+  - `get_pendulum`
+- **cognitive_rhythm**
+  - `add_cognitive_rhythm`
+  - `remove_cognitive_rhythm`
+  - `current_rhythm_state`
+  - `dimension_rhythm_value`
+  - `optimal_for_task`
+  - `best_time_for_task`
+  - `cognitive_rhythm_profile`
+  - `peak_cognitive_dimensions`
+  - `trough_cognitive_dimensions`
+  - `cognitive_rhythm_stats`
+- **surplus**
+  - `surplus_status`
+  - `allocate_surplus`
+  - `release_surplus`
+  - `commit_capacity`
+  - `uncommit_capacity`
+  - `replenish_surplus`
+  - `deplete_surplus`
+  - `surplus_allocations`
+- **cognitive_tectonics**
+  - `create_plate`
+  - `drift_tick`
+  - `resolve_collision`
+  - `trigger_earthquake`
+  - `tectonic_status`
+- **tempo**
+  - `set_tempo_baseline`
+  - `record_tempo`
+  - `adapt_tempo`
+  - `tempo_status`
+  - `domains_in_sync`
+  - `domains_mismatched`
+  - `tempo_report`
+  - `run_tempo_adaptation`
+- **temporal**
+  - `mark_event`
+  - `elapsed_since`
+  - `set_deadline`
+  - `check_deadlines`
+  - `update_time_perception`
+  - `predict_event`
+  - `temporal_patterns`
+  - `temporal_stats`
+- **temporal_discounting**
+  - `create_temporal_reward`
+  - `compare_temporal_rewards`
+  - `check_worth_waiting`
+  - `immediate_vs_delayed_comparison`
+  - `compute_optimal_delay`
+  - `temporal_patience_report`
+  - `set_domain_discount_rate`
+  - `most_valuable_rewards`
+  - `update_temporal_discounting`
+  - `temporal_discounting_stats`
+- **cognitive_tide**
+  - `add_oscillator`
+  - `check_tide`
+  - `deposit_idea`
+  - `harvest`
+  - `tide_forecast`
+  - `tide_status`
+  - `tide_maintenance`
+- **cognitive_weather**
+  - `create_front`
+  - `brew_storm`
+  - `intensify`
+  - `forecast`
+  - `list_fronts`
+  - `weather_status`
+- **cognitive_weathering**
+  - `apply_stressor`
+  - `recover`
+  - `rest`
+  - `weathering_report`
+  - `integrity_status`
+
+### lex-agentic-inference
+
+- **abductive_reasoning**
+  - `record_observation`
+  - `generate_hypothesis`
+  - `evaluate_hypothesis`
+  - `add_hypothesis_evidence`
+  - `best_explanation`
+  - `competing_hypotheses`
+  - `refute_hypothesis`
+  - `unexplained_observations`
+  - `update_abductive_reasoning`
+  - `abductive_reasoning_stats`
+- **affordance**
+  - `register_capability`
+  - `set_environment`
+  - `detect_affordance`
+  - `evaluate_action`
+  - `actionable_affordances`
+  - `current_threats`
+  - `affordances_in_domain`
+  - `update_affordances`
+  - `affordance_stats`
+- **analogical_reasoning**
+  - `create_analogy`
+  - `find_analogies`
+  - `apply_analogy`
+  - `evaluate_similarity`
+  - `cross_domain_transfer`
+  - `reinforce_analogy`
+  - `productive_analogies`
+  - `update_analogical_reasoning`
+  - `analogical_reasoning_stats`
+- **argument_mapping**
+  - `create_argument`
+  - `add_argument_ground`
+  - `add_argument_backing`
+  - `add_argument_rebuttal`
+  - `assess_argument_strength`
+  - `sound_arguments_report`
+  - `rebutted_arguments_report`
+  - `strongest_arguments_report`
+  - `update_argument_mapping`
+  - `argument_mapping_stats`
+- **bayesian_belief**
+  - `add_bayesian_belief`
+  - `update_bayesian_belief`
+  - `batch_bayesian_update`
+  - `most_probable_beliefs`
+  - `least_probable_beliefs`
+  - `posterior_distribution`
+  - `information_gain`
+  - `belief_entropy`
+  - `update_bayesian_beliefs`
+  - `bayesian_belief_stats`
+- **belief_revision**
+  - `add_belief`
+  - `submit_evidence`
+  - `link_beliefs`
+  - `revise_belief`
+  - `belief_status`
+  - `find_contradictions`
+  - `beliefs_in_domain`
+  - `coherence_report`
+  - `update_belief_revision`
+  - `belief_revision_stats`
+- **causal_attribution**
+  - `create_causal_attribution`
+  - `reattribute_cause`
+  - `attributions_by_pattern`
+  - `domain_attributions`
+  - `outcome_attributions`
+  - `attribution_bias_assessment`
+  - `emotional_attribution_profile`
+  - `most_common_attribution`
+  - `update_causal_attribution`
+  - `causal_attribution_stats`
+- **causal_reasoning**
+  - `add_causal_variable`
+  - `add_causal_edge`
+  - `find_causes`
+  - `find_effects`
+  - `trace_causal_chain`
+  - `causal_intervention`
+  - `find_confounders`
+  - `add_causal_evidence`
+  - `update_causal_reasoning`
+  - `causal_reasoning_stats`
+- **cognitive_coherence**
+  - `add_coherence_proposition`
+  - `add_coherence_constraint`
+  - `compute_proposition_coherence`
+  - `maximize_coherence`
+  - `find_contradictions`
+  - `coherence_partition`
+  - `update_cognitive_coherence`
+  - `cognitive_coherence_stats`
+- **counterfactual**
+  - `imagine_counterfactual`
+  - `generate_alternatives`
+  - `resolve_counterfactual`
+  - `compute_regret`
+  - `net_regret_level`
+  - `domain_regret`
+  - `lessons_learned`
+  - `update_counterfactual`
+  - `counterfactual_stats`
+- **cognitive_debugging**
+  - `detect_error`
+  - `trace_error`
+  - `propose_correction`
+  - `apply_correction`
+  - `measure_correction`
+  - `resolve_error`
+  - `active_errors`
+  - `resolved_errors`
+  - `errors_by_type`
+  - `errors_by_phase`
+  - `most_common_error_type`
+  - `most_effective_strategy`
+  - `correction_success_rate`
+  - `debugging_report`
+  - `snapshot`
+- **enactive_cognition**
+  - `create_sensorimotor_coupling`
+  - `execute_enactive_action`
+  - `adapt_sensorimotor_coupling`
+  - `find_action_for_perception`
+  - `coupled_sensorimotor_loops`
+  - `domain_couplings`
+  - `strongest_couplings`
+  - `overall_enactive_coupling`
+  - `update_enactive_cognition`
+  - `enactive_cognition_stats`
+- **expectation_violation**
+  - `create_expectation`
+  - `evaluate_expectation`
+  - `adapt_expectation_value`
+  - `recent_violations_report`
+  - `violations_by_type_report`
+  - `most_violated_expectations`
+  - `decay_violations`
+  - `expectation_violation_stats`
+- **free_energy**
+  - `add_generative_belief`
+  - `observe_outcome`
+  - `minimize_free_energy`
+  - `compute_free_energy`
+  - `surprise_assessment`
+  - `high_surprise_beliefs`
+  - `domain_free_energy`
+  - `update_free_energy`
+  - `free_energy_stats`
+- **gravity**
+  - `create_attractor`
+  - `add_thought`
+  - `tick_gravity`
+  - `accrete`
+  - `erode`
+  - `strongest_attractors`
+  - `thought_distribution`
+  - `cognitive_density_map`
+  - `gravity_report`
+- **cognitive_horizon**
+  - `get_horizon`
+  - `expand_horizon`
+  - `contract_horizon`
+  - `apply_stress`
+  - `relieve_stress`
+  - `add_projection`
+  - `projections_within_horizon`
+  - `beyond_horizon_projections`
+  - `nearest_projections`
+  - `farthest_projections`
+  - `horizon_status`
+- **hypothesis_testing**
+  - `propose_hypothesis`
+  - `test_hypothesis`
+  - `evaluate_hypothesis`
+  - `competing_hypotheses`
+  - `most_confident_hypotheses`
+  - `hypothesis_report`
+  - `get_hypothesis`
+- **intuition**
+  - `learn_intuitive_pattern`
+  - `intuitive_recognize`
+  - `intuit_response`
+  - `reinforce_intuition`
+  - `add_intuitive_heuristic`
+  - `apply_intuitive_heuristic`
+  - `reliable_intuitions`
+  - `expert_intuitions`
+  - `update_intuition`
+  - `intuition_stats`
+- **cognitive_magnet**
+  - `create_pole`
+  - `create_field`
+  - `magnetize`
+  - `interact`
+  - `list_poles`
+  - `magnetic_status`
+- **cognitive_momentum**
+  - `create_cognitive_idea`
+  - `reinforce_cognitive_idea`
+  - `challenge_cognitive_idea`
+  - `apply_cognitive_force`
+  - `surging_ideas_report`
+  - `reversing_ideas_report`
+  - `entrenched_ideas_report`
+  - `highest_momentum_ideas`
+  - `ideas_by_domain`
+  - `update_cognitive_momentum`
+  - `cognitive_momentum_stats`
+- **perceptual_inference**
+  - `register_percept_hypothesis`
+  - `present_perceptual_evidence`
+  - `select_percept`
+  - `check_rivalry`
+  - `current_percept`
+  - `adapt_perception`
+  - `suppress_percept`
+  - `perceptual_ambiguity`
+  - `update_perceptual_inference`
+  - `perceptual_inference_stats`
+- **prediction**
+  - `predict`
+  - `resolve_prediction`
+  - `pending_predictions`
+  - `prediction_accuracy`
+  - `expire_stale_predictions`
+  - `get_prediction`
+- **predictive_coding**
+  - `generate_prediction`
+  - `report_outcome`
+  - `precision_for`
+  - `surprising_errors`
+  - `free_energy_status`
+  - `active_inference_candidates`
+  - `register_active_inference`
+  - `resolve_active_inference`
+  - `update_predictive_coding`
+  - `predictive_coding_stats`
+- **predictive_processing**
+  - `add_generative_model`
+  - `predict_from_model`
+  - `observe_outcome`
+  - `inference_mode`
+  - `free_energy`
+  - `models_needing_update`
+  - `active_inference_candidates`
+  - `update_predictive_processing`
+  - `predictive_processing_stats`
+- **reality_testing**
+  - `create_belief`
+  - `test_belief`
+  - `get_belief`
+  - `beliefs_needing_testing`
+  - `strongest_beliefs`
+  - `weakest_beliefs`
+  - `beliefs_by_domain`
+  - `overall_coherence`
+  - `decay_beliefs`
+  - `prune_rejected_beliefs`
+  - `reality_report`
+  - `reality_status`
+- **schema**
+  - `update_schema`
+  - `learn_relation`
+  - `weaken_relation`
+  - `explain`
+  - `counterfactual`
+  - `find_effects`
+  - `find_causes`
+  - `contradictions`
+  - `schema_stats`
+- **uncertainty_tolerance**
+  - `record_uncertain_decision`
+  - `resolve_uncertain_decision`
+  - `should_act_assessment`
+  - `uncertainty_profile`
+  - `decisions_under_uncertainty_report`
+  - `domain_tolerance_report`
+  - `update_uncertainty_tolerance`
+  - `uncertainty_tolerance_stats`
+
+### lex-agentic-integration
+
+- **cognitive_boundary**
+  - `create_boundary`
+  - `open_boundary`
+  - `close_boundary`
+  - `violate_boundary`
+  - `repair_boundary`
+  - `seal_boundary`
+  - `breached_boundaries`
+  - `boundaries_by_type`
+  - `overall_integrity`
+  - `overall_permeability`
+  - `boundary_report`
+- **context**
+  - `create_context`
+  - `activate_context`
+  - `detect_context`
+  - `auto_switch`
+  - `current_context`
+  - `update_context`
+  - `add_cue`
+  - `frames_in_domain`
+  - `remove_context`
+  - `context_stats`
+- **distributed_cognition**
+  - `register_cognitive_participant`
+  - `record_cognitive_contribution`
+  - `find_capable_participants`
+  - `most_reliable_participants`
+  - `distribution_assessment`
+  - `participants_by_type`
+  - `participants_by_domain`
+  - `update_distributed_cognition`
+  - `distributed_cognition_stats`
+- **gestalt**
+  - `store`
+  - `learn_pattern`
+  - `complete_pattern`
+  - `confirm_completion`
+  - `group_items`
+  - `update_gestalt`
+  - `patterns_in_domain`
+  - `remove_pattern`
+  - `gestalt_stats`
+- **global_workspace**
+  - `submit_for_broadcast`
+  - `run_competition`
+  - `register_subscriber`
+  - `unregister_subscriber`
+  - `acknowledge_broadcast`
+  - `query_consciousness`
+  - `current_broadcast`
+  - `broadcast_history`
+  - `update_global_workspace`
+  - `workspace_stats`
+- **cognitive_integration**
+  - `add_signal`
+  - `remove_signal`
+  - `integrate`
+  - `integrate_by_modalities`
+  - `integrate_all_salient`
+  - `reinforce`
+  - `disrupt`
+  - `decay`
+  - `signals_by_modality`
+  - `coherent_representations`
+  - `integration_report`
+  - `status`
+- **cognitive_labyrinth**
+  - `create_labyrinth`
+  - `add_node`
+  - `connect_nodes`
+  - `move`
+  - `backtrack`
+  - `follow_thread`
+  - `check_minotaur`
+  - `labyrinth_report`
+  - `list_labyrinths`
+  - `delete_labyrinth`
+- **cognitive_map**
+  - `add_location`
+  - `connect_locations`
+  - `visit_location`
+  - `find_path`
+  - `explore_neighborhood`
+  - `map_clusters`
+  - `familiar_locations`
+  - `switch_context`
+  - `update_cognitive_map`
+  - `cognitive_map_stats`
+- **cognitive_mosaic**
+  - `create_tessera`
+  - `create_mosaic`
+  - `place_tessera`
+  - `list_tesserae`
+  - `list_mosaics`
+  - `mosaic_status`
+- **cognitive_mycelium**
+  - `create_node`
+  - `connect`
+  - `transfer_nutrients`
+  - `fruit`
+  - `network_status`
+- **phenomenal_binding**
+  - `register_stream`
+  - `create_binding`
+  - `reinforce_binding`
+  - `dissolve_binding`
+  - `unified_experience`
+  - `fragmentation_index`
+  - `binding_by_type`
+  - `streams_for_binding`
+  - `unbound_streams`
+  - `decay_all`
+  - `prune_incoherent`
+  - `consciousness_report`
+  - `engine_stats`
+- **qualia**
+  - `create_quale`
+  - `intensify_quale`
+  - `fade_all`
+  - `vivid_experiences`
+  - `by_modality`
+  - `phenomenal_richness`
+  - `qualia_status`
+- **situation_model**
+  - `create_situation_model`
+  - `add_situation_event`
+  - `situation_model_coherence`
+  - `find_situation_boundaries`
+  - `situation_dimension_trajectory`
+  - `most_coherent_situations`
+  - `situations_by_label`
+  - `update_situation_models`
+  - `situation_model_stats`
+- **cognitive_synthesis**
+  - `add_stream`
+  - `remove_stream`
+  - `synthesize`
+  - `decay_streams`
+  - `check_conflict`
+  - `dominant_stream`
+  - `synthesis_history`
+  - `average_coherence`
+  - `status`
+- **cognitive_tapestry**
+  - `spin_thread`
+  - `create_tapestry`
+  - `weave`
+  - `list_tapestries`
+  - `loom_status`
+- **cognitive_tessellation**
+  - `create_tile`
+  - `expand_tile`
+  - `connect_tiles`
+  - `shrink_all`
+  - `list_gaps`
+  - `tessellation_status`
+- **cognitive_zeitgeist**
+  - `ingest_signal`
+  - `zeitgeist_report`
+  - `collective_mood`
+  - `cognitive_convergence`
+  - `dominant_themes`
+  - `rising_domains`
+  - `falling_domains`
+  - `trend_window_status`
+
+### lex-agentic-language
+
+- **conceptual_blending**
+  - `create_mental_space`
+  - `add_space_element`
+  - `add_space_relation`
+  - `create_blend`
+  - `elaborate_blend`
+  - `compress_blend`
+  - `best_blends`
+  - `blend_quality`
+  - `update_conceptual_blending`
+  - `conceptual_blending_stats`
+- **conceptual_metaphor**
+  - `create_metaphor`
+  - `apply_metaphor`
+  - `add_metaphor_entailment`
+  - `find_metaphors_for`
+  - `conventional_metaphors`
+  - `novel_metaphors`
+  - `strongest_metaphors`
+  - `metaphors_by_type`
+  - `update_conceptual_metaphor`
+  - `conceptual_metaphor_stats`
+- **frame_semantics**
+  - `create_semantic_frame`
+  - `define_frame_slot`
+  - `fill_frame_slot`
+  - `instantiate_semantic_frame`
+  - `add_frame_relation`
+  - `activate_semantic_frame`
+  - `active_frames_report`
+  - `related_frames_report`
+  - `complete_frames_report`
+  - `update_frame_semantics`
+  - `frame_semantics_stats`
+- **cognitive_grammar**
+  - `create_grammar_construction`
+  - `create_grammar_construal`
+  - `use_grammar_construction`
+  - `construals_for_scene_report`
+  - `entrenched_constructions_report`
+  - `constructions_by_domain_report`
+  - `most_used_constructions`
+  - `update_cognitive_grammar`
+  - `cognitive_grammar_stats`
+- **inner_speech**
+  - `inner_speak`
+  - `inner_plan`
+  - `inner_question`
+  - `inner_debate`
+  - `switch_inner_voice`
+  - `inner_interrupt`
+  - `break_inner_rumination`
+  - `recent_inner_speech`
+  - `inner_narrative`
+  - `update_inner_speech`
+  - `inner_speech_stats`
+- **language**
+  - `summarize`
+  - `what_do_i_know`
+  - `can_answer_wonder?`
+  - `knowledge_map`
+  - `language_stats`
+- **narrative_reasoning**
+  - `create_narrative`
+  - `add_narrative_event`
+  - `add_narrative_theme`
+  - `advance_narrative_arc`
+  - `trace_narrative_causes`
+  - `complete_narratives`
+  - `domain_narratives`
+  - `most_coherent_narratives`
+  - `update_narrative_reasoning`
+  - `narrative_reasoning_stats`
+- **narrator**
+  - `narrate`
+  - `recent_entries`
+  - `entries_since`
+  - `mood_history`
+  - `current_narrative`
+  - `narrator_stats`
+- **pragmatic_inference**
+  - `analyze_utterance`
+  - `detect_maxim_violations`
+  - `generate_pragmatic_implicature`
+  - `speaker_pragmatic_profile`
+  - `utterances_by_speech_act`
+  - `utterances_by_speaker`
+  - `most_violated_maxim`
+  - `overall_cooperative_compliance`
+  - `update_pragmatic_inference`
+  - `pragmatic_inference_stats`
+
+### lex-agentic-learning
+
+- **anchoring**
+  - `record_anchor`
+  - `evaluate_estimate`
+  - `reference_frame`
+  - `de_anchor`
+  - `shift_reference`
+  - `update_anchoring`
+  - `domain_anchors`
+  - `anchoring_stats`
+- **cognitive_catalyst**
+  - `create_catalyst`
+  - `create_reaction`
+  - `apply_catalyst`
+  - `attempt_reaction`
+  - `recharge`
+  - `list_catalysts`
+  - `catalyst_status`
+- **cognitive_chrysalis**
+  - `log`
+  - `create_chrysalis`
+  - `create_cocoon`
+  - `spin`
+  - `enclose`
+  - `incubate`
+  - `incubate_all`
+  - `emerge`
+  - `disturb`
+  - `list_chrysalises`
+  - `metamorphosis_status`
+- **curiosity**
+  - `detect_gaps`
+  - `generate_wonder`
+  - `explore_wonder`
+  - `resolve_wonder`
+  - `curiosity_intensity`
+  - `top_wonders`
+  - `form_agenda`
+  - `wonder_stats`
+  - `decay_wonders`
+  - `self_inquire`
+- **epistemic_curiosity**
+  - `create_gap`
+  - `explore_gap`
+  - `satisfy_gap`
+  - `resolve_gap`
+  - `most_urgent_gaps`
+  - `gaps_by_domain`
+  - `gaps_by_type`
+  - `decay_gaps`
+  - `curiosity_report`
+  - `curiosity_status`
+- **cognitive_fermentation**
+  - `create_substrate`
+  - `ferment`
+  - `catalyze`
+  - `ferment_all`
+  - `list_ripe`
+  - `fermentation_status`
+- **habit**
+  - `observe_action`
+  - `suggest_habit`
+  - `execute_habit`
+  - `decay_habits`
+  - `merge_habits`
+  - `habit_stats`
+  - `habit_repertoire`
+- **hebbian_assembly**
+  - `activate_unit`
+  - `co_activate_units`
+  - `query_weight`
+  - `list_assemblies`
+  - `query_assembly`
+  - `pattern_complete`
+  - `strongest_units`
+  - `assemblies_for`
+  - `update_hebbian`
+  - `hebbian_stats`
+- **learning_rate**
+  - `record_prediction`
+  - `record_surprise`
+  - `record_error`
+  - `current_rate`
+  - `fastest_domains`
+  - `slowest_domains`
+  - `update_learning_rate`
+  - `learning_rate_stats`
+- **meta_learning**
+  - `create_learning_domain`
+  - `register_learning_strategy`
+  - `record_learning_episode`
+  - `recommend_learning_strategy`
+  - `check_transfer_learning`
+  - `apply_transfer_bonus`
+  - `learning_domain_ranking`
+  - `learning_strategy_ranking`
+  - `learning_curve_report`
+  - `update_meta_learning`
+  - `meta_learning_stats`
+- **outcome_listener**
+  - `process_outcome`
+- **cognitive_plasticity**
+  - `create_pathway`
+  - `strengthen_pathway`
+  - `weaken_pathway`
+  - `rejuvenate_pathway`
+  - `enter_critical_period`
+  - `exit_critical_period`
+  - `prune_weak_pathways`
+  - `strongest_pathways`
+  - `plasticity_report`
+- **preference_learning**
+  - `register_preference_option`
+  - `record_preference_comparison`
+  - `predict_preference_outcome`
+  - `top_preferences_report`
+  - `preference_stability_report`
+  - `update_preference_learning`
+  - `preference_learning_stats`
+- **procedural_learning**
+  - `create_skill`
+  - `add_skill_production`
+  - `practice_skill`
+  - `execute_production`
+  - `skill_assessment`
+  - `compiled_skills`
+  - `autonomous_skills`
+  - `most_practiced_skills`
+  - `update_procedural_learning`
+  - `procedural_learning_stats`
+- **cognitive_scaffolding**
+  - `create_scaffold`
+  - `attempt_scaffolded_task`
+  - `recommend_scaffolded_task`
+  - `mastered_scaffolded_skills`
+  - `zpd_skills`
+  - `domain_scaffolds`
+  - `adjust_scaffold_support`
+  - `overall_scaffolded_competence`
+  - `update_cognitive_scaffolding`
+  - `cognitive_scaffolding_stats`
+
+### lex-agentic-memory
+
+- **cognitive_archaeology**
+  - `create_site`
+  - `dig`
+  - `excavate`
+  - `restore_artifact`
+  - `list_artifacts`
+  - `decay_all`
+  - `archaeology_status`
+- **communication_pattern**
+  - `update_patterns`
+  - `analyze_patterns`
+  - `pattern_stats`
+- **cognitive_compression**
+  - `store_chunk`
+  - `compress_chunk`
+  - `decompress_chunk`
+  - `abstract_chunks`
+  - `compress_all`
+  - `average_fidelity`
+  - `overall_compression_ratio`
+  - `compression_report`
+- **diary**
+  - `write_diary`
+  - `read_diary`
+  - `search_diary`
+  - `diary_stats`
+- **cognitive_echo**
+  - `create_echo`
+  - `reinforce_echo`
+  - `decay_all`
+  - `active_echoes`
+  - `priming_echoes`
+  - `interfering_echoes`
+  - `echoes_by_domain`
+  - `strongest_echoes`
+  - `priming_effect`
+  - `echo_status`
+- **cognitive_echo_chamber**
+  - `create_echo`
+  - `create_chamber`
+  - `amplify`
+  - `disrupt`
+  - `list_echoes`
+  - `decay_all`
+  - `chamber_status`
+- **episodic_buffer**
+  - `create_episode`
+  - `add_binding`
+  - `attend_episode`
+  - `rehearse_episode`
+  - `check_integration`
+  - `retrieve_by_modality`
+  - `retrieve_multimodal`
+  - `most_coherent`
+  - `update_episodic_buffer`
+  - `episodic_buffer_stats`
+- **cognitive_hologram**
+  - `create`
+  - `fragment`
+  - `reconstruct`
+  - `list_holograms`
+  - `interference_check`
+  - `hologram_status`
+- **cognitive_immune_memory**
+  - `create_memory_cell`
+  - `vaccinate`
+  - `encounter_threat`
+  - `decay_all`
+  - `immunity_for`
+  - `active_cells`
+  - `veteran_cells`
+  - `threat_coverage`
+  - `immune_status`
+- **analysis**
+  - `warmth_by_domain`
+  - `rosy_retrospection_index`
+  - `nostalgia_proneness`
+  - `most_nostalgic_domains`
+  - `bittersweet_memories`
+- **recall**
+  - `store_memory`
+  - `trigger_nostalgia`
+  - `age_memories`
+  - `nostalgia_report`
+- **cognitive_offloading**
+  - `register_store`
+  - `offload_item`
+  - `retrieve_item`
+  - `report_retrieval_failure`
+  - `items_in_store`
+  - `items_by_type`
+  - `most_important_offloaded`
+  - `offloading_status`
+- **cognitive_paleontology**
+  - `record_extinction`
+  - `begin_excavation`
+  - `excavate`
+  - `complete_excavation`
+  - `list_fossils`
+  - `paleontology_status`
+- **cognitive_palimpsest**
+  - `create_palimpsest`
+  - `overwrite_belief`
+  - `peek_through_belief`
+  - `erode_belief`
+  - `ghost_layers`
+  - `all_ghost_layers`
+  - `domain_archaeology`
+  - `belief_drift`
+  - `overwrite_frequency`
+  - `most_rewritten`
+  - `decay_all_ghosts`
+  - `palimpsest_report`
+- **cognitive_reserve**
+  - `add_cognitive_pathway`
+  - `link_backup_pathway`
+  - `damage_cognitive_pathway`
+  - `recover_cognitive_pathway`
+  - `cognitive_reserve_assessment`
+  - `domain_cognitive_reserve`
+  - `most_redundant_pathways`
+  - `update_cognitive_reserve`
+  - `cognitive_reserve_stats`
+- **semantic_memory**
+  - `store_concept`
+  - `relate_concepts`
+  - `retrieve_concept`
+  - `query_concept_relations`
+  - `check_category`
+  - `find_instances`
+  - `activate_spread`
+  - `concepts_in`
+  - `update_semantic_memory`
+  - `semantic_memory_stats`
+- **semantic_priming**
+  - `add_node`
+  - `remove_node`
+  - `connect_nodes`
+  - `prime`
+  - `prime_and_spread`
+  - `spread_activation`
+  - `decay`
+  - `reset`
+  - `find_node`
+  - `neighbors`
+  - `primed_nodes`
+  - `most_primed`
+  - `priming_report`
+  - `status`
+- **semantic_satiation**
+  - `expose`
+  - `register`
+  - `expose_by_id`
+  - `recover`
+  - `satiation_status`
+  - `domain_satiation`
+  - `most_exposed`
+  - `freshest_concepts`
+  - `novelty_report`
+  - `prune_saturated`
+- **source_monitoring**
+  - `record_source`
+  - `attribute_source`
+  - `verify_source`
+  - `correct_source`
+  - `reality_check`
+  - `confused_sources`
+  - `sources_by_type`
+  - `attribution_accuracy`
+  - `update_source_monitoring`
+  - `source_monitoring_stats`
+- **consolidation**
+  - `reinforce`
+  - `decay_cycle`
+  - `migrate_tier`
+  - `hebbian_link`
+  - `enforce_quota`
+  - `erase_by_type`
+  - `erase_by_agent`
+- **traces**
+  - `store_trace`
+  - `get_trace`
+  - `retrieve_by_type`
+  - `retrieve_by_domain`
+  - `retrieve_associated`
+  - `retrieve_ranked`
+  - `delete_trace`
+  - `retrieve_and_reinforce`
+- **transfer_learning**
+  - `learn_domain`
+  - `attempt_transfer`
+  - `set_similarity`
+  - `transfer_effectiveness`
+  - `most_transferable`
+  - `interference_risks`
+  - `transfer_report`
+  - `get_domain`
+
+### lex-agentic-self
+
+- **agency**
+  - `efficacy_model`
+  - `record_mastery`
+  - `record_vicarious`
+  - `record_persuasion`
+  - `record_physiological`
+  - `update_agency`
+  - `check_efficacy`
+  - `should_attempt?`
+  - `strongest_domains`
+  - `weakest_domains`
+  - `agency_stats`
+- **cognitive_anchor**
+  - `create_anchor`
+  - `create_chain`
+  - `apply_bias`
+  - `list_anchors`
+  - `anchor_status`
+- **anosognosia**
+  - `register_deficit`
+  - `acknowledge_deficit`
+  - `reveal_blind_spot`
+  - `awareness_score`
+  - `awareness_gap`
+  - `blind_spots`
+  - `calibration_report`
+  - `decay_awareness`
+  - `anosognosia_status`
+- **cognitive_architecture**
+  - `register_architecture_subsystem`
+  - `create_architecture_connection`
+  - `activate_architecture_subsystem`
+  - `degrade_architecture_subsystem`
+  - `subsystem_status_report`
+  - `bottleneck_report`
+  - `architecture_health_report`
+  - `architecture_graph_report`
+  - `downstream_subsystems`
+  - `update_cognitive_architecture`
+  - `cognitive_architecture_stats`
+- **default_mode_network**
+  - `register_external_stimulus`
+  - `generate_idle_thought`
+  - `trigger_self_reflection`
+  - `trigger_social_replay`
+  - `trigger_spontaneous_plan`
+  - `trigger_wandering`
+  - `salient_thoughts`
+  - `dmn_mode_status`
+  - `update_dmn`
+  - `dmn_stats`
+- **cognitive_fingerprint**
+  - `record_observation`
+  - `verify_identity`
+  - `anomaly_check`
+  - `trait_profile`
+  - `strongest_traits`
+  - `weakest_traits`
+  - `identity_confidence`
+  - `fingerprint_hash`
+  - `fingerprint_report`
+  - `fingerprint_status`
+- **entra**
+  - `validate_worker_identity`
+  - `sync_owner`
+  - `transfer_ownership`
+  - `check_orphans`
+  - `resolve_governance_roles`
+  - `refresh_access_token`
+  - `rotate_client_secret`
+  - `credential_refresh_cycle`
+- **identity**
+  - `observe_behavior`
+  - `observe_all`
+  - `check_entropy`
+  - `identity_status`
+  - `identity_maturity`
+- **metacognition**
+  - `introspect`
+  - `self_narrative`
+  - `explain_subsystem`
+  - `architecture_overview`
+  - `health_trend`
+  - `architecture_changes`
+  - `metacognition_stats`
+- **registry**
+  - `register_extension`
+  - `deregister_extension`
+  - `list_extensions`
+  - `extension_status`
+  - `update_extension`
+  - `category_distribution`
+  - `degraded_extensions`
+  - `seed_from_constants`
+- **metacognitive_monitoring**
+  - `record_judgment`
+  - `resolve_judgment`
+  - `feeling_of_knowing`
+  - `judgment_of_learning`
+  - `detect_overconfidence`
+  - `detect_underconfidence`
+  - `calibration_report`
+  - `monitoring_report`
+  - `average_effort`
+  - `calibration_curve`
+- **narrative**
+  - `create_arc`
+  - `add_beat`
+  - `get_arc`
+  - `active_arcs`
+  - `completed_arcs`
+  - `most_dramatic_arc`
+  - `arc_report`
+- **narrative_identity**
+  - `record_episode`
+  - `assign_episode_to_chapter`
+  - `create_chapter`
+  - `close_chapter`
+  - `add_theme`
+  - `link_theme`
+  - `reinforce_theme`
+  - `narrative_coherence`
+  - `identity_summary`
+  - `life_story`
+  - `most_defining_episodes`
+  - `prominent_themes`
+  - `current_chapter`
+  - `decay_themes`
+  - `narrative_report`
+- **narrative_self**
+  - `record_narrative_self_episode`
+  - `recent_episodes`
+  - `significant_episodes`
+  - `episodes_by_type`
+  - `create_thread`
+  - `strongest_threads`
+  - `timeline`
+  - `self_summary`
+  - `update_narrative_self`
+  - `narrative_self_stats`
+- **personality**
+  - `update_personality`
+  - `personality_profile`
+  - `describe_personality`
+  - `trait_detail`
+  - `personality_compatibility`
+  - `personality_stats`
+- **reflection**
+  - `reflect`
+  - `reflect_on_dream`
+  - `cognitive_health`
+  - `recent_reflections`
+  - `reflections_by_category`
+  - `adapt`
+  - `reflection_stats`
+- **relationship_arc**
+  - `record_milestone`
+  - `update_arc`
+  - `arc_stats`
+- **self_model**
+  - `add_self_capability`
+  - `add_self_knowledge`
+  - `predict_own_success`
+  - `record_self_outcome`
+  - `self_introspection`
+  - `self_strengths`
+  - `self_weaknesses`
+  - `self_blind_spots`
+  - `self_calibration_report`
+  - `self_model_stats`
+- **self_talk**
+  - `register_voice`
+  - `start_dialogue`
+  - `add_turn`
+  - `conclude_dialogue`
+  - `generate_voice_turn`
+  - `deadlock_dialogue`
+  - `amplify_voice`
+  - `dampen_voice`
+  - `dialogue_report`
+  - `self_talk_status`
+  - `decay_voices`
+
+### lex-agentic-social
+
+- **cognitive_apprenticeship**
+  - `create_apprenticeship`
+  - `conduct_apprenticeship_session`
+  - `recommend_apprenticeship_method`
+  - `graduated_apprenticeships`
+  - `active_apprenticeships`
+  - `mentor_apprenticeships`
+  - `apprentice_apprenticeships`
+  - `domain_apprenticeships`
+  - `update_cognitive_apprenticeship`
+  - `cognitive_apprenticeship_stats`
+- **attachment**
+  - `update_attachment`
+  - `reflect_on_bonds`
+  - `attachment_stats`
+- **calibration**
+  - `update_calibration`
+  - `record_advisory_meta`
+  - `detect_explicit_feedback`
+  - `calibration_weights`
+  - `calibration_stats`
+  - `sync_partner_knowledge`
+  - `extract_preferences_via_llm`
+  - `promote_partner_knowledge`
+- **conflict**
+  - `register_conflict`
+  - `add_exchange`
+  - `resolve_conflict`
+  - `get_conflict`
+  - `active_conflicts`
+  - `check_stale_conflicts`
+  - `recommended_posture`
+- **conscience**
+  - `moral_evaluate`
+  - `moral_status`
+  - `moral_history`
+  - `update_moral_outcome`
+  - `moral_dilemmas`
+  - `conscience_stats`
+- **consent**
+  - `check_consent`
+  - `record_action`
+  - `evaluate_tier_change`
+  - `apply_tier_change`
+  - `evaluate_all_tiers`
+  - `request_autonomous_approval`
+  - `approve_promotion`
+  - `reject_promotion`
+  - `expire_pending_approvals`
+  - `evaluate_and_apply_tiers`
+  - `consent_status`
+- **cognitive_entrainment**
+  - `create_entrainment_pairing`
+  - `record_entrainment_interaction`
+  - `pairings_for_agent`
+  - `entrained_partners`
+  - `strongest_entrainment_pairings`
+  - `domain_entrainment`
+  - `overall_entrainment_level`
+  - `update_cognitive_entrainment`
+  - `cognitive_entrainment_stats`
+- **governance**
+  - `create_proposal`
+  - `vote_on_proposal`
+  - `get_proposal`
+  - `open_proposals`
+  - `timeout_proposals`
+  - `review_transition`
+  - `validate_action`
+- **shadow_ai**
+  - `scan_unregistered_extensions`
+  - `check_llm_bypass_indicators`
+  - `check_airb_compliance`
+  - `full_scan`
+- **joint_attention**
+  - `create_attention_target`
+  - `join_attention`
+  - `leave_attention`
+  - `direct_attention`
+  - `establish_mutual_awareness`
+  - `update_gaze`
+  - `shared_focus`
+  - `attention_targets_for`
+  - `update_joint_attention`
+  - `joint_attention_stats`
+- **mentalizing**
+  - `attribute_belief`
+  - `project_belief`
+  - `check_alignment`
+  - `detect_false_belief`
+  - `beliefs_for_agent`
+  - `beliefs_about_agent`
+  - `recursive_belief_lookup`
+  - `update_mentalizing`
+  - `mentalizing_stats`
+- **observe**
+  - `observe_action`
+  - `list_events`
+- **resonance**
+  - `empathic_resonance`
+  - `decay_resonances`
+  - `resonance_summary`
+- **simulate**
+  - `simulate_action`
+  - `record_simulation_accuracy`
+  - `simulation_history`
+- **mirror**
+  - `observe_behavior`
+  - `imitate_behavior`
+  - `report_imitation_outcome`
+  - `strongest_mirrors`
+  - `observations_for`
+  - `observations_in`
+  - `repertoire_status`
+  - `update_mirror`
+  - `mirror_stats`
+- **moral_reasoning**
+  - `evaluate_moral_action`
+  - `pose_moral_dilemma`
+  - `resolve_moral_dilemma`
+  - `apply_ethical_framework`
+  - `add_moral_principle`
+  - `check_moral_development`
+  - `moral_foundation_profile`
+  - `moral_stage_info`
+  - `update_moral_reasoning`
+  - `moral_reasoning_stats`
+- **perspective_shifting**
+  - `add_perspective`
+  - `list_perspectives`
+  - `get_perspective`
+  - `add_situation`
+  - `list_situations`
+  - `generate_view`
+  - `views_for_situation`
+  - `perspective_agreement`
+  - `blind_spots`
+  - `coverage_score`
+  - `dominant_view`
+  - `synthesize`
+  - `most_divergent_pair`
+  - `engine_status`
+- **social**
+  - `update_social`
+  - `join_group`
+  - `leave_group`
+  - `update_reputation`
+  - `agent_reputation`
+  - `reciprocity_status`
+  - `record_exchange`
+  - `report_violation`
+  - `group_status`
+  - `social_status`
+  - `social_stats`
+- **social_learning**
+  - `register_model_agent`
+  - `observe_agent_behavior`
+  - `retained_behaviors`
+  - `reproducible_behaviors`
+  - `reproduce_observed_behavior`
+  - `reinforce_reproduction`
+  - `best_model_agents`
+  - `domain_models`
+  - `update_social_learning`
+  - `social_learning_stats`
+- **cognitive_symbiosis**
+  - `create_bond`
+  - `activate`
+  - `health_status`
+  - `list_bonds`
+  - `detect_parasites`
+  - `ecosystem_report`
+- **theory_of_mind**
+  - `update_theory_of_mind`
+  - `observe_agent`
+  - `predict_behavior`
+  - `record_outcome`
+  - `check_false_beliefs`
+  - `perspective_take`
+  - `compare_agents`
+  - `mental_state`
+  - `tom_stats`
+- **trust**
+  - `get_trust`
+  - `record_trust_interaction`
+  - `reinforce_trust_dimension`
+  - `decay_trust`
+  - `trusted_agents`
+  - `delegatable_agents`
+  - `trust_status`
+
+### lex-extinction — Agent lifecycle termination protocol for LegionIO
+
+- **extinction**
+  - `escalate`
+  - `deescalate`
+  - `extinction_status`
+  - `monitor_protocol`
+  - `archive_agent`
+  - `full_termination`
+  - `reset!`
+
+### lex-mind-growth
+
+- **analyzer**
+  - `cognitive_profile`
+  - `identify_weak_links`
+  - `recommend_priorities`
+- **builder**
+  - `build_extension`
+  - `build_status`
+- **competitive_evolver**
+  - `create_competition`
+  - `run_trial`
+  - `compare_results`
+  - `declare_winner`
+  - `competition_status`
+  - `active_competitions`
+  - `competition_history`
+- **composer**
+  - `add_composition`
+  - `remove_composition`
+  - `evaluate_output`
+  - `composition_stats`
+  - `suggest_compositions`
+  - `list_compositions`
+- **consensus_builder**
+  - `propose_to_swarm`
+  - `vote_in_swarm`
+  - `tally_swarm_votes`
+  - `resolve_disagreement`
+  - `consensus_summary`
+- **dashboard**
+  - `extension_timeline`
+  - `category_distribution`
+  - `build_metrics`
+  - `top_extensions`
+  - `bottom_extensions`
+  - `recent_proposals`
+  - `full_dashboard`
+- **dream_ideation**
+  - `generate_dream_proposals`
+  - `dream_agenda_items`
+  - `enrich_from_dream_context`
+- **evolver**
+  - `select_for_improvement`
+  - `propose_improvement`
+  - `replace_extension`
+  - `merge_extensions`
+  - `evolution_summary`
+- **governance**
+  - `submit_proposal`
+  - `vote_on_proposal`
+  - `governance_resolved`
+  - `tally_votes`
+  - `approve_proposal`
+  - `reject_proposal`
+  - `governance_stats`
+- **integration_tester**
+  - `test_extension_in_tick`
+  - `test_cross_extension`
+  - `benchmark_tick`
+- **monitor**
+  - `health_check`
+  - `usage_stats`
+  - `impact_score`
+  - `decay_check`
+  - `auto_prune`
+  - `health_summary`
+- **orchestrator**
+  - `run_growth_cycle`
+  - `growth_status`
+  - `post_build_pipeline`
+- **proposer**
+  - `analyze_gaps`
+  - `propose_concept`
+  - `evaluate_proposal`
+  - `list_proposals`
+  - `proposal_stats`
+  - `get_proposal_object`
+  - `persist_proposal`
+- **retrospective**
+  - `session_report`
+  - `trend_analysis`
+  - `learning_extraction`
+- **risk_assessor**
+  - `assess_risk`
+  - `risk_summary`
+- **swarm_builder**
+  - `create_build_swarm`
+  - `join_build_swarm`
+  - `execute_swarm_build`
+  - `complete_build_swarm`
+  - `swarm_build_status`
+  - `active_build_swarms`
+- **validator**
+  - `validate_proposal`
+  - `validate_scores`
+  - `validate_fitness`
+- **wirer**
+  - `analyze_fit`
+  - `wire_extension`
+  - `unwire_extension`
+  - `disable_extension`
+  - `enable_extension`
+  - `wiring_status`
+  - `rewire_all`
+
+### lex-synapse — Cognitive routing layer for LegionIO task chains
+
+- **blast_radius**
+  - `compute`
+  - `blast_tier`
+  - `blast_multiplier_for`
+  - `requires_llm_review?`
+- **challenge**
+  - `pending_challenges`
+  - `challenge_proposal`
+  - `resolve_challenge_outcomes`
+  - `apply_proposal`
+  - `run_challenge_cycle`
+- **crystallize**
+  - `crystallize`
+- **dream**
+  - `dream_replay`
+  - `dream_simulate`
+- **evaluate**
+  - `evaluate`
+- **gaia_report**
+  - `gaia_summary`
+  - `gaia_reflection`
+- **mutate**
+  - `mutate`
+- **pain**
+  - `handle_pain`
+- **promote**
+  - `promote`
+- **propose**
+  - `propose_reactive`
+  - `propose_proactive`
+- **report**
+  - `report`
+- **retrieve**
+  - `retrieve_and_seed`
+- **revert**
+  - `revert`
+
+### lex-tick
+
+- **orchestrator**
+  - `remote_invocable?`
+  - `execute_tick`
+  - `evaluate_mode_transition`
+  - `tick_status`
+  - `set_mode`
+
+## Code Workflow
+
+### lex-assessor — Fleet pipeline intake for LegionIO
+
+- **assessor**
+  - `assess`
+  - `escalate`
+
+### lex-developer — Legion::Extensions::Developer
+
+- **developer**
+  - `implement`
+  - `incorporate_feedback`
+- **feedback**
+  - `incorporate_feedback`
+- **ship**
+  - `finalize`
+
+### lex-factory — Spec-to-code autonomous pipeline for LegionIO
+
+- **factory**
+  - `run_pipeline`
+  - `pipeline_status`
+
+### lex-planner — Legion::Extensions::Planner
+
+- **planner**
+  - `plan`
+  - `gather_context`
+
+### lex-validator — Legion::Extensions::Validator
+
+- **validator**
+  - `validate`
+
+## Core & Services
+
+### lex-acp — ACP agent protocol adapter for LegionIO
+
+- **acp**
+  - `invoke_agent`
+  - `register_external`
+  - `list_agents`
+  - `discover_agents`
+- **agent**
+  - `dispatch`
+  - `handle_initialize`
+  - `handle_session_new`
+  - `handle_session_list`
+  - `handle_session_cancel`
+  - `handle_session_set_mode`
+  - `handle_session_set_config_option`
+  - `handle_session_prompt`
+
+### lex-adapter — External agent adapter abstraction for LegionIO
+
+- **adapter**
+  - `invoke_adapter`
+  - `list_adapters`
+  - `adapter_status`
+
+### lex-apollo — Shared knowledge store for GAIA cognitive mesh
+
+- **entity_extractor**
+  - `extract_entities`
+  - `entity_extraction_prompt`
+  - `entity_schema`
+- **expertise**
+  - `get_expertise`
+  - `domains_at_risk`
+  - `agent_profile`
+  - `aggregate`
+  - `expertise_groups`
+  - `upsert_expertise_group`
+  - `expertise_proficiency`
+- **gas**
+  - `json_load`
+  - `relate_confidence_gate`
+  - `synthesis_confidence_cap`
+  - `max_anticipations`
+  - `similar_entries_limit`
+  - `fallback_confidence`
+  - `process`
+  - `processable?`
+  - `phase_comprehend`
+  - `phase_extract`
+  - `phase_relate`
+  - `phase_synthesize`
+  - `phase_deposit`
+  - `phase_anticipate`
+  - `fetch_similar_entries`
+  - `classify_relation`
+  - `llm_classify_relation`
+  - `fallback_relation`
+  - `llm_synthesize`
+  - `build_synthesis_entry`
+  - `geometric_mean`
+  - `llm_anticipate`
+  - `promote_to_pattern_store`
+  - `llm_available?`
+  - `mechanical_comprehend`
+  - `llm_comprehend`
+- **knowledge**
+  - `store_knowledge`
+  - `query_knowledge`
+  - `related_entries`
+  - `deprecate_entry`
+  - `handle_ingest`
+  - `handle_query`
+  - `handle_traverse`
+  - `redistribute_knowledge`
+  - `retrieve_relevant`
+  - `prepare_mesh_export`
+  - `handle_erasure_request`
+- **maintenance**
+  - `force_decay`
+  - `archive_stale`
+  - `resolve_dispute`
+  - `run_decay_cycle`
+  - `check_corroboration`
+- **request**
+  - `data_required?`
+  - `query`
+  - `retrieve`
+  - `ingest`
+  - `traverse`
+
+### lex-audit — Legion::Extensions::Audit
+
+- **approval_queue**
+  - `submit`
+  - `approve`
+  - `reject`
+  - `list_pending`
+  - `show_approval`
+- **audit**
+  - `write`
+  - `verify`
+
+### lex-autofix — Autonomous error fix agent for LegionIO
+
+- **diagnose**
+  - `check_github`
+- **fix**
+  - `attempt_fix`
+  - `run_tests`
+  - `run_lint`
+- **pipeline**
+  - `buffer`
+  - `handle_log_event`
+  - `run_pipeline`
+  - `process_cluster`
+- **ship**
+  - `commit_and_push`
+  - `open_pr`
+  - `ship`
+- **triage**
+  - `batch_triage`
+
+### lex-codegen — Legion::Extensions::Codegen
+
+- **auto_fix**
+  - `auto_fix`
+  - `approve_fix`
+  - `reject_fix`
+  - `list_fixes`
+- **from_gap**
+  - `generate`
+  - `generate_runner_method`
+  - `generate_full_extension`
+  - `implement_stub`
+- **generate**
+  - `scaffold_extension`
+  - `generate_file`
+- **review_handler**
+  - `handle_verdict`
+- **template**
+  - `list_templates`
+  - `render_template`
+  - `template_variables`
+- **validate**
+  - `validate_structure`
+  - `validate_rubocop_config`
+  - `validate_gemspec`
+
+### lex-coldstart
+
+- **coldstart**
+  - `begin_imprint`
+  - `record_observation`
+  - `coldstart_progress`
+  - `imprint_active?`
+  - `current_multiplier`
+- **ingest**
+  - `ingest_file`
+  - `ingest_directory`
+  - `preview_ingest`
+
+### lex-conditioner — Conditional rule engine for LegionIO task chains
+
+- **conditioner**
+  - `check`
+  - `send_task`
+- **conflict_resolver**
+  - `resolve`
+- **consent_tiers**
+  - `evaluate`
+- **domain_classifier**
+  - `classify`
+
+### lex-cost-scanner — Cloud cost optimization scanner for LegionIO
+
+- **reporter**
+  - `generate_report`
+  - `format_slack_blocks`
+  - `post_report`
+- **scanner**
+  - `scan_all`
+  - `scan_account`
+  - `scan_stats`
+
+### lex-dataset — Versioned dataset management for LegionIO
+
+- **dataset**
+  - `remote_invocable?`
+  - `create_dataset`
+  - `import_dataset`
+  - `export_dataset`
+  - `list_datasets`
+  - `get_dataset`
+  - `generate_dataset`
+- **experiment**
+  - `run_experiment`
+  - `compare_experiments`
+- **sampling**
+  - `sample_from_traces`
+
+### lex-detect
+
+- **cancel_task**
+  - `cancel_task`
+- **task_observer**
+  - `observe`
+
+### lex-eval — LLM output evaluation framework for LegionIO
+
+- **agentic_review**
+  - `review_output`
+  - `review_with_escalation`
+  - `review_experiment`
+- **annotation**
+  - `create_queue`
+  - `enqueue_items`
+  - `assign_next`
+  - `complete_annotation`
+  - `skip_annotation`
+  - `queue_stats`
+  - `export_to_dataset`
+- **code_review**
+  - `review_generated`
+- **evaluation**
+  - `run_evaluation`
+  - `list_evaluators`
+  - `build_evaluator`
+- **online**
+  - `evaluate_response`
+
+### lex-exec
+
+- **bundler** (tools: `exec.bundler.install`, `exec.bundler.exec_rspec`, `exec.bundler.exec_rubocop`)
+  - `install` — Run bundle install in a Ruby project
+  - `exec_rspec` — Run bundle exec rspec and parse the suite summary
+  - `exec_rubocop` — Run bundle exec rubocop with optional autocorrect and parse offenses
+- **filesystem** (tools: `exec.filesystem.pwd`, `exec.filesystem.ls`, `exec.filesystem.mkdir`, `exec.filesystem.touch`, `exec.filesystem.cat`, `exec.filesystem.head`, `exec.filesystem.tail`, `exec.filesystem.wc`, `exec.filesystem.cp`, `exec.filesystem.mv`, `exec.filesystem.rm`)
+  - `pwd` — Print the current working directory
+  - `ls` — List files in a directory
+  - `mkdir` — Create a directory
+  - `touch` — Create or update a file timestamp
+  - `cat` — Read a file with cat
+  - `head` — Read the first lines of a file
+  - `tail` — Read the last lines of a file
+  - `wc` — Count lines, words, and bytes in a file
+  - `cp` — Copy files or directories
+  - `mv` — Move or rename files or directories
+  - `rm` — Remove a file or directory through the sandbox blocklist
+- **git** (tools: `exec.git.init`, `exec.git.add`, `exec.git.commit`, `exec.git.push`, `exec.git.status`, `exec.git.diff`, `exec.git.branch`, `exec.git.log`, `exec.git.show`, `exec.git.create_repo`, `exec.git.clone`, `exec.git.fetch`, `exec.git.checkout`)
+  - `init` — Initialize a git repository at the target path
+  - `add` — Stage files in a git repository
+  - `commit` — Create a git commit with a message
+  - `push` — Push a git branch to a remote
+  - `status` — Return git porcelain status and parsed working tree state
+  - `diff` — Show unstaged, staged, or ref-specific git diff output
+  - `branch` — List local or all git branches
+  - `log` — Show recent git commit history
+  - `show` — Show a git object, commit, or ref
+  - `create_repo` — Create and clone a GitHub repository using gh
+  - `clone` — Clone a git repository with optional depth and branch
+  - `fetch` — Fetch git remotes and prune deleted branches
+  - `checkout` — Checkout a git ref or create a branch
+- **shell** (tools: `exec.shell.execute`, `exec.shell.audit`)
+  - `execute` — Execute an allowlisted shell command in a working directory
+  - `audit` — Return recent shell execution audit entries and aggregate stats
+
+### lex-github
+
+- **auth**
+  - `generate_jwt`
+  - `create_installation_token`
+  - `list_installations`
+  - `get_installation`
+- **credential_store**
+  - `store_app_credentials`
+  - `store_oauth_token`
+  - `load_oauth_token`
+- **installations**
+  - `list_installations`
+  - `get_installation`
+  - `list_installation_repos`
+  - `suspend_installation`
+  - `unsuspend_installation`
+  - `delete_installation`
+- **manifest**
+  - `generate_manifest`
+  - `exchange_manifest_code`
+  - `manifest_url`
+- **webhooks**
+  - `verify_signature`
+  - `parse_event`
+  - `receive_event`
+  - `invalidate_scopes_for_event`
+  - `invalidate_all_scopes_for_owner`
+- **auth**
+  - `generate_pkce`
+  - `authorize_url`
+  - `exchange_code`
+  - `refresh_token`
+  - `request_device_code`
+  - `poll_device_code`
+  - `revoke_token`
+  - `oauth_connection`
+- **actions**
+  - `list_workflows`
+  - `get_workflow`
+  - `list_workflow_runs`
+  - `get_workflow_run`
+  - `trigger_workflow`
+  - `cancel_workflow_run`
+  - `rerun_workflow`
+  - `rerun_failed_jobs`
+  - `list_workflow_run_jobs`
+  - `download_workflow_run_logs`
+  - `list_workflow_run_artifacts`
+- **app**
+  - `remote_invocable?`
+- **auth**
+  - `remote_invocable?`
+  - `status`
+  - `login`
+  - `installations`
+- **branches**
+  - `create_branch`
+- **checks**
+  - `create_check_run`
+  - `update_check_run`
+  - `get_check_run`
+  - `list_check_runs_for_ref`
+  - `list_check_suites_for_ref`
+  - `get_check_suite`
+  - `rerequest_check_suite`
+  - `list_check_run_annotations`
+- **comments**
+  - `list_comments`
+  - `get_comment`
+  - `create_comment`
+  - `update_comment`
+  - `delete_comment`
+- **commits**
+  - `list_commits`
+  - `get_commit`
+  - `compare_commits`
+- **contents**
+  - `get_file_content`
+  - `commit_files`
+- **deployments**
+  - `list_deployments`
+  - `get_deployment`
+  - `create_deployment`
+  - `delete_deployment`
+  - `list_deployment_statuses`
+  - `create_deployment_status`
+  - `get_deployment_status`
+- **gists**
+  - `list_gists`
+  - `get_gist`
+  - `create_gist`
+  - `update_gist`
+  - `delete_gist`
+- **issues**
+  - `list_issues`
+  - `get_issue`
+  - `create_issue`
+  - `update_issue`
+  - `list_issue_comments`
+  - `create_issue_comment`
+- **labels**
+  - `list_labels`
+  - `get_label`
+  - `create_label`
+  - `update_label`
+  - `delete_label`
+  - `add_labels_to_issue`
+  - `remove_label_from_issue`
+- **organizations**
+  - `list_user_orgs`
+  - `get_org`
+  - `list_org_repos`
+  - `list_org_members`
+- **pull_requests**
+  - `list_pull_requests`
+  - `get_pull_request`
+  - `create_pull_request`
+  - `update_pull_request`
+  - `merge_pull_request`
+  - `list_pull_request_commits`
+  - `list_all_pull_request_files`
+  - `list_pull_request_review_comments`
+  - `list_pull_request_files`
+  - `list_pull_request_reviews`
+  - `create_review`
+  - `mark_pr_ready`
+- **releases**
+  - `list_releases`
+  - `get_release`
+  - `get_latest_release`
+  - `get_release_by_tag`
+  - `create_release`
+  - `update_release`
+  - `delete_release`
+  - `list_release_assets`
+  - `delete_release_asset`
+- **repositories**
+  - `list_repos`
+  - `get_repo`
+  - `create_repo`
+  - `update_repo`
+  - `delete_repo`
+  - `list_branches`
+  - `list_tags`
+  - `get_tree`
+- **repository_webhooks**
+  - `list_webhooks`
+  - `get_webhook`
+  - `create_webhook`
+  - `update_webhook`
+  - `delete_webhook`
+  - `ping_webhook`
+  - `test_webhook`
+  - `list_webhook_deliveries`
+- **search**
+  - `search_repositories`
+  - `search_issues`
+  - `search_users`
+  - `search_code`
+- **users**
+  - `get_authenticated_user`
+  - `get_user`
+  - `list_followers`
+  - `list_following`
+
+### lex-governance
+
+- **governance**
+  - `review_transition`
+  - `check_airb_approval`
+  - `check_council_approval`
+  - `check_authority_level`
+  - `governance_enabled?`
+  - `auto_submit?`
+  - `council_required_transitions`
+
+### lex-health — Legion::Extensions::Health
+
+- **health**
+  - `update`
+  - `insert`
+  - `delete`
+- **watchdog**
+  - `expire`
+
+### lex-http
+
+- **http**
+  - `status`
+  - `get`
+  - `post`
+  - `patch`
+  - `put`
+  - `delete`
+  - `head`
+  - `options`
+
+### lex-knowledge — Document corpus ingestion and knowledge query pipeline for LegionIO
+
+- **corpus**
+  - `manifest_path`
+  - `corpus_stats`
+- **ingest**
+  - `scan_corpus`
+  - `ingest_corpus`
+  - `ingest_corpus_path`
+  - `ingest_monitors`
+  - `ingest_content`
+  - `ingest_file`
+  - `process_file`
+  - `filter_chunks`
+  - `chunk_allowed_by_filter?`
+  - `filter_cache`
+  - `llm_structured_available?`
+  - `batch_embed_chunks`
+  - `build_exists_map`
+  - `llm_embed_available?`
+  - `paired_without_embed`
+  - `build_embed_map`
+  - `upsert_chunk_with_embedding`
+  - `chunk_exists?`
+  - `ingest_to_apollo`
+  - `retire_file`
+- **maintenance**
+  - `detect_orphans`
+  - `cleanup_orphans`
+  - `reindex`
+  - `health`
+  - `quality_report`
+  - `build_local_stats`
+  - `build_apollo_stats`
+  - `apollo_stats_from_rows`
+  - `apollo_defaults`
+  - `build_sync_stats`
+  - `load_manifest_files`
+  - `load_apollo_source_files`
+  - `count_apollo_chunks`
+  - `archive_orphan_entries`
+  - `hot_chunks`
+  - `cold_chunks`
+  - `low_confidence_chunks`
+  - `quality_summary`
+  - `query_count`
+- **monitor**
+  - `resolve_monitors`
+  - `add_monitor`
+  - `remove_monitor`
+  - `list_monitors`
+  - `monitor_status`
+  - `read_monitors_setting`
+  - `read_legacy_corpus_path`
+  - `persist_monitors`
+- **query**
+  - `query`
+  - `retrieve`
+  - `record_feedback`
+  - `retrieve_chunks`
+  - `expand_neighbor_chunks`
+  - `neighbor_window_for`
+  - `neighbor_dataset`
+  - `chunk_from_entry`
+  - `merge_neighbor_chunks`
+  - `synthesize_answer`
+  - `format_source`
+  - `chunk_context`
+  - `row_context`
+  - `normalize_context`
+  - `chunk_dedupe_key`
+  - `average_score`
+  - `build_metadata`
+  - `zero_embedding?`
+  - `emit_feedback_event`
+  - `llm_available?`
+  - `resolve_neighbor_radius`
+
+### lex-lex — Legion Extension Registry
+
+- **extension**
+  - `create`
+  - `update`
+  - `get`
+  - `delete`
+- **function**
+  - `create`
+  - `update`
+  - `get`
+  - `delete`
+  - `build_args`
+- **register**
+  - `save`
+  - `register_single_extension`
+- **runner**
+  - `create`
+  - `update`
+  - `get`
+  - `delete`
+- **sync**
+  - `sync`
+
+### lex-log — Used to generate logs within the Legion framework
+
+- **output**
+  - `to_file`
+  - `to_stdout`
+
+### lex-mesh
+
+- **delegation**
+  - `delegate`
+  - `complete_delegation`
+  - `revoke_delegation`
+  - `delegation_chain`
+  - `agent_delegations`
+  - `delegation_stats`
+- **mesh**
+  - `register`
+  - `unregister`
+  - `heartbeat`
+  - `send_message`
+  - `find_agents`
+  - `mesh_status`
+  - `expire_silent_agents`
+  - `publish_gossip`
+  - `merge_gossip`
+  - `dispatch_gossip_message`
+- **preferences**
+  - `query_preferences`
+  - `handle_preference_query`
+  - `handle_preference_response`
+  - `expire_pending_requests`
+  - `dispatch_preference_message`
+- **task_request**
+  - `request_task`
+  - `handle_task_reply`
+  - `pending_task_stats`
+  - `expire_pending_tasks`
+
+### lex-metering — Legion::Extensions::Metering
+
+- **cost_optimizer**
+  - `analyze_costs`
+- **metering**
+  - `record`
+  - `worker_costs`
+  - `team_costs`
+  - `routing_stats`
+  - `cleanup_old_records`
+- **rollup**
+  - `rollup_hour`
+  - `purge_raw_records`
+
+### lex-microsoft-outlook
+
+- **auth** (tools: `outlook.auth.status`)
+  - `status` — Report Outlook auth state for the resolved qualifier
+- **folders** (tools: `outlook.list_folders`, `outlook.list_folder_messages`)
+  - `list_folders` — List mail folders in a mailbox via Microsoft Graph
+  - `list_folder_messages` — List messages in a mail folder (well-known name or id) via Microsoft Graph
+- **messages** (tools: `outlook.list_messages`, `outlook.get_message`, `outlook.search_messages`)
+  - `list_messages` — List mail messages in a mailbox folder via Microsoft Graph
+  - `get_message` — Get a single mail message by id via Microsoft Graph
+  - `search_messages` — Search a mailbox with injection-safe $search / whitelisted $filter
+- **send** (tools: `outlook.send_mail`)
+  - `send_mail` — Send mail on the operator behalf via Microsoft Graph (202-inclusive success)
+
+### lex-microsoft_teams
+
+- **activities** (tools: `teams.send_activity_notification`)
+  - `send_activity_notification` — Send an activity notification to a Teams user
+- **adaptive_cards**
+  - `build_card`
+  - `text_block`
+  - `fact_set`
+  - `action_open_url`
+  - `action_submit`
+  - `message_attachment`
+- **ai_insights** (tools: `teams.list_meeting_ai_insights`, `teams.get_meeting_ai_insight`, `teams.list_meeting_recordings`, `teams.get_meeting_recording`, `teams.list_call_records`, `teams.get_call_record`)
+  - `list_meeting_ai_insights` — List AI-generated insights for an online meeting
+  - `get_meeting_ai_insight` — Get a specific AI insight for an online meeting
+  - `list_meeting_recordings` — List recordings for an online meeting
+  - `get_meeting_recording` — Get a specific recording for an online meeting
+  - `list_call_records` — List Teams call records from communications API
+  - `get_call_record` — Get a specific Teams call record
+- **api_ingest**
+  - `ingest_api`
+- **app_installations** (tools: `teams.list_installed_apps_for_user`, `teams.list_installed_apps_in_chat`, `teams.install_app_for_user`, `teams.uninstall_app_for_user`)
+  - `list_installed_apps_for_user` — List Teams apps installed for a user with expand support
+  - `list_installed_apps_in_chat` — List Teams apps installed in a specific chat with expand support
+  - `install_app_for_user` — Install a Teams app for a user
+  - `uninstall_app_for_user` — Uninstall a Teams app for a user
+- **auth**
+  - `acquire_token`
+  - `acquire_bot_token`
+- **bot**
+  - `send_activity`
+  - `reply_to_activity`
+  - `send_text`
+  - `send_card`
+  - `create_conversation`
+  - `get_conversation_members`
+  - `dispatch_message`
+  - `handle_message`
+  - `observe_message`
+  - `session_manager`
+  - `subscription_registry`
+  - `handle_command`
+- **cache_ingest**
+  - `ingest_cache`
+- **call_events** (tools: `teams.list_call_sessions`, `teams.get_call_session`, `teams.list_session_segments`)
+  - `list_call_sessions` — List sessions for a Teams call record with pagination and expand
+  - `get_call_session` — Get a specific session from a Teams call record
+  - `list_session_segments` — List segments for a session in a Teams call record with pagination
+- **channel_messages** (tools: `teams.list_channel_messages`, `teams.get_channel_message`, `teams.send_channel_message`, `teams.reply_to_channel_message`, `teams.list_channel_message_replies`, `teams.edit_channel_message`)
+  - `list_channel_messages` — List messages posted in a Teams channel with pagination and expand support
+  - `get_channel_message` — Get a specific message from a Teams channel
+  - `send_channel_message` — Post a message to a Teams channel
+  - `reply_to_channel_message` — Reply to a thread in a Teams channel
+  - `list_channel_message_replies` — List replies in a Teams channel message thread with pagination
+  - `edit_channel_message` — Edit an existing message in a Teams channel
+- **channels** (tools: `teams.list_channels`, `teams.get_channel`, `teams.create_channel`, `teams.update_channel`, `teams.delete_channel`, `teams.list_channel_members`)
+  - `list_channels` — List channels in a Team with optional filtering and select
+  - `get_channel` — Get a specific channel in a Team
+  - `create_channel` — Create a new channel in a Team
+  - `update_channel` — Update a channel display name or description
+  - `delete_channel` — Delete a channel from a Team
+  - `list_channel_members` — List members of a channel
+- **chats** (tools: `teams.list_chats`, `teams.get_chat`, `teams.create_chat`, `teams.list_chat_members`, `teams.add_chat_member`)
+  - `list_chats` — List Teams chats for the current user with pagination, filtering, and expand support
+  - `get_chat` — Get metadata for a specific Teams chat by ID
+  - `create_chat` — Create a new 1:1 or group Teams chat
+  - `list_chat_members` — List members of a Teams chat
+  - `add_chat_member` — Add a member to a Teams chat
+- **files** (tools: `teams.list_drive_items`, `teams.get_drive_item`, `teams.get_drive_item_content`, `teams.list_team_drive_items`)
+  - `list_drive_items` — List files in the root of a user\'s OneDrive with pagination and filtering
+  - `get_drive_item` — Get metadata for a specific OneDrive file or folder
+  - `get_drive_item_content` — Download the content of a OneDrive file
+  - `list_team_drive_items` — List files in a Team\'s SharePoint document library with pagination
+- **local_cache**
+  - `extract_local_messages`
+  - `local_cache_stats`
+- **loop**
+  - `create_loop_file`
+  - `loop_attachment`
+  - `post_loop_to_chat`
+  - `post_loop_to_channel`
+- **meeting_artifacts** (tools: `teams.list_meeting_artifacts`, `teams.get_meeting_artifact`)
+  - `list_meeting_artifacts` — List artifacts (recordings, whiteboards) for an online meeting with pagination
+  - `get_meeting_artifact` — Get a specific artifact from an online meeting
+- **meetings** (tools: `teams.list_meetings`, `teams.get_meeting`, `teams.create_meeting`, `teams.update_meeting`, `teams.delete_meeting`, `teams.get_meeting_by_join_url`, `teams.list_attendance_reports`, `teams.get_attendance_report`, `teams.resolve_meeting`)
+  - `list_meetings` — List online meetings for the current user with pagination and filtering
+  - `get_meeting` — Get details for a specific online meeting
+  - `create_meeting` — Create a new online meeting
+  - `update_meeting` — Update an existing online meeting
+  - `delete_meeting` — Delete an online meeting
+  - `get_meeting_by_join_url` — Look up a meeting by its join URL
+  - `list_attendance_reports` — List attendance reports for an online meeting
+  - `get_attendance_report` — Get a specific attendance report for an online meeting
+  - `resolve_meeting` — Resolve a Teams meeting from a chat thread ID or join URL
+- **messages** (tools: `teams.list_chat_messages`, `teams.get_chat_message`, `teams.send_chat_message`, `teams.reply_to_chat_message`, `teams.list_message_replies`)
+  - `list_chat_messages` — List messages in a Teams chat thread with pagination, ordering, and filtering
+  - `get_chat_message` — Get a specific message from a Teams chat
+  - `send_chat_message` — Send a message to a Teams chat
+  - `reply_to_chat_message` — Reply to a message in a Teams chat
+  - `list_message_replies` — List replies to a message in a Teams chat with pagination support
+- **ownership**
+  - `sync_owners`
+  - `detect_orphans`
+  - `get_team_owners`
+- **people** (tools: `teams.get_profile`, `teams.list_people`)
+  - `get_profile` — Get the Microsoft Graph profile for a user
+  - `list_people` — List people relevant to the current user with search and filter support
+- **presence** (tools: `teams.get_presence`)
+  - `get_presence` — Get the presence/availability status for a user
+- **profile_ingest**
+  - `full_ingest`
+  - `ingest_self`
+  - `ingest_people`
+  - `ingest_conversations`
+  - `ingest_teams_and_meetings`
+  - `incremental_sync`
+- **subscriptions** (tools: `teams.list_subscriptions`, `teams.get_subscription`, `teams.create_subscription`, `teams.renew_subscription`, `teams.delete_subscription`, `teams.subscribe_to_chat_messages`, `teams.subscribe_to_channel_messages`)
+  - `list_subscriptions` — List active Graph API subscriptions
+  - `get_subscription` — Get a specific Graph API subscription
+  - `create_subscription` — Create a new Graph API change notification subscription
+  - `renew_subscription` — Renew an expiring Graph API subscription
+  - `delete_subscription` — Delete a Graph API subscription
+  - `subscribe_to_chat_messages` — Subscribe to new and updated messages in a Teams chat
+  - `subscribe_to_channel_messages` — Subscribe to new and updated messages in a Teams channel
+- **teams** (tools: `teams.list_joined_teams`, `teams.get_team`, `teams.list_team_members`)
+  - `list_joined_teams` — List Teams the current user has joined with optional filtering and select
+  - `get_team` — Get details for a specific Team by ID
+  - `list_team_members` — List members of a Team with pagination
+- **transcripts** (tools: `teams.list_transcripts`, `teams.get_transcript`, `teams.get_transcript_content`)
+  - `list_transcripts` — List transcripts for an online meeting with pagination
+  - `get_transcript` — Get metadata for a specific meeting transcript
+  - `get_transcript_content` — Download the content of a meeting transcript (VTT or DOCX)
+
+### lex-nautobot
+
+- **circuits**
+  - `list_providers`
+  - `get_provider`
+  - `create_provider`
+  - `update_provider`
+  - `delete_provider`
+  - `list_provider_networks`
+  - `get_provider_network`
+  - `list_circuit_types`
+  - `get_circuit_type`
+  - `create_circuit_type`
+  - `list_circuits`
+  - `get_circuit`
+  - `create_circuit`
+  - `update_circuit`
+  - `delete_circuit`
+  - `list_circuit_terminations`
+  - `get_circuit_termination`
+  - `create_circuit_termination`
+- **cloud**
+  - `list_cloud_accounts`
+  - `get_cloud_account`
+  - `create_cloud_account`
+  - `update_cloud_account`
+  - `delete_cloud_account`
+  - `list_cloud_networks`
+  - `get_cloud_network`
+  - `create_cloud_network`
+  - `update_cloud_network`
+  - `delete_cloud_network`
+  - `list_cloud_services`
+  - `get_cloud_service`
+  - `create_cloud_service`
+  - `list_cloud_resource_types`
+  - `get_cloud_resource_type`
+- **dcim**
+  - `list_location_types`
+  - `get_location_type`
+  - `create_location_type`
+  - `list_locations`
+  - `get_location`
+  - `create_location`
+  - `update_location`
+  - `delete_location`
+  - `list_rack_groups`
+  - `list_racks`
+  - `get_rack`
+  - `create_rack`
+  - `update_rack`
+  - `delete_rack`
+  - `list_rack_reservations`
+  - `list_manufacturers`
+  - `get_manufacturer`
+  - `create_manufacturer`
+  - `list_device_types`
+  - `get_device_type`
+  - `create_device_type`
+  - `list_device_families`
+  - `list_module_types`
+  - `list_platforms`
+  - `get_platform`
+  - `create_platform`
+  - `list_devices`
+  - `get_device`
+  - `create_device`
+  - `update_device`
+  - `delete_device`
+  - `list_interfaces`
+  - `get_interface`
+  - `create_interface`
+  - `update_interface`
+  - `delete_interface`
+  - `list_cables`
+  - `get_cable`
+  - `create_cable`
+  - `delete_cable`
+  - `list_console_ports`
+  - `list_console_server_ports`
+  - `list_power_ports`
+  - `list_power_outlets`
+  - `list_power_panels`
+  - `list_power_feeds`
+  - `list_front_ports`
+  - `list_rear_ports`
+  - `list_device_bays`
+  - `list_inventory_items`
+  - `list_virtual_chassis`
+  - `get_virtual_chassis`
+  - `list_device_redundancy_groups`
+  - `list_interface_redundancy_groups`
+  - `list_software_versions`
+  - `list_software_image_files`
+  - `list_controllers`
+  - `list_controller_managed_device_groups`
+- **extras**
+  - `list_tags`
+  - `get_tag`
+  - `create_tag`
+  - `list_statuses`
+  - `get_status`
+  - `create_status`
+  - `list_roles`
+  - `get_role`
+  - `create_role`
+  - `list_custom_fields`
+  - `get_custom_field`
+  - `create_custom_field`
+  - `list_custom_links`
+  - `list_computed_fields`
+  - `list_config_contexts`
+  - `get_config_context`
+  - `create_config_context`
+  - `update_config_context`
+  - `delete_config_context`
+  - `list_config_context_schemas`
+  - `list_dynamic_groups`
+  - `get_dynamic_group`
+  - `list_git_repositories`
+  - `get_git_repository`
+  - `sync_git_repository`
+  - `list_jobs`
+  - `get_job`
+  - `run_job`
+  - `list_job_results`
+  - `get_job_result`
+  - `list_scheduled_jobs`
+  - `list_secrets`
+  - `get_secret`
+  - `list_secrets_groups`
+  - `list_relationships`
+  - `get_relationship`
+  - `list_webhooks`
+  - `get_webhook`
+  - `create_webhook`
+  - `graphql_query`
+  - `list_notes`
+  - `list_object_changes`
+  - `get_object_change`
+  - `list_contacts`
+  - `get_contact`
+  - `create_contact`
+  - `list_teams`
+  - `get_team`
+  - `list_external_integrations`
+  - `get_external_integration`
+- **ipam**
+  - `list_namespaces`
+  - `get_namespace`
+  - `create_namespace`
+  - `list_vrfs`
+  - `get_vrf`
+  - `create_vrf`
+  - `update_vrf`
+  - `delete_vrf`
+  - `list_route_targets`
+  - `list_rirs`
+  - `list_prefixes`
+  - `get_prefix`
+  - `create_prefix`
+  - `update_prefix`
+  - `delete_prefix`
+  - `available_prefixes`
+  - `list_ip_addresses`
+  - `get_ip_address`
+  - `create_ip_address`
+  - `update_ip_address`
+  - `delete_ip_address`
+  - `available_ips`
+  - `list_vlan_groups`
+  - `get_vlan_group`
+  - `list_vlans`
+  - `get_vlan`
+  - `create_vlan`
+  - `update_vlan`
+  - `delete_vlan`
+  - `list_services`
+  - `get_service`
+  - `create_service`
+- **tenancy**
+  - `list_tenant_groups`
+  - `get_tenant_group`
+  - `create_tenant_group`
+  - `update_tenant_group`
+  - `delete_tenant_group`
+  - `list_tenants`
+  - `get_tenant`
+  - `create_tenant`
+  - `update_tenant`
+  - `delete_tenant`
+- **users**
+  - `list_users`
+  - `get_user`
+  - `create_user`
+  - `list_groups`
+  - `get_group`
+  - `list_tokens`
+  - `list_permissions`
+  - `get_permission`
+- **virtualization**
+  - `list_cluster_types`
+  - `get_cluster_type`
+  - `create_cluster_type`
+  - `list_cluster_groups`
+  - `get_cluster_group`
+  - `create_cluster_group`
+  - `list_clusters`
+  - `get_cluster`
+  - `create_cluster`
+  - `update_cluster`
+  - `delete_cluster`
+  - `list_virtual_machines`
+  - `get_virtual_machine`
+  - `create_virtual_machine`
+  - `update_virtual_machine`
+  - `delete_virtual_machine`
+  - `list_vm_interfaces`
+  - `get_vm_interface`
+  - `create_vm_interface`
+  - `update_vm_interface`
+  - `delete_vm_interface`
+- **vpn**
+  - `list_vpns`
+  - `get_vpn`
+  - `create_vpn`
+  - `update_vpn`
+  - `delete_vpn`
+  - `list_vpn_tunnels`
+  - `get_vpn_tunnel`
+  - `create_vpn_tunnel`
+  - `update_vpn_tunnel`
+  - `delete_vpn_tunnel`
+  - `list_vpn_tunnel_endpoints`
+  - `get_vpn_tunnel_endpoint`
+  - `list_vpn_profiles`
+  - `get_vpn_profile`
+  - `create_vpn_profile`
+  - `list_vpn_terminations`
+  - `get_vpn_termination`
+- **wireless**
+  - `list_radio_profiles`
+  - `get_radio_profile`
+  - `create_radio_profile`
+  - `list_wireless_networks`
+  - `get_wireless_network`
+  - `create_wireless_network`
+  - `list_supported_data_rates`
+
+### lex-neo4j
+
+- **admin**
+  - `server_info`
+  - `discovery`
+  - `list_databases`
+  - `database_info`
+  - `create_database`
+  - `drop_database`
+  - `list_procedures`
+  - `list_functions`
+  - `call_procedure`
+  - `db_stats`
+- **cypher**
+  - `query`
+  - `query_single`
+  - `multi_statement`
+- **graph_data_science**
+  - `list_graphs`
+  - `project_graph`
+  - `drop_graph`
+  - `run_pagerank`
+  - `run_louvain`
+  - `run_node_similarity`
+- **indexes**
+  - `list_indexes`
+  - `create_index`
+  - `create_fulltext_index`
+  - `drop_index`
+  - `list_constraints`
+  - `create_uniqueness_constraint`
+  - `create_existence_constraint`
+  - `drop_constraint`
+- **nodes**
+  - `find_nodes`
+  - `get_node`
+  - `create_node`
+  - `update_node`
+  - `delete_node`
+  - `merge_node`
+  - `count_nodes`
+  - `list_labels`
+- **relationships**
+  - `find_relationships`
+  - `get_relationship`
+  - `create_relationship`
+  - `update_relationship`
+  - `delete_relationship`
+  - `merge_relationship`
+  - `list_relationship_types`
+  - `neighbors`
+  - `shortest_path`
+- **transactions**
+  - `begin_transaction`
+  - `execute_in_transaction`
+  - `commit_transaction`
+  - `rollback_transaction`
+
+### lex-node — Does Legion Node things
+
+- **beat**
+  - `beat`
+- **node**
+  - `message`
+  - `update_gem`
+  - `update_settings`
+  - `push_public_key`
+  - `update_public_key`
+  - `delete_public_key`
+  - `request_public_keys`
+  - `request_cluster_secret`
+  - `push_cluster_secret`
+  - `receive_cluster_secret`
+  - `receive_vault_token`
+  - `broadcast_settings`
+  - `killswitch`
+- **vault**
+  - `request_token`
+  - `request_vault_token`
+  - `receive_vault_token`
+  - `push_vault_token`
+
+### lex-onboard
+
+- **provision**
+  - `provision`
+- **validator**
+  - `validate_askid`
+  - `check_conflicts`
+
+### lex-pilot-knowledge-assist
+
+- **assistant**
+  - `answer_question`
+- **classifier**
+  - `classify_intent`
+- **feedback**
+  - `record_feedback`
+  - `feedback_stats`
+
+### lex-ping
+
+- **http**
+  - `ping`
+- **tcp**
+  - `ping`
+- **udp**
+  - `ping`
+
+### lex-privatecore
+
+- **embedding_guard**
+  - `check_embedding_similarity`
+  - `cache_pattern_embeddings`
+- **privatecore**
+  - `enforce_boundary`
+  - `check_pii`
+  - `detect_probe`
+  - `restore_text`
+  - `erasure_audit`
+  - `prune_audit_log`
+
+### lex-prompt — Versioned prompt management for LegionIO
+
+- **prompt**
+  - `create_prompt`
+  - `update_prompt`
+  - `get_prompt`
+  - `list_prompts`
+  - `tag_prompt`
+  - `render_prompt`
+
+### lex-react — Reaction engine for LegionIO
+
+- **react**
+  - `handle_event`
+  - `react_stats`
+  - `reset!`
+
+### lex-s3
+
+- **buckets**
+  - `list_buckets`
+  - `create_bucket`
+  - `delete_bucket`
+  - `bucket_exists?`
+- **objects**
+  - `list_objects`
+  - `get_object`
+  - `put_object`
+  - `delete_object`
+  - `head_object`
+  - `copy_object`
+
+### lex-scheduler
+
+- **emergency_promotion**
+  - `promote`
+  - `emergency_event?`
+  - `emergency_patterns`
+  - `fetch_current_mode`
+  - `execute_emergency_promotion`
+- **mode_scheduler**
+  - `evaluate_mode`
+  - `mode_schedule`
+  - `default_mode_schedule`
+  - `determine_mode`
+  - `fetch_current_mode`
+  - `execute_mode_change`
+- **mode_transition**
+  - `transition`
+  - `valid_mode?`
+  - `critical_tasks_running?`
+  - `fetch_current_mode`
+  - `execute_transition`
+- **schedule**
+  - `push_refresh`
+  - `refresh`
+  - `schedule_tasks`
+  - `send_task`
+
+### lex-splunk
+
+- **authentication**
+  - `login`
+  - `list_tokens`
+  - `create_token`
+  - `delete_token`
+- **roles**
+  - `list_roles`
+  - `get_role`
+  - `create_role`
+  - `update_role`
+  - `delete_role`
+  - `list_capabilities`
+- **users**
+  - `list_users`
+  - `get_user`
+  - `create_user`
+  - `update_user`
+  - `delete_user`
+- **apps**
+  - `list_apps`
+  - `get_app`
+  - `install_app`
+  - `update_app`
+  - `delete_app`
+- **config**
+  - `get_cluster_config`
+  - `update_cluster_config`
+- **peers**
+  - `list_cluster_peers`
+  - `get_cluster_peer`
+- **searchhead**
+  - `list_searchhead_members`
+  - `get_shcluster_config`
+- **conf**
+  - `list_conf_files`
+  - `list_stanzas`
+  - `get_stanza`
+  - `create_stanza`
+  - `update_stanza`
+  - `delete_stanza`
+- **client**
+  - `list_deployment_clients`
+  - `get_deployment_client`
+- **server**
+  - `list_serverclasses`
+  - `get_serverclass`
+  - `create_serverclass`
+- **serverclass**
+  - `list_serverclass_apps`
+  - `add_serverclass_app`
+- **providers**
+  - `list_providers`
+  - `get_provider`
+  - `create_provider`
+  - `update_provider`
+  - `delete_provider`
+- **http_event_collector**
+  - `list_hec_tokens`
+  - `create_hec_token`
+  - `get_hec_token`
+  - `update_hec_token`
+  - `delete_hec_token`
+- **ingest**
+  - `list_ingest_destinations`
+  - `create_ingest_destination`
+  - `delete_ingest_destination`
+- **monitor**
+  - `list_monitor_inputs`
+  - `create_monitor_input`
+  - `get_monitor_input`
+  - `update_monitor_input`
+  - `delete_monitor_input`
+- **scripted**
+  - `list_scripted_inputs`
+  - `create_scripted_input`
+- **tcp**
+  - `list_tcp_raw_inputs`
+  - `create_tcp_raw_input`
+  - `list_tcp_cooked_inputs`
+  - `create_tcp_cooked_input`
+- **udp**
+  - `list_udp_inputs`
+  - `create_udp_input`
+- **server**
+  - `get_server_info`
+  - `get_server_status`
+- **admin**
+  - `create_backup`
+  - `restore_backup`
+  - `toggle_maintenance`
+  - `get_kvstore_status`
+  - `start_migration`
+  - `get_migration_status`
+  - `stop_migration`
+- **collections**
+  - `list_collections`
+  - `create_collection`
+  - `get_collection`
+  - `update_collection`
+  - `delete_collection`
+- **data**
+  - `list_records`
+  - `create_record`
+  - `get_record`
+  - `update_record`
+  - `delete_record`
+  - `delete_all_records`
+- **event_types**
+  - `list_event_types`
+  - `create_event_type`
+- **field_extractions**
+  - `list_field_extractions`
+  - `create_field_extraction`
+- **lookups**
+  - `list_lookups`
+  - `upload_lookup`
+- **saved_searches**
+  - `list_saved_searches`
+  - `get_saved_search`
+  - `create_saved_search`
+  - `update_saved_search`
+  - `delete_saved_search`
+  - `dispatch_saved_search`
+- **tags**
+  - `list_tags`
+  - `get_tag`
+  - `update_tag`
+- **license**
+  - `list_license_pools`
+  - `list_license_stacks`
+  - `list_license_messages`
+  - `get_license_usage`
+- **catalog**
+  - `list_metrics`
+  - `list_dimensions`
+  - `get_dimension_values`
+- **rollup**
+  - `list_rollup_policies`
+  - `create_rollup_policy`
+  - `get_rollup_policy`
+  - `update_rollup_policy`
+  - `delete_rollup_policy`
+- **tcp_default**
+  - `get_tcp_default`
+  - `update_tcp_default`
+  - `get_tcp_default_named`
+  - `update_tcp_default_named`
+  - `delete_tcp_default_named`
+- **tcp_group**
+  - `list_tcp_groups`
+  - `create_tcp_group`
+  - `get_tcp_group`
+  - `update_tcp_group`
+  - `delete_tcp_group`
+- **tcp_server**
+  - `list_tcp_servers`
+  - `create_tcp_server`
+  - `get_tcp_server`
+  - `update_tcp_server`
+  - `delete_tcp_server`
+  - `list_tcp_server_connections`
+- **alerts**
+  - `list_alert_actions`
+- **jobs**
+  - `create_search_job`
+  - `list_search_jobs`
+  - `get_search_job`
+  - `delete_search_job`
+  - `control_search_job`
+- **parser**
+  - `parse_search`
+- **results**
+  - `export_search`
+  - `get_search_events`
+  - `get_search_results`
+  - `get_search_preview`
+- **convert**
+  - `convert_spl_to_spl2`
+- **datasets**
+  - `list_spl2_datasets`
+  - `get_spl2_dataset`
+- **dispatch**
+  - `dispatch_spl2`
+- **modules**
+  - `list_spl2_modules`
+  - `get_spl2_module`
+  - `create_spl2_module`
+  - `delete_spl2_module`
+  - `get_spl2_module_permissions`
+  - `update_spl2_module_permissions`
+- **logger**
+  - `list_loggers`
+  - `get_logger`
+  - `set_log_level`
+- **messages**
+  - `list_messages`
+  - `create_message`
+  - `get_message`
+  - `delete_message`
+- **server_control**
+  - `list_server_controls`
+  - `restart_server`
+  - `restart_webui`
+- **settings**
+  - `get_server_settings`
+  - `get_server_roles`
+  - `rotate_secret`
+  - `get_proxy_settings`
+  - `update_proxy_settings`
+  - `delete_proxy_settings`
+- **topology**
+  - `list_search_peers`
+  - `get_search_peer`
+  - `add_search_peer`
+  - `remove_search_peer`
+- **categories**
+  - `list_workload_categories`
+- **pools**
+  - `list_workload_pools`
+  - `get_workload_pool`
+  - `create_workload_pool`
+  - `update_workload_pool`
+  - `delete_workload_pool`
+- **rules**
+  - `list_workload_rules`
+  - `create_workload_rule`
+
+### lex-tasker
+
+- **check_subtask**
+  - `check_subtasks`
+  - `chain_matches?`
+  - `build_task_hash`
+  - `resolve_master_id`
+  - `subtask_routing_key`
+  - `dispatch_task`
+  - `resolve_results`
+  - `send_task`
+  - `insert_task`
+- **fetch_delayed**
+  - `fetch`
+  - `delayed_by?`
+  - `build_delayed_hash`
+  - `delayed_routing_key`
+  - `update_delayed_status`
+  - `send_task`
+  - `push`
+- **log**
+  - `add_log`
+  - `delete_log`
+  - `delete_task_logs`
+  - `delete_node_logs`
+  - `delete_all`
+- **task_manager**
+  - `purge_old`
+  - `expire_queued`
+- **updater**
+  - `update_status`
+
+### lex-telemetry — Legion::Extensions::Telemetry
+
+- **telemetry**
+  - `cross_region_counters`
+  - `replication_lag_samples`
+  - `record_cross_region`
+  - `record_replication_lag`
+  - `region_stats`
+  - `event_store`
+  - `parsers`
+  - `ingest_session`
+  - `session_stats`
+  - `aggregate_stats`
+  - `telemetry_status`
+  - `publish_pending`
+  - `high_water_mark`
+  - `collect`
+  - `region_metrics`
+  - `privacy_mode?`
+  - `system_stats`
+  - `reset!`
+
+### lex-tfe
+
+- **applies**
+  - `get_apply`
+  - `get_apply_log`
+- **organizations**
+  - `list_organizations`
+  - `get_organization`
+- **plans**
+  - `get_plan`
+  - `get_plan_json_output`
+  - `get_plan_log`
+- **policy_sets**
+  - `list_policy_sets`
+  - `get_policy_set`
+  - `list_workspace_policy_sets`
+- **projects**
+  - `list_projects`
+  - `get_project`
+  - `create_project`
+  - `update_project`
+  - `delete_project`
+- **runs**
+  - `list_runs`
+  - `get_run`
+  - `create_run`
+  - `apply_run`
+  - `discard_run`
+  - `cancel_run`
+- **state_versions**
+  - `list_state_versions`
+  - `get_state_version`
+  - `get_current_state_version`
+- **variable_sets**
+  - `list_variable_sets`
+  - `get_variable_set`
+  - `create_variable_set`
+  - `update_variable_set`
+  - `delete_variable_set`
+  - `list_varset_variables`
+  - `add_varset_variable`
+- **variables**
+  - `list_variables`
+  - `create_variable`
+  - `update_variable`
+  - `delete_variable`
+- **workspaces**
+  - `list`
+  - `get`
+  - `create`
+  - `update`
+  - `delete`
+  - `lock`
+  - `unlock`
+
+### lex-transformer — Payload transformation engine for LegionIO task chains
+
+- **transform**
+  - `transform`
+  - `transform_chain`
+  - `render_transformation`
+  - `dispatch_transformed`
+  - `dispatch_multiplied`
+  - `send_task`
+
+### lex-webhook — Legion::Extensions::Webhook
+
+- **endpoints**
+  - `list_endpoints`
+  - `register_endpoint`
+  - `remove_endpoint`
+- **receive**
+  - `receive`
+- **verify**
+  - `verify`
+  - `compute_signature`
+
+## Identity
+
+### lex-identity-entra
+
+- **credential**
+  - `acquire_token`
+  - `acquire_token_with_certificate`
+  - `credential_post`
+- **login**
+  - `delegated_scopes`
+  - `request_device_code`
+  - `poll_device_code`
+  - `authorize_url`
+  - `exchange_code`
+  - `refresh_delegated_token`
+  - `auth_callback`
+  - `oauth_post`
+- **on_behalf_of**
+  - `exchange_on_behalf_of`
+  - `obo_post`
+- **token**
+  - `acquire_managed_token`
+- **token**
+  - `acquire_federated_token`
+  - `acquire_from_environment`
+  - `federation_post`
+
+### lex-identity-github
+
+
+### lex-identity-kerberos
+
+
+### lex-identity-ldap
+
+
+### lex-identity-ledger
+
+- **audit**
+  - `write_audit`
+- **groups**
+  - `write_group`
+- **identity**
+  - `write_identity`
+
+### lex-identity-system
+
+
+### lex-kerberos
+
+- **authenticate**
+  - `validate_spnego`
+  - `negotiate`
+
+## Service Integrations
+
+### lex-arize
+
+- **ai_integrations**
+  - `list_ai_integrations`
+  - `create_ai_integration`
+  - `get_ai_integration`
+  - `update_ai_integration`
+  - `delete_ai_integration`
+- **annotation_configs**
+  - `list_annotation_configs`
+  - `create_annotation_config`
+  - `get_annotation_config`
+  - `delete_annotation_config`
+- **annotation_queues**
+  - `list_annotation_queues`
+  - `create_annotation_queue`
+  - `get_annotation_queue`
+  - `update_annotation_queue`
+  - `delete_annotation_queue`
+  - `list_annotation_queue_records`
+  - `create_annotation_queue_records`
+  - `delete_annotation_queue_records`
+  - `annotate_record`
+  - `assign_record`
+- **api_keys**
+  - `list_api_keys`
+  - `create_api_key`
+  - `delete_api_key`
+  - `refresh_api_key`
+- **datasets**
+  - `list_datasets`
+  - `create_dataset`
+  - `get_dataset`
+  - `delete_dataset`
+  - `list_dataset_examples`
+  - `create_dataset_examples`
+  - `update_dataset_examples`
+  - `annotate_dataset_examples`
+- **evaluators**
+  - `list_evaluators`
+  - `create_evaluator`
+  - `get_evaluator`
+  - `update_evaluator`
+  - `delete_evaluator`
+  - `list_evaluator_versions`
+  - `create_evaluator_version`
+  - `get_evaluator_version`
+- **experiments**
+  - `list_experiments`
+  - `create_experiment`
+  - `get_experiment`
+  - `delete_experiment`
+  - `list_experiment_runs`
+  - `annotate_experiment_runs`
+- **organizations**
+  - `list_organizations`
+  - `create_organization`
+  - `get_organization`
+  - `update_organization`
+  - `delete_organization`
+- **projects**
+  - `list_projects`
+  - `create_project`
+  - `get_project`
+  - `delete_project`
+- **prompts**
+  - `list_prompts`
+  - `create_prompt`
+  - `get_prompt`
+  - `update_prompt`
+  - `delete_prompt`
+  - `list_prompt_versions`
+  - `create_prompt_version`
+  - `resolve_prompt_label`
+  - `get_prompt_version`
+  - `set_prompt_version_labels`
+  - `remove_prompt_version_label`
+- **resource_restrictions**
+  - `restrict_resource`
+  - `unrestrict_resource`
+- **role_bindings**
+  - `create_role_binding`
+  - `get_role_binding`
+  - `update_role_binding`
+
+### lex-cloudflare
+
+- **accounts**
+  - `list`
+  - `get`
+  - `create`
+  - `update`
+  - `delete`
+  - `get_profile`
+  - `update_profile`
+- **members**
+  - `list_members`
+  - `get_member`
+  - `add_member`
+  - `update_member`
+  - `remove_member`
+- **roles**
+  - `list_roles`
+  - `get_role`
+- **tokens**
+  - `list_tokens`
+  - `get_token`
+  - `create_token`
+  - `update_token`
+- **finetunes**
+  - `list_finetunes`
+  - `create_finetune`
+  - `upload_finetune_asset`
+  - `list_public_finetunes`
+- **models**
+  - `run`
+  - `search_models`
+  - `model_schema`
+  - `to_markdown`
+  - `supported_markdown_formats`
+- **datasets**
+  - `list_datasets`
+  - `get_dataset`
+  - `create_dataset`
+  - `update_dataset`
+  - `delete_dataset`
+- **evaluations**
+  - `list_evaluations`
+  - `get_evaluation`
+  - `create_evaluation`
+  - `delete_evaluation`
+- **gateways**
+  - `list_gateways`
+  - `get_gateway`
+  - `create_gateway`
+  - `update_gateway`
+  - `delete_gateway`
+- **logs**
+  - `list_logs`
+  - `get_log`
+  - `patch_log`
+  - `delete_logs`
+  - `get_log_request`
+  - `get_log_response`
+- **nameservers**
+  - `list`
+  - `add`
+  - `delete`
+- **dnssec**
+  - `get_dnssec`
+  - `edit_dnssec`
+  - `delete_dnssec`
+- **records**
+  - `list`
+  - `get`
+  - `create`
+  - `update`
+  - `delete`
+- **analytics**
+  - `report`
+  - `report_by_time`
+  - `get_reverse_dns`
+  - `update_reverse_dns`
+- **clusters**
+  - `list`
+  - `get`
+  - `create`
+  - `update`
+  - `delete`
+- **deployments**
+  - `list_deployments`
+  - `get_deployment`
+  - `delete_deployment`
+  - `retry_deployment`
+  - `rollback_deployment`
+- **domains**
+  - `list_domains`
+  - `get_domain`
+  - `add_domain`
+  - `delete_domain`
+- **projects**
+  - `list_projects`
+  - `get_project`
+  - `create_project`
+  - `delete_project`
+- **certificate_packs**
+  - `list_packs`
+  - `get_pack`
+  - `order_pack`
+  - `update_pack`
+  - `delete_pack`
+  - `quota`
+- **universal**
+  - `get_universal_settings`
+  - `update_universal_settings`
+  - `get_recommendation`
+  - `list_verification`
+  - `update_verification`
+- **indexes**
+  - `list_indexes`
+  - `get_index`
+  - `create_index`
+  - `delete_index`
+  - `index_info`
+  - `list_metadata_indexes`
+  - `create_metadata_index`
+  - `delete_metadata_index`
+- **vectors**
+  - `insert`
+  - `upsert`
+  - `query`
+  - `get_by_ids`
+  - `delete_by_ids`
+  - `list_vectors`
+- **routes**
+  - `list_routes`
+  - `get_route`
+  - `create_route`
+  - `update_route`
+  - `delete_route`
+- **devices**
+  - `list_devices`
+  - `get_device`
+  - `delete_device`
+  - `revoke_device`
+- **dex_tests**
+  - `list_dex_tests`
+  - `get_dex_test`
+  - `create_dex_test`
+  - `update_dex_test`
+  - `delete_dex_test`
+- **ip_profiles**
+  - `list_ip_profiles`
+  - `get_ip_profile`
+  - `create_ip_profile`
+  - `update_ip_profile`
+  - `delete_ip_profile`
+- **registrations**
+  - `list_registrations`
+  - `get_registration`
+  - `delete_registration`
+  - `revoke_registrations`
+  - `unrevoke_registrations`
+- **settings**
+  - `list_settings`
+  - `get_setting`
+- **zones**
+  - `list`
+  - `get`
+  - `create`
+  - `update`
+  - `delete`
+  - `activation_check`
+
+### lex-consul
+
+- **agent**
+  - `self_info`
+  - `members`
+  - `join`
+  - `leave`
+  - `force_leave`
+  - `reload`
+  - `maintenance`
+- **catalog**
+  - `datacenters`
+  - `nodes`
+  - `services`
+  - `service`
+  - `node`
+  - `register`
+  - `deregister`
+- **event**
+  - `fire_event`
+  - `list_events`
+- **health**
+  - `node_health`
+  - `service_checks`
+  - `service_health`
+  - `checks_in_state`
+  - `connect_health`
+- **kv**
+  - `get_key`
+  - `put_key`
+  - `delete_key`
+  - `list_keys`
+- **partitions**
+  - `list_partitions`
+  - `get_partition`
+  - `create_partition`
+  - `delete_partition`
+- **session**
+  - `create_session`
+  - `destroy_session`
+  - `session_info`
+  - `list_sessions`
+  - `node_sessions`
+  - `renew_session`
+- **status**
+  - `leader`
+  - `peers`
+
+### lex-elasticsearch
+
+- **documents**
+  - `index_document`
+  - `get_document`
+  - `delete_document`
+  - `update_document`
+- **indices**
+  - `list_indices`
+  - `create_index`
+  - `delete_index`
+  - `check_index`
+  - `get_index`
+- **search**
+  - `search`
+  - `count`
+
+### lex-esphome
+
+- **alarm_control_panel**
+  - `alarm_state`
+  - `alarm_arm_away`
+  - `alarm_arm_home`
+  - `alarm_arm_night`
+  - `alarm_arm_vacation`
+  - `alarm_disarm`
+- **binary_sensor**
+  - `binary_sensor_state`
+- **button**
+  - `button_press`
+- **climate**
+  - `climate_state`
+  - `climate_set`
+- **cover**
+  - `cover_state`
+  - `cover_open`
+  - `cover_close`
+  - `cover_stop`
+  - `cover_toggle`
+  - `cover_set`
+- **device**
+  - `device_info`
+  - `discover_mdns`
+- **fan**
+  - `fan_state`
+  - `fan_turn_on`
+  - `fan_turn_off`
+  - `fan_toggle`
+- **light**
+  - `light_state`
+  - `light_turn_on`
+  - `light_turn_off`
+  - `light_toggle`
+- **lock**
+  - `lock_state`
+  - `lock_lock`
+  - `lock_unlock`
+  - `lock_open`
+- **media_player**
+  - `media_player_state`
+  - `media_player_play`
+  - `media_player_pause`
+  - `media_player_stop`
+  - `media_player_set_volume`
+- **number**
+  - `number_state`
+  - `number_set`
+- **select**
+  - `select_state`
+  - `select_set`
+- **sensor**
+  - `sensor_state`
+- **switch**
+  - `switch_state`
+  - `switch_turn_on`
+  - `switch_turn_off`
+  - `switch_toggle`
+- **text**
+  - `text_state`
+  - `text_set`
+- **update**
+  - `update_state`
+  - `update_install`
+- **valve**
+  - `valve_state`
+  - `valve_open`
+  - `valve_close`
+  - `valve_toggle`
+  - `valve_set`
+
+### lex-home_assistant
+
+- **calendars**
+  - `list_calendars`
+  - `get_calendar_events`
+- **camera**
+  - `get_camera_image`
+- **config**
+  - `api_status`
+  - `get_config`
+  - `get_components`
+  - `check_config`
+  - `get_error_log`
+- **entities**
+  - `list_entities`
+  - `get_entity`
+- **events**
+  - `list_events`
+  - `fire_event`
+- **history**
+  - `get_history`
+- **intents**
+  - `handle_intent`
+- **logbook**
+  - `get_logbook`
+- **services**
+  - `list_services`
+  - `call_service`
+- **states**
+  - `list_states`
+  - `get_state`
+  - `set_state`
+  - `delete_state`
+- **template**
+  - `render_template`
+
+### lex-jfrog
+
+- **release_bundles**
+  - `list_bundles`
+  - `list_versions`
+  - `get_version`
+  - `delete_version`
+  - `import_version`
+  - `import_status`
+- **repositories**
+  - `create`
+  - `get`
+  - `update`
+  - `delete`
+  - `list`
+  - `exists?`
+  - `create_batch`
+  - `update_batch`
+- **searches**
+  - `aql`
+  - `artifact_search`
+  - `gavc_search`
+  - `property_search`
+  - `checksum_search`
+  - `usage_search`
+  - `date_range_search`
+  - `pattern_search`
+  - `docker_repositories`
+  - `docker_tags`
+- **security**
+  - `get_user`
+  - `list_permissions`
+  - `get_permission`
+  - `create_permission`
+  - `delete_permission`
+  - `create_api_key`
+  - `get_api_key`
+  - `revoke_api_key`
+- **storage**
+  - `empty_trash`
+  - `delete_trash_item`
+  - `restore_trash_item`
+  - `run_garbage_collection`
+  - `storage_info`
+
+### lex-jira
+
+- **backlogs**
+  - `move_issues_to_backlog`
+- **boards**
+  - `list_boards`
+  - `get_board`
+  - `get_board_configuration`
+  - `get_board_issues`
+- **epics**
+  - `get_epic`
+  - `get_epic_issues`
+  - `move_issues_to_epic`
+- **sprints**
+  - `get_sprint`
+  - `create_sprint`
+  - `update_sprint`
+  - `delete_sprint`
+  - `get_sprint_issues`
+  - `move_issues_to_sprint`
+- **audit_records**
+  - `get_audit_records`
+- **dashboards**
+  - `list_dashboards`
+  - `get_dashboard`
+  - `create_dashboard`
+  - `update_dashboard`
+  - `delete_dashboard`
+  - `copy_dashboard`
+- **filters**
+  - `list_favorite_filters`
+  - `get_filter`
+  - `create_filter`
+  - `update_filter`
+  - `delete_filter`
+  - `get_filter_share_permissions`
+  - `add_filter_share_permission`
+  - `delete_filter_share_permission`
+- **groups**
+  - `get_group`
+  - `create_group`
+  - `delete_group`
+  - `add_user_to_group`
+  - `remove_user_from_group`
+  - `bulk_get_groups`
+  - `find_groups`
+- **attachments**
+  - `get_attachments`
+  - `get_attachment`
+  - `add_attachment`
+  - `delete_attachment`
+  - `get_attachment_meta`
+- **comments**
+  - `get_issue_comments`
+  - `get_comment`
+  - `add_comment`
+  - `update_comment`
+  - `delete_comment`
+- **issues**
+  - `create_issue`
+  - `get_issue`
+  - `update_issue`
+  - `delete_issue`
+  - `bulk_create_issues`
+  - `get_issue_changelog`
+- **links**
+  - `create_issue_link`
+  - `get_issue_link`
+  - `delete_issue_link`
+  - `list_link_types`
+  - `get_link_type`
+- **properties**
+  - `get_issue_properties`
+  - `get_issue_property`
+  - `set_issue_property`
+  - `delete_issue_property`
+- **remote_links**
+  - `get_remote_links`
+  - `get_remote_link`
+  - `create_remote_link`
+  - `update_remote_link`
+  - `delete_remote_link`
+- **search**
+  - `search_issues`
+  - `pick_issues`
+  - `parse_jql`
+  - `autocomplete_jql`
+- **transitions**
+  - `get_transitions`
+  - `transition_issue`
+- **votes**
+  - `get_votes`
+  - `add_vote`
+  - `remove_vote`
+- **watchers**
+  - `get_watchers`
+  - `add_watcher`
+  - `remove_watcher`
+- **worklogs**
+  - `get_issue_worklogs`
+  - `get_worklog`
+  - `add_worklog`
+  - `update_worklog`
+  - `delete_worklog`
+- **permissions**
+  - `get_my_permissions`
+  - `get_all_permissions`
+  - `list_permission_schemes`
+  - `get_permission_scheme`
+  - `check_permissions`
+- **categories**
+  - `list_project_categories`
+  - `get_project_category`
+  - `create_project_category`
+  - `update_project_category`
+  - `delete_project_category`
+- **components**
+  - `list_project_components`
+  - `get_component`
+  - `create_component`
+  - `update_component`
+  - `delete_component`
+- **projects**
+  - `list_projects`
+  - `get_project`
+  - `create_project`
+  - `update_project`
+  - `delete_project`
+  - `search_projects`
+  - `get_project_statuses`
+- **roles**
+  - `list_project_roles`
+  - `get_project_role`
+  - `set_role_actors`
+  - `add_role_actors`
+  - `remove_role_actor`
+- **versions**
+  - `list_project_versions`
+  - `get_version`
+  - `create_version`
+  - `update_version`
+  - `delete_version`
+  - `merge_versions`
+  - `move_version`
+- **users**
+  - `get_user`
+  - `create_user`
+  - `delete_user`
+  - `bulk_get_users`
+  - `find_users`
+  - `find_users_by_query`
+  - `get_myself`
+  - `get_user_columns`
+- **webhooks**
+  - `list_webhooks`
+  - `register_webhooks`
+  - `delete_webhooks`
+  - `refresh_webhooks`
+
+### lex-lakera
+
+- **guard**
+  - `check`
+  - `check_detailed`
+- **health**
+  - `policy_health`
+  - `policy_lint`
+  - `startup`
+  - `ready`
+  - `live`
+- **policies**
+  - `create_policy`
+  - `get_policy`
+  - `update_policy`
+  - `delete_policy`
+- **projects**
+  - `create_project`
+  - `get_project`
+  - `update_project`
+  - `delete_project`
+
+### lex-memcached
+
+- **item**
+  - `set`
+  - `get`
+  - `fetch`
+  - `add`
+  - `delete`
+  - `append`
+- **server**
+  - `alive`
+  - `flush`
+  - `stats`
+  - `reset_stats`
+  - `version`
+
+### lex-mongodb
+
+- **collections**
+  - `list_collections`
+  - `create_collection`
+  - `drop_collection`
+  - `collection_stats`
+  - `database`
+- **documents**
+  - `find`
+  - `insert_one`
+  - `insert_many`
+  - `update_one`
+  - `delete_one`
+  - `count`
+  - `database`
+
+### lex-nomad
+
+- **allocations**
+  - `list_allocations`
+  - `get_allocation`
+  - `stop_allocation`
+  - `signal_allocation`
+  - `restart_allocation`
+  - `allocation_services`
+  - `allocation_checks`
+- **deployments**
+  - `list_deployments`
+  - `get_deployment`
+  - `deployment_allocations`
+  - `fail_deployment`
+  - `pause_deployment`
+  - `promote_deployment`
+  - `set_allocation_health`
+  - `unblock_deployment`
+- **evaluations**
+  - `list_evaluations`
+  - `get_evaluation`
+  - `evaluation_allocations`
+  - `evaluations_count`
+  - `delete_evaluations`
+- **jobs**
+  - `list_jobs`
+  - `get_job`
+  - `create_job`
+  - `update_job`
+  - `delete_job`
+  - `plan_job`
+  - `dispatch_job`
+  - `revert_job`
+  - `job_versions`
+  - `job_summary`
+  - `job_allocations`
+  - `job_evaluations`
+  - `job_deployments`
+  - `job_latest_deployment`
+  - `evaluate_job`
+  - `force_periodic_job`
+  - `scale_job`
+  - `job_scale_status`
+  - `job_services`
+  - `parse_job`
+- **namespaces**
+  - `list_namespaces`
+  - `get_namespace`
+  - `create_or_update_namespace`
+  - `delete_namespace`
+- **nodes**
+  - `list_nodes`
+  - `get_node`
+  - `node_allocations`
+  - `evaluate_node`
+  - `drain_node`
+  - `purge_node`
+  - `set_node_eligibility`
+- **search**
+  - `prefix_search`
+  - `fuzzy_search`
+- **services**
+  - `list_services`
+  - `get_service`
+  - `delete_service`
+- **status**
+  - `leader`
+  - `peers`
+- **variables**
+  - `list_variables`
+  - `get_variable`
+  - `create_or_update_variable`
+  - `delete_variable`
+
+### lex-pagerduty
+
+- **abilities**
+  - `list_abilities`
+  - `test_ability`
+- **escalation_policies**
+  - `list_escalation_policies`
+  - `get_escalation_policy`
+  - `create_escalation_policy`
+  - `update_escalation_policy`
+  - `delete_escalation_policy`
+- **incidents**
+  - `list_incidents`
+  - `get_incident`
+  - `create_incident`
+  - `update_incident`
+  - `merge_incidents`
+  - `snooze_incident`
+  - `list_incident_notes`
+  - `create_incident_note`
+  - `list_incident_alerts`
+  - `get_incident_alert`
+  - `update_incident_alert`
+- **log_entries**
+  - `list_log_entries`
+  - `get_log_entry`
+- **maintenance_windows**
+  - `list_maintenance_windows`
+  - `get_maintenance_window`
+  - `create_maintenance_window`
+  - `update_maintenance_window`
+  - `delete_maintenance_window`
+- **notifications**
+  - `list_notifications`
+- **on_calls**
+  - `list_on_calls`
+- **priorities**
+  - `list_priorities`
+- **schedules**
+  - `list_schedules`
+  - `get_schedule`
+  - `create_schedule`
+  - `update_schedule`
+  - `delete_schedule`
+  - `list_schedule_overrides`
+  - `create_schedule_override`
+  - `delete_schedule_override`
+  - `list_on_call_users`
+- **services**
+  - `list_services`
+  - `get_service`
+  - `create_service`
+  - `update_service`
+  - `delete_service`
+  - `list_integrations`
+  - `create_integration`
+  - `get_integration`
+  - `update_integration`
+- **tags**
+  - `list_tags`
+  - `get_tag`
+  - `create_tag`
+  - `delete_tag`
+  - `list_entity_tags`
+  - `assign_tags`
+  - `remove_tags`
+- **teams**
+  - `list_teams`
+  - `get_team`
+  - `create_team`
+  - `update_team`
+  - `delete_team`
+  - `add_member`
+  - `remove_member`
+- **users**
+  - `list_users`
+  - `get_user`
+  - `create_user`
+  - `update_user`
+  - `delete_user`
+  - `list_contact_methods`
+  - `create_contact_method`
+  - `list_notification_rules`
+  - `create_notification_rule`
+- **vendors**
+  - `list_vendors`
+  - `get_vendor`
+
+### lex-postgres
+
+- **queries**
+  - `execute`
+  - `execute_params`
+- **tables**
+  - `list_tables`
+  - `describe_table`
+  - `table_size`
+
+### lex-prometheus
+
+- **alerts**
+  - `list_alerts`
+  - `list_rules`
+- **queries**
+  - `instant_query`
+  - `range_query`
+  - `series`
+  - `labels`
+  - `label_values`
+
+### lex-redis
+
+- **item**
+  - `get`
+  - `decrement`
+  - `delete`
+  - `exists`
+  - `increment`
+  - `keys`
+  - `rename`
+  - `set`
+- **server**
+  - `keys`
+  - `ping`
+  - `save`
+  - `time`
+  - `flushall`
+  - `flush_db`
+
+### lex-service_now
+
+- **access_control**
+  - `list_acls`
+  - `get_acl`
+  - `create_acl`
+  - `update_acl`
+  - `delete_acl`
+- **account**
+  - `list_accounts`
+  - `get_account`
+  - `create_account`
+  - `update_account`
+- **aggregate**
+  - `aggregate`
+- **approval**
+  - `list_approvals`
+  - `get_approval`
+  - `approve`
+  - `reject`
+  - `list_approvals_for_record`
+- **asset**
+  - `list_assets`
+  - `get_asset`
+  - `create_asset`
+  - `update_asset`
+  - `delete_asset`
+  - `list_hardware`
+- **attachment**
+  - `list_attachments`
+  - `get_attachment`
+  - `get_attachment_file`
+  - `upload_attachment`
+  - `delete_attachment`
+- **audit**
+  - `list_audit_records`
+  - `get_audit_record`
+  - `list_field_changes`
+- **business_rule**
+  - `list_business_rules`
+  - `get_business_rule`
+  - `create_business_rule`
+  - `update_business_rule`
+  - `delete_business_rule`
+- **calendar**
+  - `list_schedules`
+  - `get_schedule`
+  - `create_schedule`
+  - `update_schedule`
+  - `delete_schedule`
+  - `list_schedule_entries`
+- **catalog_task**
+  - `list_catalog_tasks`
+  - `get_catalog_task`
+  - `update_catalog_task`
+  - `close_catalog_task`
+- **catalog_variable**
+  - `list_catalog_variables`
+  - `get_catalog_variable`
+  - `create_catalog_variable`
+  - `update_catalog_variable`
+  - `delete_catalog_variable`
+- **change**
+  - `list_changes`
+  - `create_normal`
+  - `create_emergency`
+  - `create_standard`
+  - `get_change`
+  - `update_change`
+  - `delete_change`
+  - `list_change_tasks`
+  - `create_change_task`
+  - `update_change_task`
+  - `delete_change_task`
+  - `get_conflicts`
+  - `calculate_conflicts`
+  - `get_approvals`
+- **ci_relationship**
+  - `list_relationship_types`
+  - `get_relationship_type`
+  - `list_ci_relationships`
+  - `create_ci_relationship`
+  - `delete_ci_relationship`
+- **instance**
+  - `list_cis`
+  - `create_ci`
+  - `get_ci`
+  - `update_ci`
+  - `delete_ci`
+  - `get_relationships`
+  - `create_relationship`
+- **meta**
+  - `get_hierarchy`
+  - `get_class_meta`
+- **cmdb_health**
+  - `list_health_rules`
+  - `get_cmdb_health_dashboard`
+  - `list_duplicate_cis`
+  - `list_stale_cis`
+- **company**
+  - `list_companies`
+  - `get_company`
+  - `create_company`
+  - `update_company`
+  - `delete_company`
+- **contract**
+  - `list_contracts`
+  - `get_contract`
+  - `create_contract`
+  - `update_contract`
+  - `delete_contract`
+- **cost_center**
+  - `list_cost_centers`
+  - `get_cost_center`
+  - `create_cost_center`
+  - `update_cost_center`
+  - `delete_cost_center`
+- **csm**
+  - `list_csm_cases`
+  - `get_csm_case`
+  - `create_csm_case`
+  - `update_csm_case`
+  - `list_contacts`
+  - `get_contact`
+- **currency**
+  - `list_currencies`
+  - `get_currency`
+  - `list_exchange_rates`
+- **department**
+  - `list_departments`
+  - `get_department`
+  - `create_department`
+  - `update_department`
+  - `delete_department`
+- **deprecation_log**
+  - `list_upgrade_logs`
+  - `get_upgrade_log`
+  - `list_upgrade_skips`
+  - `list_deprecation_entries`
+- **discovery**
+  - `list_discovery_schedules`
+  - `get_discovery_schedule`
+  - `trigger_discovery`
+  - `list_discovery_logs`
+  - `list_discovered_devices`
+- **email_log**
+  - `list_email_logs`
+  - `get_email_log`
+  - `list_email_logs_for_record`
+- **event**
+  - `create_event`
+  - `list_events`
+  - `get_event`
+- **flow**
+  - `list_flows`
+  - `get_flow`
+  - `execute_flow`
+  - `get_flow_execution`
+  - `list_subflows`
+  - `execute_subflow`
+- **grc**
+  - `list_risks`
+  - `get_risk`
+  - `list_controls`
+  - `get_control`
+  - `list_audits`
+  - `get_audit`
+  - `list_policies`
+- **hr_case**
+  - `list_hr_cases`
+  - `get_hr_case`
+  - `create_hr_case`
+  - `update_hr_case`
+  - `close_hr_case`
+- **import_set**
+  - `import`
+  - `import_multiple`
+- **incident**
+  - `list_incidents`
+  - `get_incident`
+  - `create_incident`
+  - `update_incident`
+  - `resolve_incident`
+  - `delete_incident`
+- **integration_hub**
+  - `list_spokes`
+  - `list_action_types`
+  - `list_connections`
+  - `get_connection`
+  - `list_credentials`
+- **knowledge**
+  - `list_articles`
+  - `get_article`
+  - `create_article`
+  - `update_article`
+  - `delete_article`
+- **knowledge_base**
+  - `list_knowledge_bases`
+  - `get_knowledge_base`
+  - `create_knowledge_base`
+  - `update_knowledge_base`
+  - `delete_knowledge_base`
+  - `list_kb_categories`
+- **knowledge_feedback**
+  - `list_knowledge_feedback`
+  - `get_knowledge_feedback`
+  - `create_knowledge_feedback`
+  - `list_knowledge_views`
+- **license**
+  - `list_licenses`
+  - `get_license`
+  - `list_license_allocations`
+  - `list_installed_software`
+- **location**
+  - `list_locations`
+  - `get_location`
+  - `create_location`
+  - `update_location`
+  - `delete_location`
+- **metric**
+  - `list_metric_definitions`
+  - `get_metric_definition`
+  - `list_metric_instances`
+  - `get_metric_instance`
+- **mid_server**
+  - `list_mid_servers`
+  - `get_mid_server`
+  - `get_mid_server_by_name`
+  - `update_mid_server`
+  - `list_mid_server_capabilities`
+- **notification**
+  - `list_notifications`
+  - `get_notification`
+  - `create_notification`
+  - `update_notification`
+  - `delete_notification`
+- **on_call**
+  - `list_on_call_schedules`
+  - `get_on_call_schedule`
+  - `list_on_call_members`
+  - `get_current_on_call`
+  - `list_escalation_policies`
+- **performance_analytics**
+  - `get_widget_data`
+  - `list_widgets`
+  - `get_scorecard`
+  - `list_indicators`
+  - `list_breakdowns`
+- **problem**
+  - `list_problems`
+  - `get_problem`
+  - `create_problem`
+  - `update_problem`
+  - `close_problem`
+  - `delete_problem`
+- **project**
+  - `list_projects`
+  - `get_project`
+  - `create_project`
+  - `update_project`
+  - `delete_project`
+  - `list_project_tasks`
+- **release**
+  - `list_releases`
+  - `get_release`
+  - `create_release`
+  - `update_release`
+  - `delete_release`
+- **request**
+  - `list_requests`
+  - `get_request`
+  - `update_request`
+  - `list_request_items`
+  - `get_request_item`
+  - `update_request_item`
+- **scheduled_job**
+  - `list_scheduled_jobs`
+  - `get_scheduled_job`
+  - `create_scheduled_job`
+  - `update_scheduled_job`
+  - `delete_scheduled_job`
+- **script_action**
+  - `list_script_actions`
+  - `get_script_action`
+  - `create_script_action`
+  - `update_script_action`
+  - `delete_script_action`
+- **script_include**
+  - `list_script_includes`
+  - `get_script_include`
+  - `create_script_include`
+  - `update_script_include`
+  - `delete_script_include`
+- **security_incident**
+  - `list_security_incidents`
+  - `get_security_incident`
+  - `create_security_incident`
+  - `update_security_incident`
+  - `close_security_incident`
+- **service_catalog**
+  - `list_catalogs`
+  - `get_catalog`
+  - `get_category`
+  - `list_items`
+  - `get_item`
+  - `get_item_variables`
+  - `order_now`
+  - `add_to_cart`
+  - `get_cart`
+  - `checkout_cart`
+  - `delete_cart`
+- **service_portal**
+  - `list_portals`
+  - `get_portal`
+  - `list_portal_pages`
+  - `get_portal_page`
+  - `list_portal_widgets`
+  - `get_portal_widget`
+- **sla**
+  - `list_sla_definitions`
+  - `get_sla_definition`
+  - `list_task_slas`
+  - `get_task_sla`
+  - `pause_task_sla`
+- **survey**
+  - `list_surveys`
+  - `get_survey`
+  - `list_survey_instances`
+  - `get_survey_instance`
+  - `list_survey_responses`
+- **system_property**
+  - `list_properties`
+  - `get_property`
+  - `get_property_by_name`
+  - `create_property`
+  - `update_property`
+  - `delete_property`
+- **table**
+  - `table_list`
+  - `table_get`
+  - `table_create`
+  - `table_update`
+  - `table_delete`
+- **tag**
+  - `list_tags`
+  - `get_tag`
+  - `create_tag`
+  - `delete_tag`
+  - `list_tagged_records`
+  - `add_tag_to_record`
+  - `remove_tag_from_record`
+- **task**
+  - `list_tasks`
+  - `get_task`
+  - `update_task`
+  - `close_task`
+  - `add_work_note`
+- **ui_action**
+  - `list_ui_actions`
+  - `get_ui_action`
+  - `create_ui_action`
+  - `update_ui_action`
+  - `delete_ui_action`
+- **ui_policy**
+  - `list_ui_policies`
+  - `get_ui_policy`
+  - `create_ui_policy`
+  - `update_ui_policy`
+  - `delete_ui_policy`
+- **update_set**
+  - `list_update_sets`
+  - `get_update_set`
+  - `create_update_set`
+  - `update_update_set`
+  - `delete_update_set`
+  - `list_update_set_changes`
+- **user**
+  - `list_users`
+  - `get_user`
+  - `get_user_by_username`
+  - `get_user_by_email`
+  - `create_user`
+  - `update_user`
+  - `delete_user`
+- **user_group**
+  - `list_groups`
+  - `get_group`
+  - `get_group_by_name`
+  - `create_group`
+  - `update_group`
+  - `delete_group`
+  - `list_group_members`
+  - `add_group_member`
+  - `remove_group_member`
+- **vendor**
+  - `list_vendors`
+  - `get_vendor`
+  - `create_vendor`
+  - `update_vendor`
+  - `delete_vendor`
+- **work_order**
+  - `list_work_orders`
+  - `get_work_order`
+  - `create_work_order`
+  - `update_work_order`
+  - `close_work_order`
+  - `list_work_order_tasks`
+- **workflow**
+  - `list_workflows`
+  - `get_workflow`
+  - `list_workflow_contexts`
+  - `get_workflow_context`
+  - `list_workflow_contexts_for_record`
+  - `cancel_workflow_context`
+
+### lex-slack
+
+- **blocks**
+  - `mrkdwn`
+  - `plain_text`
+  - `option`
+  - `section`
+  - `divider`
+  - `header`
+  - `context`
+  - `actions`
+  - `image`
+  - `input`
+  - `file_block`
+  - `button`
+  - `overflow_menu`
+  - `static_select`
+  - `multi_static_select`
+  - `datepicker`
+- **bookmarks**
+  - `add_bookmark`
+  - `edit_bookmark`
+  - `remove_bookmark`
+  - `list_bookmarks`
+- **chat**
+  - `post_message`
+  - `send_webhook`
+  - `update_message`
+  - `delete_message`
+  - `schedule_message`
+  - `delete_scheduled`
+- **conversations**
+  - `list_conversations`
+  - `conversation_info`
+  - `conversation_history`
+  - `conversation_replies`
+  - `conversation_members`
+  - `join_conversation`
+  - `leave_conversation`
+  - `invite_to_conversation`
+  - `open_conversation`
+  - `create_conversation`
+  - `archive_conversation`
+  - `set_conversation_topic`
+- **files**
+  - `upload_file`
+  - `list_files`
+  - `file_info`
+  - `delete_file`
+  - `share_file`
+- **pins**
+  - `add_pin`
+  - `remove_pin`
+  - `list_pins`
+- **reactions**
+  - `add_reaction`
+  - `remove_reaction`
+  - `get_reactions`
+  - `list_reactions`
+- **reminders**
+  - `add_reminder`
+  - `complete_reminder`
+  - `delete_reminder`
+  - `reminder_info`
+  - `list_reminders`
+- **search**
+  - `search_messages`
+  - `search_files`
+- **usergroups**
+  - `list_usergroups`
+  - `create_usergroup`
+  - `update_usergroup`
+  - `disable_usergroup`
+  - `enable_usergroup`
+  - `list_usergroup_users`
+  - `update_usergroup_users`
+- **users**
+  - `list_users`
+  - `user_info`
+  - `lookup_by_email`
+  - `get_presence`
+  - `set_presence`
+- **views**
+  - `open_view`
+  - `push_view`
+  - `update_view`
+  - `publish_view`
+
+### lex-smtp
+
+- **email**
+  - `send`
+
+### lex-ssh
+
+- **command**
+  - `run`
+  - `run_mulitple`
+- **state**
+  - `reboot`
+  - `shutdown`
+
+### lex-vault
+
+- **kv**
+  - `read_secret`
+  - `write_secret`
+  - `patch_secret`
+  - `delete_secret`
+  - `delete_versions`
+  - `undelete_versions`
+  - `destroy_versions`
+  - `list_secrets`
+  - `read_metadata`
+  - `write_metadata`
+  - `delete_metadata`
+- **leases**
+  - `lookup_lease`
+  - `renew_lease`
+  - `revoke_lease`
+  - `list_leases`
+- **namespaces**
+  - `list_namespaces`
+  - `get_namespace`
+  - `create_namespace`
+  - `delete_namespace`
+- **pki**
+  - `issue`
+  - `sign_csr`
+  - `revoke`
+  - `list_certs`
+  - `get_cert`
+  - `ca_chain`
+  - `list_pki_roles`
+  - `get_pki_role`
+  - `create_pki_role`
+  - `tidy`
+- **system**
+  - `health`
+  - `seal_status`
+  - `seal`
+  - `unseal`
+  - `init`
+  - `list_mounts`
+  - `mount`
+  - `unmount`
+  - `list_auth`
+  - `enable_auth`
+  - `disable_auth`
+  - `list_policies`
+  - `get_policy`
+  - `put_policy`
+  - `delete_policy`
+- **token**
+  - `create_token`
+  - `lookup_token`
+  - `lookup_self`
+  - `renew_token`
+  - `renew_self`
+  - `revoke_token`
+  - `revoke_self`
+  - `list_accessors`
+  - `list_token_roles`
+  - `get_token_role`
+  - `create_token_role`
+  - `delete_token_role`
+- **transit**
+  - `create_key`
+  - `read_key`
+  - `list_keys`
+  - `delete_key`
+  - `rotate_key`
+  - `encrypt`
+  - `decrypt`
+  - `rewrap`
+  - `datakey`
+  - `sign`
+  - `verify`
+  - `hash_data`
+  - `random_bytes`
+
+### lex-velociraptor
+
+- **collections**
+  - `collect_artifact`
+  - `collect_artifact_and_wait`
+  - `flow_results`
+  - `cancel_flow`
+- **hunts**
+  - `launch_hunt`
+  - `hunt_results`
+  - `list_hunts`
+- **query**
+  - `query`
+  - `server_info`
+  - `search_clients`
+
+## Skills
+
+### lex-skill-superpowers — Superpowers skill set for Legion LLM
+
+

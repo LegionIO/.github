@@ -8,7 +8,7 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![Gem](https://img.shields.io/gem/v/legionio.svg)](https://rubygems.org/gems/legionio)
 
-**[legionio.dev](https://legionio.dev)** | [Main README](https://github.com/LegionIO/LegionIO) | [Getting Started](https://legionio.dev/getting-started/) | [Discussions](https://github.com/LegionIO/docs/discussions)
+**[legionio.dev](https://legionio.dev)** | [Main README](https://github.com/LegionIO/LegionIO) | [Getting Started](https://legionio.dev/getting-started/) | [Discussions](https://github.com/LegionIO/LegionIO/discussions)
 
 ```bash
 brew tap LegionIO/tap && brew install legionio
@@ -74,7 +74,7 @@ will correctly find nothing, because it lives in
 [lex-microsoft_teams](https://github.com/LegionIO/lex-microsoft_teams) (25 runners:
 chats, channels, meetings, transcripts, presence, files, adaptive cards). The
 authoritative list is the
-**[capability catalog](https://github.com/LegionIO/docs/blob/main/capabilities.md)** —
+**[capability catalog](https://github.com/LegionIO/.github/blob/main/capabilities.md)** —
 770 runners exposing 4,583 functions across the extension gems, generated from source
 on every release.
 
@@ -161,7 +161,7 @@ Copy claims are cheap; these artifacts settle questions, in reading order:
 - **30 minutes:** [router.rb](https://github.com/LegionIO/legion-llm/blob/main/lib/legion/llm/router.rb),
   [curator.rb](https://github.com/LegionIO/legion-llm/blob/main/lib/legion/llm/context/curator.rb),
   the [production metrics](https://github.com/LegionIO/legion-llm/blob/main/docs/curation-production-metrics.md),
-  and the [capability catalog](https://github.com/LegionIO/docs/blob/main/capabilities.md).
+  and the [capability catalog](https://github.com/LegionIO/.github/blob/main/capabilities.md).
 - **Full audit:** the [engineering docs](https://github.com/LegionIO/legion-llm/tree/main/docs/work/planning)
   (router design, debugging methodology), any runner file, any spec/ directory.
 
