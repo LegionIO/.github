@@ -38,6 +38,11 @@ on:
         default: false
         type: boolean
         required: false
+      ruby-version-map:
+        description: 'JSON object mapping matrix label to actual install version (e.g. {"4.0":"4.0.5"} pins 4.0 to 4.0.5)'
+        default: '{"4.0":"4.0.5"}'
+        type: string
+        required: false
       runner:
         description: "Runner label (set to 'legion' for self-hosted, 'ubuntu-latest' for GitHub-hosted)"
         default: 'ubuntu-latest'
@@ -131,7 +136,7 @@ jobs:
           echo "RabbitMQ ready after ${elapsed}s"
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: ${{ matrix.ruby }}
+          ruby-version: ${{ fromJSON(inputs.ruby-version-map)[matrix.ruby] || matrix.ruby }}
           bundler-cache: true
       - name: Run RSpec
         run: bundle exec rspec
