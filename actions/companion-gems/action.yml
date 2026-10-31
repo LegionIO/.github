@@ -1,0 +1,18 @@
+name: Companion Gem Checkouts
+description: Check out same-owner gem dependencies at immutable commits before Bundler runs
+
+inputs:
+  repositories:
+    description: JSON object mapping local gem directory names to repository and full commit ref
+    required: false
+    default: '{}'
+
+runs:
+  using: composite
+  steps:
+    - name: Check out companion gems
+      shell: bash
+      env:
+        COMPANION_GEMS: ${{ inputs.repositories }}
+        ACTION_DIRECTORY: ${{ github.action_path }}
+      run: node "$ACTION_DIRECTORY/checkout.mjs"
