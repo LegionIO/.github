@@ -57,7 +57,7 @@ jobs:
           version=""
 
           # Prefer gemspec version (authoritative)
-          if ls *.gemspec 1>/dev/null 2>&1; then
+          if compgen -G '*.gemspec' >/dev/null; then
             version=$(ruby -e "puts Gem::Specification.load(Dir['*.gemspec'].first).version" 2>/dev/null || true)
           fi
 
@@ -139,8 +139,8 @@ jobs:
         if: steps.check.outputs.needed == 'true'
         id: build
         run: |
-          gem build *.gemspec
-          echo "gem_file=$(ls -t *.gem | head -1)" >> "$GITHUB_OUTPUT"
+          gem build ./*.gemspec
+          echo "gem_file=$(ruby -e 'puts Dir.glob("*.gem").max_by { |path| File.mtime(path) }')" >> "$GITHUB_OUTPUT"
 
       - name: Create git tag
         if: steps.check.outputs.needed == 'true'

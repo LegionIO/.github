@@ -42,6 +42,20 @@ jobs:
       run-rubocop: true
 ```
 
+### Coordinated gem changes
+
+The CI and security workflows accept `companion-gems`: a JSON object mapping local directory names to same-owner repositories and full 40-character commit SHAs. Dependencies are checked out under `.ci-dependencies/` before Bundler runs. Branches and tags are rejected so verification cannot silently move to different code.
+
+```yaml
+with:
+  companion-gems: >-
+    {"legion-settings":{"repository":"LegionIO/legion-settings","ref":"58364fd5051a5157f0af8f5ef0f0cc45c0ed3926"}}
+```
+
+The consuming Gemfile must explicitly select these directories with guarded local `path:` dependencies. Ignore `.ci-dependencies/`; do not commit generated checkouts or `Gemfile.lock`. This allows related PRs to retain accurate minimum gem versions without publishing unreleased gems or replacing runtime APIs with compatibility stubs.
+
+Use reviewed dependency commits and record their PRs in the consuming PR. Release foundational gems before their consumers, then remove the companion input when the released dependencies satisfy the declared constraints. The action fetches public repositories only, never executes manifest text as shell commands, and refuses cross-owner repositories, path traversal, symlinks, or existing destinations. It does not change any CI gate or grant additional permissions.
+
 For the release workflow:
 
 ```yaml
@@ -89,6 +103,7 @@ The lex container workflow uses `ghcr.io/legionio/legion-core:latest` as its def
 | Action | Description |
 |--------|-------------|
 | `legion-eval` | Run LLM evaluations as a CI quality gate via `legion eval run` — inputs: evaluator, dataset, threshold (0.0-1.0), ruby-version, model |
+| `companion-gems` | Fetch reviewed same-owner dependencies at immutable commits before dependency installation — input: repositories |
 
 Usage:
 ```yaml
@@ -129,6 +144,7 @@ The `ci.yml` reusable workflow accepts these inputs:
 | `needs-redis` | `false` | Start Redis service container |
 | `needs-memcached` | `false` | Start Memcached service container (64MB, 8MB value limit) |
 | `needs-rabbitmq` | `false` | Start RabbitMQ service container |
+| `companion-gems` | `'{}'` | JSON mapping of dependency directory names to `{repository, ref}`; also supported by `security-scan.yml` |
 
 ## Release Workflow Reference
 

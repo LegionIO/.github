@@ -18,6 +18,11 @@ on:
         default: false
         type: boolean
         required: false
+      companion-gems:
+        description: JSON mapping of companion directory names to same-owner repository and full commit ref
+        default: '{}'
+        type: string
+        required: false
 
 jobs:
   bundler-audit:
@@ -26,6 +31,11 @@ jobs:
     runs-on: ${{ inputs.runner || 'ubuntu-latest' }}
     steps:
       - uses: actions/checkout@v4
+      - name: Check out companion gems
+        if: ${{ inputs.companion-gems != '' && inputs.companion-gems != '{}' }}
+        uses: LegionIO/.github/actions/companion-gems@ef14bb68db4bc530509f5c31b1de364a5575a16b
+        with:
+          repositories: ${{ inputs.companion-gems }}
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ inputs.ruby-version }}
@@ -42,6 +52,11 @@ jobs:
     runs-on: ${{ inputs.runner || 'ubuntu-latest' }}
     steps:
       - uses: actions/checkout@v4
+      - name: Check out companion gems
+        if: ${{ inputs.companion-gems != '' && inputs.companion-gems != '{}' }}
+        uses: LegionIO/.github/actions/companion-gems@ef14bb68db4bc530509f5c31b1de364a5575a16b
+        with:
+          repositories: ${{ inputs.companion-gems }}
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ inputs.ruby-version }}

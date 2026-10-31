@@ -1,0 +1,38 @@
+name: Companion Gem Action
+
+on:
+  pull_request:
+    paths:
+      - actions/companion-gems/**
+      - .github/workflows/companion-gems.yml
+      - .github/workflows/ci.yml
+      - .github/workflows/security-scan.yml
+  push:
+    branches: [main]
+    paths:
+      - actions/companion-gems/**
+      - .github/workflows/companion-gems.yml
+
+permissions:
+  contents: read
+
+jobs:
+  checkout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify checkout security boundaries
+        run: node --test actions/companion-gems/checkout.test.mjs
+      - name: Exercise immutable checkout
+        uses: ./actions/companion-gems
+        with:
+          repositories: >-
+            {"workflow-fixture":{"repository":"${{ github.repository }}","ref":"${{ github.sha }}"}}
+      - name: Verify checked-out revision
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+        run: test "$(git -C .ci-dependencies/workflow-fixture rev-parse HEAD)" = "$EXPECTED_SHA"
